@@ -286,7 +286,7 @@ fun HomeScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "PennyWise",
+                title = com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME,
                 isHomeScreen = true,
                 userName = uiState.userName,
                 profileImageUri = uiState.profileImageUri,

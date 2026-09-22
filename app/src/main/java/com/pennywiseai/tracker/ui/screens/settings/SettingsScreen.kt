@@ -244,43 +244,40 @@ fun SettingsScreen(
                 .padding(Dimensions.Padding.content),
             verticalArrangement = Arrangement.spacedBy(Spacing.sm)
         ) {
-            // ── PennyWise Pro / Support development ──
-            // Top of Settings on purpose: highest-discoverability slot.
-            // F-Droid builds have no Play billing (everything is already
-            // unlocked), so instead of an un-buyable Pro upsell they get a
-            // "Support development" tip jar. Play builds keep the Pro upgrade.
-            if (isFdroidBuild) {
-                SectionHeaderV2(title = stringResource(R.string.support_title))
-                SettingsGroup {
-                    SettingsNavItem(
-                        icon = Icons.Default.Favorite,
-                        iconBgColor = yellow_light,
-                        iconTint = yellow_dark,
-                        title = stringResource(R.string.support_title),
-                        subtitle = stringResource(R.string.support_subtitle),
-                        onClick = { showSupportDialog = true },
-                        position = ListItemPosition.Single,
-                    )
-                }
-            } else {
-                // Row content adapts to entitlement state — paid users see
-                // "Active" so the row reads as status, free users see "Upgrade"
-                // so it reads as a call-to-action.
-                SectionHeaderV2(title = "PennyWise Pro")
-                SettingsGroup {
-                    SettingsNavItem(
-                        icon = Icons.Default.AutoAwesome,
-                        iconBgColor = yellow_light,
-                        iconTint = yellow_dark,
-                        title = if (isProEntitled) "PennyWise Pro" else "Upgrade to PennyWise Pro",
-                        subtitle = if (isProEntitled) {
-                            "Active · all power features unlocked"
-                        } else {
-                            "Unlimited rules, statements, exports, and more"
-                        },
-                        onClick = { showUpgradeSheet = true },
-                        position = ListItemPosition.Single,
-                    )
+            // Commercial/support UI belongs to the upstream distribution.
+            // The personal flavor has all existing gated features unlocked and
+            // intentionally shows no purchase, license, or tip-jar surface.
+            if (!com.pennywiseai.tracker.BuildConfig.IS_PERSONAL_BUILD) {
+                if (isFdroidBuild) {
+                    SectionHeaderV2(title = stringResource(R.string.support_title))
+                    SettingsGroup {
+                        SettingsNavItem(
+                            icon = Icons.Default.Favorite,
+                            iconBgColor = yellow_light,
+                            iconTint = yellow_dark,
+                            title = stringResource(R.string.support_title),
+                            subtitle = stringResource(R.string.support_subtitle),
+                            onClick = { showSupportDialog = true },
+                            position = ListItemPosition.Single,
+                        )
+                    }
+                } else {
+                    SectionHeaderV2(title = "PennyWise Pro")
+                    SettingsGroup {
+                        SettingsNavItem(
+                            icon = Icons.Default.AutoAwesome,
+                            iconBgColor = yellow_light,
+                            iconTint = yellow_dark,
+                            title = if (isProEntitled) "PennyWise Pro" else "Upgrade to PennyWise Pro",
+                            subtitle = if (isProEntitled) {
+                                "Active · all power features unlocked"
+                            } else {
+                                "Unlimited rules, statements, exports, and more"
+                            },
+                            onClick = { showUpgradeSheet = true },
+                            position = ListItemPosition.Single,
+                        )
+                    }
                 }
             }
 

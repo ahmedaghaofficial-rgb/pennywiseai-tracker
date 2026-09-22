@@ -90,7 +90,7 @@ fun ChatScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "PennyWise AI",
+                title = "${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} AI",
                 hazeState = hazeState
             )
         }

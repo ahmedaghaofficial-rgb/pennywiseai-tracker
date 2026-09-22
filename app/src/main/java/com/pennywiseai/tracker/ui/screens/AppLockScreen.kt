@@ -80,7 +80,7 @@ fun AppLockScreen(
 
                 // Title
                 Text(
-                    text = "PennyWise is Locked",
+                    text = "${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} is Locked",
                     style = MaterialTheme.typography.headlineMedium,
                     textAlign = TextAlign.Center
                 )

@@ -24,6 +24,7 @@ android {
         versionName = "2.20.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders["deepLinkScheme"] = "pennywise"
         
         // Load RSA public key from local.properties
         val localPropertiesFile = rootProject.file("local.properties")
@@ -78,26 +79,44 @@ android {
             // unlocked, tip-jar instead of Pro). Beats matching BuildConfig.FLAVOR
             // against the "fdroid" string literal, which a typo would silently break.
             buildConfigField("boolean", "IS_FDROID_BUILD", "true")
+            buildConfigField("boolean", "IS_PERSONAL_BUILD", "false")
+            buildConfigField("String", "APP_DISPLAY_NAME", "\"PennyWise\"")
+            buildConfigField("String", "DEEP_LINK_SCHEME", "\"pennywise\"")
         }
         create("standard") {
             dimension = "version"
             isDefault = true
             // Standard flavor includes all architectures (including x86 for emulators)
             buildConfigField("boolean", "IS_FDROID_BUILD", "false")
+            buildConfigField("boolean", "IS_PERSONAL_BUILD", "false")
+            buildConfigField("String", "APP_DISPLAY_NAME", "\"PennyWise\"")
+            buildConfigField("String", "DEEP_LINK_SCHEME", "\"pennywise\"")
+        }
+        create("personal") {
+            dimension = "version"
+            // Personal-first build: separate install identity, no Play Billing,
+            // all existing Pro-gated features unlocked for owner testing.
+            applicationId = "com.flosi.tracker"
+            versionNameSuffix = "-personal"
+            manifestPlaceholders["deepLinkScheme"] = "flosi"
+            buildConfigField("boolean", "IS_FDROID_BUILD", "false")
+            buildConfigField("boolean", "IS_PERSONAL_BUILD", "true")
+            buildConfigField("String", "APP_DISPLAY_NAME", "\"فلوسي\"")
+            buildConfigField("String", "DEEP_LINK_SCHEME", "\"flosi\"")
         }
     }
 
     splits {
         abi {
-            // Disable splits for F-Droid builds and bundle builds
+            // Disable ABI splits for F-Droid, Personal, and bundle builds
             //noinspection WrongGradleMethod
             val runTasks = gradle.startParameter.taskNames.map { it.lowercase() }
             //noinspection WrongGradleMethod
             val isBundleBuild = runTasks.any { it.contains("bundle") }   // e.g., :app:bundleRelease
             //noinspection WrongGradleMethod
-            val isFdroidBuild = runTasks.any { it.contains("fdroid") }
+            val isSingleApkBuild = runTasks.any { it.contains("fdroid") || it.contains("personal") }
 
-            isEnable = !(isBundleBuild || isFdroidBuild)
+            isEnable = !(isBundleBuild || isSingleApkBuild)
 
             reset()
             include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
