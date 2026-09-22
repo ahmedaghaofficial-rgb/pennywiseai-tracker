@@ -71,9 +71,6 @@ jobs:
 
     - uses: gradle/actions/setup-gradle@v4
 
-    - name: Compile standard debug app
-      run: ./gradlew :app:compileStandardDebugKotlin --build-cache
-
     - name: Compile personal debug app
       run: ./gradlew :app:compilePersonalDebugKotlin --build-cache
 
@@ -115,9 +112,6 @@ jobs:
         packages: platform-tools
 
     - uses: gradle/actions/setup-gradle@v4
-
-    - name: Run standard debug unit tests
-      run: ./gradlew :app:testStandardDebugUnitTest --build-cache --continue
 
     - name: Run personal debug unit tests
       run: ./gradlew :app:testPersonalDebugUnitTest --build-cache --continue
