@@ -166,7 +166,7 @@ private fun WelcomeStep() {
     ) {
         Image(
             painter = painterResource(id = R.mipmap.ic_launcher_foreground),
-            contentDescription = "PennyWise",
+            contentDescription = com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME,
             modifier = Modifier
                 .size(HERO_ICON_SIZE)
                 .clip(CircleShape),
@@ -176,7 +176,7 @@ private fun WelcomeStep() {
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "Welcome to PennyWise",
+            text = "Welcome to ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME}",
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
