@@ -18,6 +18,9 @@ Establish a verified baseline before adding or removing functionality.
 - Product-logic changes
 - Aggressive deletion of billing/licensing code before dependency impact is understood
 
+## Verification rule
+Every meaningful development PR must run the existing CI checks before merge.
+
 ## Definition of Done
 - CI tests pass
 - APK build succeeds
