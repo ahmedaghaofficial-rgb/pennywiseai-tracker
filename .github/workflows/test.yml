@@ -74,7 +74,10 @@ jobs:
     - name: Compile standard debug app
       run: ./gradlew :app:compileStandardDebugKotlin --build-cache
 
-    - name: Build debug APK
+    - name: Compile personal debug app
+      run: ./gradlew :app:compilePersonalDebugKotlin --build-cache
+
+    - name: Build debug APKs
       run: ./gradlew :app:assembleDebug --build-cache
 
     - name: Upload standard debug APK
@@ -90,6 +93,13 @@ jobs:
         name: fdroid-debug-apk
         path: app/build/outputs/apk/fdroid/debug/*.apk
         retention-days: 7
+
+    - name: Upload personal debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: flosi-personal-debug-apk
+        path: app/build/outputs/apk/personal/debug/*.apk
+        retention-days: 14
 
     - name: Upload compile report
       uses: actions/upload-artifact@v4
@@ -122,6 +132,9 @@ jobs:
 
     - name: Run standard debug unit tests
       run: ./gradlew :app:testStandardDebugUnitTest --build-cache --continue
+
+    - name: Run personal debug unit tests
+      run: ./gradlew :app:testPersonalDebugUnitTest --build-cache --continue
 
     - name: Upload test results
       uses: actions/upload-artifact@v4
