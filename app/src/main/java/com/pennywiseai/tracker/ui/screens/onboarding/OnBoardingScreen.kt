@@ -62,6 +62,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -82,6 +83,7 @@ fun OnBoardingScreen(
     viewModel: OnBoardingViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val smsCaptureAvailable = booleanResource(R.bool.sms_capture_available)
 
     val stepOrder = remember {
         OnBoardingStep.entries.toList()
@@ -115,7 +117,8 @@ fun OnBoardingScreen(
                         else -> viewModel.goToNextStep()
                     }
                 },
-                onStartScan = { viewModel.startSmsScan() }
+                onStartScan = { viewModel.startSmsScan() },
+                smsCaptureAvailable = smsCaptureAvailable
             )
         }
     ) { innerPadding ->
@@ -143,7 +146,12 @@ fun OnBoardingScreen(
                 )
                 OnBoardingStep.PERMISSIONS -> PermissionsStep(
                     uiState = uiState,
-                    onPermissionResult = { viewModel.onSmsPermissionResult(it) }
+                    smsCaptureAvailable = smsCaptureAvailable,
+                    onPermissionResult = { viewModel.onSmsPermissionResult(it) },
+                    onContinueWithoutSms = {
+                        viewModel.skipSmsPermission()
+                        viewModel.goToNextStep()
+                    }
                 )
                 OnBoardingStep.SMS_SCAN -> SmsScanStep(uiState = uiState)
                 OnBoardingStep.ACCOUNT_SETUP -> AccountSetupStep(
@@ -396,7 +404,9 @@ private fun ProfileStep(
 @Composable
 private fun PermissionsStep(
     uiState: OnBoardingUiState,
-    onPermissionResult: (Boolean) -> Unit
+    smsCaptureAvailable: Boolean,
+    onPermissionResult: (Boolean) -> Unit,
+    onContinueWithoutSms: () -> Unit
 ) {
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -423,6 +433,52 @@ private fun PermissionsStep(
 
         Spacer(modifier = Modifier.height(Spacing.lg))
 
+        if (!smsCaptureAvailable) {
+            Text(
+                text = "Automatic Detection Is Off In This Test Build",
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(Spacing.md))
+
+            Text(
+                text = "This sideload test intentionally disables SMS and bank-notification access so Android can install it safely. You can still test manual transactions, accounts, budgets, search, analytics, backup and AI.",
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(modifier = Modifier.height(Spacing.lg))
+
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ),
+                shape = MaterialTheme.shapes.large,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Automatic transaction capture is not being removed from فلوسي. It stays in the future full/release build; only this test APK has it disabled.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.padding(Spacing.md)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(Spacing.xl))
+
+            Button(
+                onClick = onContinueWithoutSms,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Continue Without SMS")
+            }
+
+            return@Column
+        }
+
         Text(
             text = "Enable Automatic Detection",
             style = MaterialTheme.typography.headlineMedium,
@@ -433,7 +489,7 @@ private fun PermissionsStep(
         Spacer(modifier = Modifier.height(Spacing.md))
 
         Text(
-            text = "PennyWise can automatically detect and categorize your bank transactions from SMS messages.",
+            text = "${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} can automatically detect and categorize your bank transactions from SMS messages.",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -456,10 +512,10 @@ private fun PermissionsStep(
                 )
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "\u2022 Only transaction messages are processed\n" +
-                            "\u2022 All data stays on your device\n" +
-                            "\u2022 No personal messages are read\n" +
-                            "\u2022 You can revoke access anytime in Settings",
+                    text = "• Only transaction messages are processed\n" +
+                            "• All data stays on your device\n" +
+                            "• No personal messages are read\n" +
+                            "• You can revoke access anytime in Settings",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
@@ -812,7 +868,8 @@ private fun OnBoardingBottomBar(
     onBack: () -> Unit,
     onNext: () -> Unit,
     onSkip: () -> Unit,
-    onStartScan: () -> Unit
+    onStartScan: () -> Unit,
+    smsCaptureAvailable: Boolean
 ) {
     val isFirstStep = uiState.currentStep == OnBoardingStep.WELCOME
     val canGoBack = !isFirstStep && !uiState.isScanning
@@ -869,14 +926,20 @@ private fun OnBoardingBottomBar(
                 }
 
                 OnBoardingStep.PERMISSIONS -> {
-                    if (!uiState.smsPermissionGranted) {
-                        TextButton(onClick = onSkip) {
-                            Text("Skip")
-                        }
-                    }
-                    if (uiState.smsPermissionGranted) {
+                    if (!smsCaptureAvailable) {
                         Button(onClick = onNext) {
                             Text("Continue")
+                        }
+                    } else {
+                        if (!uiState.smsPermissionGranted) {
+                            TextButton(onClick = onSkip) {
+                                Text("Skip")
+                            }
+                        }
+                        if (uiState.smsPermissionGranted) {
+                            Button(onClick = onNext) {
+                                Text("Continue")
+                            }
                         }
                     }
                 }
