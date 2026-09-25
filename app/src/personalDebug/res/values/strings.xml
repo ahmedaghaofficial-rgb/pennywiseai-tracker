@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Build-type resources have higher priority than flavor resources.
+         Override the upstream debug label so this variant remains branded. -->
+    <string name="app_name">فلوسي</string>
+</resources>
