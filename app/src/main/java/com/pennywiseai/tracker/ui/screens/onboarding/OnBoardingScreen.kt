@@ -66,6 +66,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -188,7 +189,7 @@ private fun WelcomeStep() {
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "Welcome to ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME}",
+            text = stringResource(R.string.onboarding_welcome, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -197,7 +198,7 @@ private fun WelcomeStep() {
         Spacer(modifier = Modifier.height(Spacing.md))
 
         Text(
-            text = "Your AI-powered expense tracker that automatically detects transactions from SMS messages.",
+            text = stringResource(R.string.onboarding_intro),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -221,7 +222,7 @@ private fun WelcomeStep() {
                 },
                 modifier = Modifier.weight(1f)
             ) {
-                Text("العربية")
+                Text(stringResource(R.string.language_arabic))
             }
             OutlinedButton(
                 onClick = {
@@ -232,7 +233,7 @@ private fun WelcomeStep() {
                 },
                 modifier = Modifier.weight(1f)
             ) {
-                Text("English")
+                Text(stringResource(R.string.language_english))
             }
         }
 
@@ -247,13 +248,13 @@ private fun WelcomeStep() {
         ) {
             Column(modifier = Modifier.padding(Spacing.md)) {
                 Text(
-                    text = "What you'll set up:",
+                    text = stringResource(R.string.onboarding_setup_title),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "1. Your profile\n2. SMS permissions for auto-detection\n3. Initial transaction scan\n4. Your main bank account",
+                    text = stringResource(R.string.onboarding_setup_body),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -285,7 +286,7 @@ private fun ProfileStep(
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "What should we call you?",
+            text = stringResource(R.string.onboarding_name_question),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -296,7 +297,7 @@ private fun ProfileStep(
         TextField(
             value = uiState.userName,
             onValueChange = { viewModel.updateUserName(it) },
-            label = { Text("Your name") },
+            label = { Text(stringResource(R.string.onboarding_your_name)) },
             singleLine = true,
             shape = MaterialTheme.shapes.large,
             modifier = Modifier.fillMaxWidth(),
@@ -313,7 +314,7 @@ private fun ProfileStep(
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "Choose an avatar",
+            text = stringResource(R.string.onboarding_choose_avatar),
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -396,7 +397,7 @@ private fun ProfileStep(
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "Pick a background color",
+            text = stringResource(R.string.onboarding_pick_color),
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -472,7 +473,7 @@ private fun PermissionsStep(
 
         if (!smsCaptureAvailable) {
             Text(
-                text = "Automatic Detection Is Off In This Test Build",
+                text = stringResource(R.string.onboarding_test_detection_off),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -481,7 +482,7 @@ private fun PermissionsStep(
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "This sideload test intentionally disables SMS and bank-notification access so Android can install it safely. You can still test manual transactions, accounts, budgets, search, analytics, backup and AI.",
+                text = stringResource(R.string.onboarding_test_detection_body),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -497,7 +498,7 @@ private fun PermissionsStep(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Automatic transaction capture is not being removed from فلوسي. It stays in the future full/release build; only this test APK has it disabled.",
+                    text = stringResource(R.string.onboarding_test_detection_note, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.padding(Spacing.md)
@@ -510,14 +511,14 @@ private fun PermissionsStep(
                 onClick = onContinueWithoutSms,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Continue Without SMS")
+                Text(stringResource(R.string.onboarding_continue_without_sms))
             }
 
             return@Column
         }
 
         Text(
-            text = "Enable Automatic Detection",
+            text = stringResource(R.string.onboarding_enable_detection),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -526,7 +527,7 @@ private fun PermissionsStep(
         Spacer(modifier = Modifier.height(Spacing.md))
 
         Text(
-            text = "${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} can automatically detect and categorize your bank transactions from SMS messages.",
+            text = stringResource(R.string.onboarding_detection_body, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -543,16 +544,13 @@ private fun PermissionsStep(
         ) {
             Column(modifier = Modifier.padding(Spacing.md)) {
                 Text(
-                    text = "Your Privacy Matters",
+                    text = stringResource(R.string.onboarding_privacy_title),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "• Only transaction messages are processed\n" +
-                            "• All data stays on your device\n" +
-                            "• No personal messages are read\n" +
-                            "• You can revoke access anytime in Settings",
+                    text = stringResource(R.string.onboarding_privacy_body),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
@@ -581,7 +579,7 @@ private fun PermissionsStep(
                     )
                     Spacer(modifier = Modifier.width(Spacing.sm))
                     Text(
-                        text = "Permissions granted! Tap Continue to proceed.",
+                        text = stringResource(R.string.onboarding_permissions_granted),
                         style = MaterialTheme.typography.bodyMedium,
                         color = incomeColor
                     )
@@ -601,7 +599,7 @@ private fun PermissionsStep(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Enable Permissions")
+                Text(stringResource(R.string.onboarding_enable_permissions))
             }
         }
     }
@@ -624,7 +622,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
             Spacer(modifier = Modifier.height(Spacing.lg))
 
             Text(
-                text = "Scanning your messages...",
+                text = stringResource(R.string.onboarding_scanning),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -663,7 +661,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "Preparing scan...",
+                    text = stringResource(R.string.onboarding_preparing_scan),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -679,7 +677,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
             Spacer(modifier = Modifier.height(Spacing.lg))
 
             Text(
-                text = "Scan Complete!",
+                text = stringResource(R.string.onboarding_scan_complete),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -696,7 +694,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
                 )
             } else {
                 Text(
-                    text = "No transactions found. You can add them manually later.",
+                    text = stringResource(R.string.onboarding_no_transactions),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -714,7 +712,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
             Spacer(modifier = Modifier.height(Spacing.lg))
 
             Text(
-                text = "Scan Your Messages",
+                text = stringResource(R.string.onboarding_scan_messages),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -723,7 +721,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "We'll scan your SMS messages to find bank transactions and set up your accounts automatically.",
+                text = stringResource(R.string.onboarding_scan_explain),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -758,7 +756,7 @@ private fun AccountSetupStep(
             Spacer(modifier = Modifier.height(Spacing.lg))
 
             Text(
-                text = "You're all set!",
+                text = stringResource(R.string.onboarding_all_set),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -767,14 +765,14 @@ private fun AccountSetupStep(
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "No accounts were detected yet. You can set up your main account later in Settings.",
+                text = stringResource(R.string.onboarding_no_accounts),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         } else {
             Text(
-                text = "Select Your Main Account",
+                text = stringResource(R.string.onboarding_select_main_account),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -783,7 +781,7 @@ private fun AccountSetupStep(
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "Choose the account you use most often. This will be shown on your home screen.",
+                text = stringResource(R.string.onboarding_main_account_explain),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -949,7 +947,7 @@ private fun OnBoardingBottomBar(
             when (uiState.currentStep) {
                 OnBoardingStep.WELCOME -> {
                     Button(onClick = onNext) {
-                        Text("Get Started")
+                        Text(stringResource(R.string.onboarding_get_started))
                     }
                 }
 
@@ -958,24 +956,24 @@ private fun OnBoardingBottomBar(
                         onClick = onNext,
                         enabled = uiState.userName.isNotBlank()
                     ) {
-                        Text("Save & Continue")
+                        Text(stringResource(R.string.onboarding_save_continue))
                     }
                 }
 
                 OnBoardingStep.PERMISSIONS -> {
                     if (!smsCaptureAvailable) {
                         Button(onClick = onNext) {
-                            Text("Continue")
+                            Text(stringResource(R.string.common_continue))
                         }
                     } else {
                         if (!uiState.smsPermissionGranted) {
                             TextButton(onClick = onSkip) {
-                                Text("Skip")
+                                Text(stringResource(R.string.common_skip))
                             }
                         }
                         if (uiState.smsPermissionGranted) {
                             Button(onClick = onNext) {
-                                Text("Continue")
+                                Text(stringResource(R.string.common_continue))
                             }
                         }
                     }
@@ -984,18 +982,18 @@ private fun OnBoardingBottomBar(
                 OnBoardingStep.SMS_SCAN -> {
                     if (!uiState.isScanning && !uiState.scanCompleted) {
                         TextButton(onClick = onSkip) {
-                            Text("Skip")
+                            Text(stringResource(R.string.common_skip))
                         }
                         Button(onClick = onStartScan) {
-                            Text("Start Scanning")
+                            Text(stringResource(R.string.onboarding_start_scanning))
                         }
                     } else if (uiState.isScanning) {
                         TextButton(onClick = onSkip) {
-                            Text("Skip")
+                            Text(stringResource(R.string.common_skip))
                         }
                     } else if (uiState.scanCompleted) {
                         Button(onClick = onNext) {
-                            Text("Continue")
+                            Text(stringResource(R.string.common_continue))
                         }
                     }
                 }
@@ -1003,12 +1001,12 @@ private fun OnBoardingBottomBar(
                 OnBoardingStep.ACCOUNT_SETUP -> {
                     if (uiState.accounts.isEmpty()) {
                         Button(onClick = onNext) {
-                            Text("Finish")
+                            Text(stringResource(R.string.common_finish))
                         }
                     } else {
                         if (uiState.selectedAccountKey == null) {
                             TextButton(onClick = onSkip) {
-                                Text("Skip")
+                                Text(stringResource(R.string.common_skip))
                             }
                         }
                         Button(
@@ -1021,7 +1019,7 @@ private fun OnBoardingBottomBar(
                                     strokeWidth = 2.dp
                                 )
                             } else {
-                                Text("Finish")
+                                Text(stringResource(R.string.common_finish))
                             }
                         }
                     }
