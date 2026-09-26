@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="common_back">Back</string>
+    <string name="common_close">Close</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_save">Save</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_add">Add</string>
+    <string name="common_update">Update</string>
+    <string name="common_continue">Continue</string>
+    <string name="common_skip">Skip</string>
+    <string name="common_finish">Finish</string>
+    <string name="common_search">Search</string>
+    <string name="common_manage">Manage</string>
+    <string name="common_view_all">View All</string>
+    <string name="common_ok">OK</string>
+    <string name="common_clear">Clear</string>
+    <string name="common_none">None</string>
+    <string name="common_history">History</string>
+    <string name="common_more_options">More options</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome">Welcome to %1$s</string>
+    <string name="onboarding_intro">Your expense tracker for personal and business money, with smart automation and local-first privacy.</string>
+    <string name="onboarding_setup_title">What you'll set up:</string>
+    <string name="onboarding_setup_body">1. Your profile
+2. Automatic capture permissions
+3. Initial transaction scan
+4. Your main account</string>
+    <string name="onboarding_name_question">What should we call you?</string>
+    <string name="onboarding_your_name">Your name</string>
+    <string name="onboarding_choose_avatar">Choose an avatar</string>
+    <string name="onboarding_pick_color">Pick a background color</string>
+    <string name="onboarding_test_detection_off">Automatic Detection Is Off In This Test Build</string>
+    <string name="onboarding_test_detection_body">This sideload test intentionally disables SMS and bank-notification access. You can still test manual transactions, accounts, budgets, search, analytics, backup and AI.</string>
+    <string name="onboarding_test_detection_note">Automatic transaction capture is not being removed from %1$s. It stays in the future full/release build; only this test APK has it disabled.</string>
+    <string name="onboarding_continue_without_sms">Continue Without SMS</string>
+    <string name="onboarding_enable_detection">Enable Automatic Detection</string>
+    <string name="onboarding_detection_body">%1$s can automatically detect and categorize bank transactions from SMS messages.</string>
+    <string name="onboarding_privacy_title">Your Privacy Matters</string>
+    <string name="onboarding_privacy_body">• Only transaction messages are processed
+• All data stays on your device
+• No personal messages are read
+• You can revoke access anytime in Settings</string>
+    <string name="onboarding_permissions_granted">Permissions granted! Tap Continue to proceed.</string>
+    <string name="onboarding_enable_permissions">Enable Permissions</string>
+    <string name="onboarding_scan_messages">Scan Your Messages</string>
+    <string name="onboarding_scanning">Scanning your messages…</string>
+    <string name="onboarding_preparing_scan">Preparing scan…</string>
+    <string name="onboarding_scan_complete">Scan Complete!</string>
+    <string name="onboarding_no_transactions">No transactions found. You can add them manually later.</string>
+    <string name="onboarding_scan_explain">We'll scan your SMS messages to find bank transactions and set up your accounts automatically.</string>
+    <string name="onboarding_all_set">You're all set!</string>
+    <string name="onboarding_no_accounts">No accounts were detected yet. You can set up your main account later in Settings.</string>
+    <string name="onboarding_select_main_account">Select Your Main Account</string>
+    <string name="onboarding_main_account_explain">Choose the account you use most often. This will be shown on your home screen.</string>
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_save_continue">Save &amp; Continue</string>
+    <string name="onboarding_start_scanning">Start Scanning</string>
+
+    <!-- Home -->
+    <string name="home_budgets">Budgets</string>
+    <string name="home_loans">Loans</string>
+    <string name="home_groups">Groups</string>
+    <string name="home_recent_transactions">Recent Transactions</string>
+    <string name="home_bank_accounts">Bank Accounts</string>
+    <string name="home_upcoming_subscriptions">Upcoming Subscriptions</string>
+    <string name="home_activity">Activity</string>
+    <string name="home_add_transaction">Add Transaction or Subscription</string>
+    <string name="home_search_transactions">Search transactions</string>
+    <string name="home_sync_sms">Sync SMS</string>
+    <string name="home_full_resync">Full Resync</string>
+    <string name="home_resync_all">Resync All</string>
+    <string name="home_edit_screen">Edit home screen</string>
+    <string name="home_edit_screen_subtitle">Reorder or hide sections on your home screen.</string>
+    <string name="home_calculation_breakdown">Calculation Breakdown</string>
+
+    <!-- Add transaction -->
+    <string name="add_title">Add New</string>
+    <string name="add_amount_required">Amount *</string>
+    <string name="add_merchant">Merchant</string>
+    <string name="add_notes_optional">Notes (Optional)</string>
+    <string name="add_category">Category</string>
+    <string name="add_no_account_manual">No account (Manual Entry)</string>
+    <string name="add_receipt_optional">Receipt (Optional)</string>
+    <string name="add_gallery">Gallery</string>
+    <string name="add_camera">Camera</string>
+    <string name="add_budget_impact">Budget impact</string>
+    <string name="add_refund">Refund</string>
+    <string name="add_extra_budget">Extra budget</string>
+    <string name="add_budget_category">Budget category</string>
+    <string name="add_no_budget_categories">No budget categories found</string>
+    <string name="add_expense">Expense</string>
+    <string name="add_income">Income</string>
+    <string name="add_billing_cycle">Billing Cycle</string>
+    <string name="add_service_name_required">Service Name *</string>
+    <string name="add_no_account">No account</string>
+    <string name="add_select_time">Select Time</string>
+
+    <!-- Transactions -->
+    <string name="transactions_title">Transactions</string>
+    <string name="transactions_export_csv">Export to CSV</string>
+    <string name="transactions_mark_transfer">Mark as transfer</string>
+    <string name="transactions_change_category">Change category</string>
+    <string name="transactions_add_group">Add to group</string>
+    <string name="transactions_delete_selected">Delete selected</string>
+    <string name="transactions_clear_filters">Clear filters</string>
+    <string name="transactions_all_categories">All categories</string>
+    <string name="transactions_all_profiles">All profiles</string>
+    <string name="transactions_all_tags">All tags</string>
+    <string name="transactions_all_accounts">All accounts</string>
+    <string name="transactions_create_group">Create new group</string>
+    <string name="transactions_group_name">Group name</string>
+
+    <!-- Accounts -->
+    <string name="accounts_title">Accounts</string>
+    <string name="accounts_bank_accounts">Bank Accounts</string>
+    <string name="accounts_unlinked_cards">Unlinked Cards</string>
+    <string name="accounts_credit_cards">Credit Cards</string>
+    <string name="accounts_hidden">Hidden Accounts</string>
+    <string name="accounts_outstanding">Outstanding</string>
+    <string name="accounts_available">Available</string>
+    <string name="accounts_credit_limit">Credit Limit</string>
+    <string name="accounts_business">Business</string>
+    <string name="accounts_linked_cards">Linked Cards</string>
+    <string name="accounts_low_balance">Low-balance alert</string>
+    <string name="accounts_rename">Rename account</string>
+    <string name="accounts_alias">Alias</string>
+    <string name="accounts_update_balance">Update Balance</string>
+    <string name="accounts_new_balance">New Balance</string>
+    <string name="accounts_currency">Currency</string>
+    <string name="accounts_account_balance">Account Balance</string>
+    <string name="accounts_edit_account">Edit Account</string>
+    <string name="accounts_bank_name">Bank Name</string>
+    <string name="accounts_account_number">Account Number</string>
+    <string name="accounts_link">Link</string>
+
+    <!-- Categories -->
+    <string name="categories_title">Categories</string>
+    <string name="categories_expense">Expense Categories</string>
+    <string name="categories_income">Income Categories</string>
+    <string name="categories_add">Add Category</string>
+    <string name="categories_system">System</string>
+
+    <!-- Budgets -->
+    <string name="budgets_title">Budgets</string>
+    <string name="budgets_setup">Set Up Your Budget</string>
+    <string name="budgets_intro">Organize your spending into budgets to track where your money goes.</string>
+    <string name="budgets_smart_defaults">Use Smart Defaults</string>
+    <string name="budgets_custom">Create Custom Budget</string>
+    <string name="budgets_delete">Delete Budget</string>
+    <string name="budgets_actual">Actual</string>
+    <string name="budgets_pace">Budget Pace</string>
+    <string name="budgets_tracking_all">Tracking all expenses</string>
+
+    <!-- Analytics -->
+    <string name="analytics_title">Analytics</string>
+    <string name="analytics_trends">Trends</string>
+    <string name="analytics_top_categories">Top Categories</string>
+    <string name="analytics_top_tags">Top Tags</string>
+    <string name="analytics_top_merchants">Top Merchants</string>
+    <string name="analytics_by_account">By Account</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_personalization">Personalization</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_appearance_subtitle">Theme, colors, fonts &amp; navigation</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_subtitle">Choose Arabic or English</string>
+    <string name="settings_currency">Currency</string>
+    <string name="settings_unified_currency">Unified Currency Mode</string>
+    <string name="settings_unified_currency_subtitle">Convert all transactions to display currency</string>
+    <string name="settings_display_currency">Display Currency</string>
+    <string name="settings_display_currency_subtitle">All amounts shown in this currency</string>
+    <string name="settings_exchange_rates">Exchange Rates</string>
+    <string name="settings_exchange_rates_subtitle">View and customize rates</string>
+    <string name="settings_default_currency">Default Currency</string>
+    <string name="settings_default_currency_subtitle">Currency used for conversions</string>
+    <string name="settings_main_account">Main Account</string>
+    <string name="settings_main_account_subtitle">Sets your default currency</string>
+    <string name="settings_number_format">Number Format</string>
+    <string name="settings_number_format_subtitle">How large amounts are grouped</string>
+    <string name="settings_budget">Budget</string>
+    <string name="settings_budget_cycle">Budget Cycle Start Day</string>
+    <string name="settings_contacts">Contacts</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_app_lock">App Lock</string>
+    <string name="settings_lock_timeout">Lock Timeout</string>
+    <string name="settings_data_management">Data Management</string>
+    <string name="settings_manage_accounts">Manage Accounts</string>
+    <string name="settings_manage_accounts_subtitle">View and manage your bank accounts</string>
+    <string name="settings_categories">Categories</string>
+    <string name="settings_categories_subtitle">Manage expense and income categories</string>
+    <string name="settings_smart_rules">Smart Rules</string>
+    <string name="settings_smart_rules_subtitle">Automatic transaction categorization</string>
+    <string name="settings_budgets">Budgets</string>
+    <string name="settings_budgets_subtitle">Track spending limits by category</string>
+    <string name="settings_loans">Loans</string>
+    <string name="settings_loans_subtitle">Track money lent and borrowed</string>
+    <string name="settings_recurring">Recurring</string>
+    <string name="settings_recurring_subtitle">Auto-add scheduled cash &amp; manual transactions</string>
+    <string name="settings_transaction_groups">Transaction Groups</string>
+    <string name="settings_transaction_groups_subtitle">Organise transactions under a topic</string>
+    <string name="settings_export_data">Export Data</string>
+    <string name="settings_export_data_subtitle">Backup all data to a file</string>
+    <string name="settings_automatic_backup">Automatic Folder Backup</string>
+    <string name="settings_backup_now">Back Up Now</string>
+    <string name="settings_change_backup_folder">Change Backup Folder</string>
+    <string name="settings_import_data">Import Data</string>
+    <string name="settings_import_data_subtitle">Restore data from backup</string>
+    <string name="settings_import_csv">Import Transactions (CSV)</string>
+    <string name="settings_import_statement">Import Statement</string>
+    <string name="settings_unrecognized_sms">Unrecognized SMS</string>
+    <string name="settings_sms_scan_period">SMS Scan Period</string>
+    <string name="settings_delete_all">Delete All Transactions</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_bank_notification_access">Bank Notification Access</string>
+    <string name="settings_ai_features">AI Features</string>
+    <string name="settings_developer">Developer</string>
+    <string name="settings_support">Support &amp; Community</string>
+    <string name="settings_help">Help &amp; FAQ</string>
+    <string name="settings_report_issue">Report an Issue</string>
+    <string name="settings_ai_assistant">AI Chat Assistant</string>
+    <string name="settings_download">Download</string>
+
+    <!-- Language -->
+    <string name="language_arabic">العربية</string>
+    <string name="language_english">English</string>
+</resources>
