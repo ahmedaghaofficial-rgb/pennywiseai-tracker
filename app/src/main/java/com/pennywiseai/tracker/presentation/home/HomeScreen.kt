@@ -65,6 +65,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -569,11 +570,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Budgets",
+                                            title = stringResource(R.string.home_budgets),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToBudgets) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.common_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -612,11 +613,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Loans",
+                                            title = stringResource(R.string.home_loans),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToLoans) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.common_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -662,11 +663,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Groups",
+                                            title = stringResource(R.string.home_groups),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToTransactionGroups) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.common_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -707,7 +708,7 @@ fun HomeScreen(
                             ) {
                                 Column(modifier = Modifier.padding(horizontal = Dimensions.Padding.content)) {
                                     SectionHeaderV2(
-                                        title = "Recent Transactions",
+                                        title = stringResource(R.string.home_recent_transactions),
                                         action = {
                                             Row(
                                                 horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
@@ -720,14 +721,14 @@ fun HomeScreen(
                                                 ) {
                                                     Icon(
                                                         imageVector = Icons.Default.Search,
-                                                        contentDescription = "Search transactions",
+                                                        contentDescription = stringResource(R.string.home_search_transactions),
                                                         tint = MaterialTheme.colorScheme.primary
                                                     )
                                                 }
 
                                                 // View All button
                                                 TextButton(onClick = onNavigateToTransactions) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.common_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -847,11 +848,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Bank Accounts",
+                                            title = stringResource(R.string.home_bank_accounts),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToManageAccounts) {
-                                                    Text("Manage")
+                                                    Text(stringResource(R.string.common_manage))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -901,11 +902,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Upcoming Subscriptions",
+                                            title = stringResource(R.string.home_upcoming_subscriptions),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToSubscriptions) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.common_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -949,7 +950,7 @@ fun HomeScreen(
                                     verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                 ) {
                                     SectionHeaderV2(
-                                        title = "Activity",
+                                        title = stringResource(R.string.home_activity),
                                         modifier = Modifier.padding(horizontal = Dimensions.Padding.content)
                                     )
                                     com.pennywiseai.tracker.ui.components.cards.HeatmapWidget(
@@ -1003,7 +1004,7 @@ fun HomeScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Transaction or Subscription"
+                    contentDescription = stringResource(R.string.home_add_transaction)
                 )
             }
             
@@ -1066,7 +1067,7 @@ fun HomeScreen(
                     )
                 },
                 title = {
-                    Text("Full Resync")
+                    Text(stringResource(R.string.home_full_resync))
                 },
                 text = {
                     Text(
@@ -1084,14 +1085,14 @@ fun HomeScreen(
                             viewModel.scanSmsMessages(forceResync = true)
                         }
                     ) {
-                        Text("Resync All")
+                        Text(stringResource(R.string.home_resync_all))
                     }
                 },
                 dismissButton = {
                     TextButton(
                         onClick = { showFullResyncDialog = false }
                     ) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.common_cancel))
                     }
                 }
             )
@@ -1145,7 +1146,7 @@ fun HomeScreen(
             ) {
                 // Title
                 Text(
-                    text = "More Options",
+                    text = stringResource(R.string.common_more_options),
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -1264,13 +1265,13 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(Spacing.Layout.groupedListGap)
             ) {
                 Text(
-                    text = "Edit home screen",
+                    text = stringResource(R.string.home_edit_screen),
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = "Reorder or hide sections on your home screen.",
+                    text = stringResource(R.string.home_edit_screen_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -1354,7 +1355,7 @@ private fun BreakdownDialog(
                 verticalArrangement = Arrangement.spacedBy(Spacing.lg)
             ) {
                 Text(
-                    text = "Calculation Breakdown",
+                    text = stringResource(R.string.home_calculation_breakdown),
                     style = MaterialTheme.typography.headlineSmall
                 )
 
@@ -1394,7 +1395,7 @@ private fun BreakdownDialog(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
                 ) {
-                    Text("Close")
+                    Text(stringResource(R.string.common_close))
                 }
             }
         }
