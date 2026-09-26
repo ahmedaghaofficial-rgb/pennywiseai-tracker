@@ -2,6 +2,7 @@ package com.pennywiseai.tracker.ui.screens.onboarding
 
 import android.Manifest
 import android.os.Build
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -47,6 +48,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -71,6 +73,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLanguage
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import androidx.compose.foundation.isSystemInDarkTheme
 import com.pennywiseai.tracker.ui.theme.Dimensions
 import com.pennywiseai.tracker.ui.theme.PennyWiseText
@@ -198,6 +202,39 @@ private fun WelcomeStep() {
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+
+        Spacer(modifier = Modifier.height(Spacing.lg))
+
+        val activity = LocalActivity.current
+        val localeContext = androidx.compose.ui.platform.LocalContext.current
+        val currentLanguage = AppLocaleController.getLanguage(localeContext)
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            OutlinedButton(
+                onClick = {
+                    if (currentLanguage != AppLanguage.ARABIC) {
+                        AppLocaleController.setLanguage(localeContext, AppLanguage.ARABIC)
+                        activity?.recreate()
+                    }
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("العربية")
+            }
+            OutlinedButton(
+                onClick = {
+                    if (currentLanguage != AppLanguage.ENGLISH) {
+                        AppLocaleController.setLanguage(localeContext, AppLanguage.ENGLISH)
+                        activity?.recreate()
+                    }
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("English")
+            }
+        }
 
         Spacer(modifier = Modifier.height(Spacing.lg))
 
