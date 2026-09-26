@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="common_back">رجوع</string>
+    <string name="common_close">إغلاق</string>
+    <string name="common_cancel">إلغاء</string>
+    <string name="common_save">حفظ</string>
+    <string name="common_delete">حذف</string>
+    <string name="common_edit">تعديل</string>
+    <string name="common_add">إضافة</string>
+    <string name="common_update">تحديث</string>
+    <string name="common_continue">متابعة</string>
+    <string name="common_skip">تخطي</string>
+    <string name="common_finish">إنهاء</string>
+    <string name="common_search">بحث</string>
+    <string name="common_manage">إدارة</string>
+    <string name="common_view_all">عرض الكل</string>
+    <string name="common_ok">تمام</string>
+    <string name="common_clear">مسح</string>
+    <string name="common_none">بدون</string>
+    <string name="common_history">السجل</string>
+    <string name="common_more_options">خيارات أخرى</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome">أهلًا بيك في %1$s</string>
+    <string name="onboarding_intro">تطبيق لتتبع فلوسك الشخصية والبيزنس، بأتمتة ذكية وخصوصية تعتمد على جهازك.</string>
+    <string name="onboarding_setup_title">هنجهز إيه؟</string>
+    <string name="onboarding_setup_body">١. ملفك الشخصي
+٢. صلاحيات التسجيل التلقائي
+٣. فحص العمليات السابقة
+٤. حسابك الأساسي</string>
+    <string name="onboarding_name_question">تحب نناديك بإيه؟</string>
+    <string name="onboarding_your_name">اسمك</string>
+    <string name="onboarding_choose_avatar">اختار صورة رمزية</string>
+    <string name="onboarding_pick_color">اختار لون الخلفية</string>
+    <string name="onboarding_test_detection_off">التسجيل التلقائي متوقف في نسخة الاختبار</string>
+    <string name="onboarding_test_detection_body">نسخة الاختبار دي بتعطّل مؤقتًا قراءة الرسائل وإشعارات البنوك علشان تقدر تثبتها بأمان. تقدر تختبر التسجيل اليدوي والحسابات والميزانيات والبحث والتقارير والنسخ الاحتياطي والذكاء الاصطناعي.</string>
+    <string name="onboarding_test_detection_note">التسجيل التلقائي مش بيتشال من %1$s. هيكون موجود في النسخة الكاملة؛ التعطيل خاص بنسخة الاختبار دي فقط.</string>
+    <string name="onboarding_continue_without_sms">كمل بدون الرسائل</string>
+    <string name="onboarding_enable_detection">فعّل التسجيل التلقائي</string>
+    <string name="onboarding_detection_body">%1$s يقدر يكتشف معاملات البنك ويصنفها تلقائيًا من رسائل SMS.</string>
+    <string name="onboarding_privacy_title">خصوصيتك مهمة</string>
+    <string name="onboarding_privacy_body">• بنعالج رسائل المعاملات فقط
+• بياناتك بتفضل على جهازك
+• مش بنقرأ رسائلك الشخصية
+• تقدر تلغي الصلاحية في أي وقت</string>
+    <string name="onboarding_permissions_granted">تم منح الصلاحيات. اضغط متابعة.</string>
+    <string name="onboarding_enable_permissions">تفعيل الصلاحيات</string>
+    <string name="onboarding_scan_messages">فحص الرسائل</string>
+    <string name="onboarding_scanning">جاري فحص الرسائل…</string>
+    <string name="onboarding_preparing_scan">جاري تجهيز الفحص…</string>
+    <string name="onboarding_scan_complete">اكتمل الفحص</string>
+    <string name="onboarding_no_transactions">ملقيناش معاملات. تقدر تضيفها يدويًا بعدين.</string>
+    <string name="onboarding_scan_explain">هنفحص رسائل SMS لاكتشاف معاملات البنوك وتجهيز حساباتك تلقائيًا.</string>
+    <string name="onboarding_all_set">كله جاهز</string>
+    <string name="onboarding_no_accounts">لسه مفيش حسابات اتكتشفت. تقدر تضيف حسابك الأساسي بعدين من الإعدادات.</string>
+    <string name="onboarding_select_main_account">اختار حسابك الأساسي</string>
+    <string name="onboarding_main_account_explain">اختار الحساب اللي بتستخدمه أكتر؛ هو اللي هيظهر بشكل أساسي في الرئيسية.</string>
+    <string name="onboarding_get_started">ابدأ</string>
+    <string name="onboarding_save_continue">احفظ وكمل</string>
+    <string name="onboarding_start_scanning">ابدأ الفحص</string>
+
+    <!-- Home -->
+    <string name="home_budgets">الميزانيات</string>
+    <string name="home_loans">الديون والقروض</string>
+    <string name="home_groups">المجموعات</string>
+    <string name="home_recent_transactions">آخر المعاملات</string>
+    <string name="home_bank_accounts">الحسابات البنكية</string>
+    <string name="home_upcoming_subscriptions">الاشتراكات القادمة</string>
+    <string name="home_activity">النشاط</string>
+    <string name="home_add_transaction">إضافة معاملة أو اشتراك</string>
+    <string name="home_search_transactions">البحث في المعاملات</string>
+    <string name="home_sync_sms">مزامنة الرسائل</string>
+    <string name="home_full_resync">مزامنة كاملة</string>
+    <string name="home_resync_all">إعادة مزامنة الكل</string>
+    <string name="home_edit_screen">تعديل الصفحة الرئيسية</string>
+    <string name="home_edit_screen_subtitle">رتّب الأقسام أو اخفي اللي مش محتاجه.</string>
+    <string name="home_calculation_breakdown">تفاصيل الحساب</string>
+
+    <!-- Add transaction -->
+    <string name="add_title">إضافة جديد</string>
+    <string name="add_amount_required">المبلغ *</string>
+    <string name="add_merchant">التاجر / المستلم</string>
+    <string name="add_notes_optional">ملاحظات (اختياري)</string>
+    <string name="add_category">التصنيف</string>
+    <string name="add_no_account_manual">بدون حساب (إدخال يدوي)</string>
+    <string name="add_receipt_optional">الإيصال (اختياري)</string>
+    <string name="add_gallery">الصور</string>
+    <string name="add_camera">الكاميرا</string>
+    <string name="add_budget_impact">تأثيره على الميزانية</string>
+    <string name="add_refund">استرداد</string>
+    <string name="add_extra_budget">ميزانية إضافية</string>
+    <string name="add_budget_category">تصنيف الميزانية</string>
+    <string name="add_no_budget_categories">مفيش تصنيفات ميزانية</string>
+    <string name="add_expense">مصروف</string>
+    <string name="add_income">دخل</string>
+    <string name="add_billing_cycle">دورة الدفع</string>
+    <string name="add_service_name_required">اسم الخدمة *</string>
+    <string name="add_no_account">بدون حساب</string>
+    <string name="add_select_time">اختار الوقت</string>
+
+    <!-- Transactions -->
+    <string name="transactions_title">المعاملات</string>
+    <string name="transactions_export_csv">تصدير CSV</string>
+    <string name="transactions_mark_transfer">اعتبرها تحويل</string>
+    <string name="transactions_change_category">تغيير التصنيف</string>
+    <string name="transactions_add_group">إضافة لمجموعة</string>
+    <string name="transactions_delete_selected">حذف المحدد</string>
+    <string name="transactions_clear_filters">مسح الفلاتر</string>
+    <string name="transactions_all_categories">كل التصنيفات</string>
+    <string name="transactions_all_profiles">كل الملفات</string>
+    <string name="transactions_all_tags">كل الوسوم</string>
+    <string name="transactions_all_accounts">كل الحسابات</string>
+    <string name="transactions_create_group">إنشاء مجموعة جديدة</string>
+    <string name="transactions_group_name">اسم المجموعة</string>
+
+    <!-- Accounts -->
+    <string name="accounts_title">الحسابات</string>
+    <string name="accounts_bank_accounts">الحسابات البنكية</string>
+    <string name="accounts_unlinked_cards">بطاقات غير مرتبطة</string>
+    <string name="accounts_credit_cards">بطاقات ائتمان</string>
+    <string name="accounts_hidden">الحسابات المخفية</string>
+    <string name="accounts_outstanding">المستحق</string>
+    <string name="accounts_available">المتاح</string>
+    <string name="accounts_credit_limit">حد الائتمان</string>
+    <string name="accounts_business">بيزنس</string>
+    <string name="accounts_linked_cards">البطاقات المرتبطة</string>
+    <string name="accounts_low_balance">تنبيه الرصيد المنخفض</string>
+    <string name="accounts_rename">تغيير اسم الحساب</string>
+    <string name="accounts_alias">اسم مختصر</string>
+    <string name="accounts_update_balance">تحديث الرصيد</string>
+    <string name="accounts_new_balance">الرصيد الجديد</string>
+    <string name="accounts_currency">العملة</string>
+    <string name="accounts_account_balance">رصيد الحساب</string>
+    <string name="accounts_edit_account">تعديل الحساب</string>
+    <string name="accounts_bank_name">اسم البنك</string>
+    <string name="accounts_account_number">رقم الحساب</string>
+    <string name="accounts_link">ربط</string>
+
+    <!-- Categories -->
+    <string name="categories_title">التصنيفات</string>
+    <string name="categories_expense">تصنيفات المصروفات</string>
+    <string name="categories_income">تصنيفات الدخل</string>
+    <string name="categories_add">إضافة تصنيف</string>
+    <string name="categories_system">أساسي</string>
+
+    <!-- Budgets -->
+    <string name="budgets_title">الميزانيات</string>
+    <string name="budgets_setup">جهّز ميزانيتك</string>
+    <string name="budgets_intro">نظم مصروفاتك في ميزانيات علشان تعرف فلوسك بتروح فين.</string>
+    <string name="budgets_smart_defaults">إعدادات ذكية</string>
+    <string name="budgets_custom">إنشاء ميزانية مخصصة</string>
+    <string name="budgets_delete">حذف الميزانية</string>
+    <string name="budgets_actual">الفعلي</string>
+    <string name="budgets_pace">معدل الصرف</string>
+    <string name="budgets_tracking_all">متابعة كل المصروفات</string>
+
+    <!-- Analytics -->
+    <string name="analytics_title">التقارير</string>
+    <string name="analytics_trends">الاتجاهات</string>
+    <string name="analytics_top_categories">أعلى التصنيفات</string>
+    <string name="analytics_top_tags">أعلى الوسوم</string>
+    <string name="analytics_top_merchants">أكثر التجار</string>
+    <string name="analytics_by_account">حسب الحساب</string>
+
+    <!-- Settings -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_personalization">التخصيص</string>
+    <string name="settings_appearance">المظهر</string>
+    <string name="settings_appearance_subtitle">الثيم والألوان والخطوط والتنقل</string>
+    <string name="settings_language">اللغة</string>
+    <string name="settings_language_subtitle">اختار العربية أو English</string>
+    <string name="settings_currency">العملة</string>
+    <string name="settings_unified_currency">توحيد عرض العملات</string>
+    <string name="settings_unified_currency_subtitle">حوّل عرض كل المعاملات لعملة واحدة</string>
+    <string name="settings_display_currency">عملة العرض</string>
+    <string name="settings_display_currency_subtitle">اعرض كل المبالغ بالعملة دي</string>
+    <string name="settings_exchange_rates">أسعار الصرف</string>
+    <string name="settings_exchange_rates_subtitle">عرض وتعديل أسعار التحويل</string>
+    <string name="settings_default_currency">العملة الأساسية</string>
+    <string name="settings_default_currency_subtitle">العملة المستخدمة كأساس</string>
+    <string name="settings_main_account">الحساب الأساسي</string>
+    <string name="settings_main_account_subtitle">بيحدد العملة الافتراضية</string>
+    <string name="settings_number_format">تنسيق الأرقام</string>
+    <string name="settings_number_format_subtitle">طريقة تجميع الأرقام الكبيرة</string>
+    <string name="settings_budget">الميزانية</string>
+    <string name="settings_budget_cycle">بداية دورة الميزانية</string>
+    <string name="settings_contacts">جهات الاتصال</string>
+    <string name="settings_security">الأمان</string>
+    <string name="settings_app_lock">قفل التطبيق</string>
+    <string name="settings_lock_timeout">مدة القفل</string>
+    <string name="settings_data_management">إدارة البيانات</string>
+    <string name="settings_manage_accounts">إدارة الحسابات</string>
+    <string name="settings_manage_accounts_subtitle">عرض وإدارة حساباتك</string>
+    <string name="settings_categories">التصنيفات</string>
+    <string name="settings_categories_subtitle">إدارة تصنيفات الدخل والمصروف</string>
+    <string name="settings_smart_rules">القواعد الذكية</string>
+    <string name="settings_smart_rules_subtitle">تصنيف المعاملات تلقائيًا</string>
+    <string name="settings_budgets">الميزانيات</string>
+    <string name="settings_budgets_subtitle">متابعة حدود الصرف</string>
+    <string name="settings_loans">الديون والقروض</string>
+    <string name="settings_loans_subtitle">متابعة الفلوس اللي ليك واللي عليك</string>
+    <string name="settings_recurring">المعاملات المتكررة</string>
+    <string name="settings_recurring_subtitle">إضافة المعاملات المجدولة تلقائيًا</string>
+    <string name="settings_transaction_groups">مجموعات المعاملات</string>
+    <string name="settings_transaction_groups_subtitle">اجمع معاملات مرتبطة بموضوع واحد</string>
+    <string name="settings_export_data">تصدير البيانات</string>
+    <string name="settings_export_data_subtitle">نسخة احتياطية من كل البيانات</string>
+    <string name="settings_automatic_backup">نسخ احتياطي تلقائي</string>
+    <string name="settings_backup_now">اعمل نسخة احتياطية الآن</string>
+    <string name="settings_change_backup_folder">تغيير مجلد النسخ الاحتياطي</string>
+    <string name="settings_import_data">استيراد البيانات</string>
+    <string name="settings_import_data_subtitle">استعادة البيانات من نسخة احتياطية</string>
+    <string name="settings_import_csv">استيراد معاملات CSV</string>
+    <string name="settings_import_statement">استيراد كشف حساب</string>
+    <string name="settings_unrecognized_sms">رسائل غير معروفة</string>
+    <string name="settings_sms_scan_period">مدة فحص الرسائل</string>
+    <string name="settings_delete_all">حذف كل المعاملات</string>
+    <string name="settings_notifications">الإشعارات</string>
+    <string name="settings_bank_notification_access">صلاحية إشعارات البنوك</string>
+    <string name="settings_ai_features">الذكاء الاصطناعي</string>
+    <string name="settings_developer">المطور</string>
+    <string name="settings_support">المساعدة والمجتمع</string>
+    <string name="settings_help">المساعدة والأسئلة الشائعة</string>
+    <string name="settings_report_issue">الإبلاغ عن مشكلة</string>
+    <string name="settings_ai_assistant">مساعد فلوسي الذكي</string>
+    <string name="settings_download">تحميل</string>
+
+    <!-- Language -->
+    <string name="language_arabic">العربية</string>
+    <string name="language_english">English</string>
+</resources>
