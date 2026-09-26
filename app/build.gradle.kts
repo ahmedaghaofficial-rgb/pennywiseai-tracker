@@ -82,6 +82,7 @@ android {
             buildConfigField("boolean", "IS_PERSONAL_BUILD", "false")
             buildConfigField("String", "APP_DISPLAY_NAME", "\"PennyWise\"")
             buildConfigField("String", "DEEP_LINK_SCHEME", "\"pennywise\"")
+            buildConfigField("String", "DEFAULT_CURRENCY", "\"INR\"")
         }
         create("standard") {
             dimension = "version"
@@ -91,6 +92,7 @@ android {
             buildConfigField("boolean", "IS_PERSONAL_BUILD", "false")
             buildConfigField("String", "APP_DISPLAY_NAME", "\"PennyWise\"")
             buildConfigField("String", "DEEP_LINK_SCHEME", "\"pennywise\"")
+            buildConfigField("String", "DEFAULT_CURRENCY", "\"INR\"")
         }
         create("personal") {
             dimension = "version"
@@ -103,6 +105,7 @@ android {
             buildConfigField("boolean", "IS_PERSONAL_BUILD", "true")
             buildConfigField("String", "APP_DISPLAY_NAME", "\"فلوسي\"")
             buildConfigField("String", "DEEP_LINK_SCHEME", "\"flosi\"")
+            buildConfigField("String", "DEFAULT_CURRENCY", "\"EGP\"")
         }
     }
 
