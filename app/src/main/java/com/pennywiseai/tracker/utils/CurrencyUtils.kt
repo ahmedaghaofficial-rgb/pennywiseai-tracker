@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.utils
 
+import com.pennywiseai.tracker.BuildConfig
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Currency
@@ -62,23 +63,23 @@ object CurrencyUtils {
     }
 
     /**
-     * Sorts a list of currency codes with INR prioritized first, then alphabetically.
+     * Sorts a list of currency codes with the current build's default first, then alphabetically.
      * This is the standard sorting for currency lists throughout the app.
      *
      * @param currencies List of currency codes to sort
-     * @return Sorted list with INR first (if present), then alphabetically
+     * @return Sorted list with the build default first (if present), then alphabetically
      *
      * Example:
      * ```
-     * sortCurrencies(listOf("USD", "EUR", "INR", "GBP"))
-     * // Returns: ["INR", "EUR", "GBP", "USD"]
+     * sortCurrencies(listOf("USD", "EUR", "EGP", "GBP"))
+     * // Personal build returns: ["EGP", "EUR", "GBP", "USD"]
      * ```
      */
     fun sortCurrencies(currencies: List<String>): List<String> {
         return currencies.sortedWith { a, b ->
             when {
-                a == "INR" -> -1 // INR first
-                b == "INR" -> 1
+                a == BuildConfig.DEFAULT_CURRENCY -> -1
+                b == BuildConfig.DEFAULT_CURRENCY -> 1
                 else -> a.compareTo(b) // Alphabetical for others
             }
         }
