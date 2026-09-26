@@ -44,6 +44,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pennywiseai.tracker.core.Constants
+import com.pennywiseai.tracker.core.localization.AppLanguage
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import com.pennywiseai.tracker.ui.components.CustomTitleTopAppBar
 import com.pennywiseai.tracker.ui.components.SupportDevelopmentDialog
 import com.pennywiseai.tracker.ui.components.cards.GroupedColumn
@@ -163,6 +165,9 @@ fun SettingsScreen(
     val permissionUiState by permissionViewModel.uiState.collectAsStateWithLifecycle()
     val hasNotificationAccess = permissionUiState.hasNotificationAccess
     val context = LocalContext.current
+    val activity = androidx.activity.compose.LocalActivity.current
+    val currentLanguage = AppLocaleController.getLanguage(context)
+    var showLanguageDialog by remember { mutableStateOf(false) }
     val notificationAccessLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) {
@@ -291,7 +296,17 @@ fun SettingsScreen(
                     title = "Appearance",
                     subtitle = "Theme, colors, fonts & navigation",
                     onClick = onNavigateToAppearance,
-                    position = ListItemPosition.Single
+                    position = ListItemPosition.Top
+                )
+                SettingsNavItem(
+                    icon = Icons.Default.Language,
+                    iconBgColor = blue_light,
+                    iconTint = blue_dark,
+                    title = "Language / اللغة",
+                    subtitle = "Choose Arabic or English",
+                    trailingText = if (currentLanguage == AppLanguage.ARABIC) "العربية" else "English",
+                    onClick = { showLanguageDialog = true },
+                    position = ListItemPosition.Bottom
                 )
             }
 
@@ -796,6 +811,53 @@ fun SettingsScreen(
     }
 
     // ── Dialogs ──
+
+    // App Language Dialog
+    if (showLanguageDialog) {
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            title = { Text("Language / اللغة") },
+            text = {
+                Column {
+                    listOf(
+                        AppLanguage.ARABIC to "العربية",
+                        AppLanguage.ENGLISH to "English"
+                    ).forEach { (language, label) ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .selectable(
+                                    selected = language == currentLanguage,
+                                    onClick = {
+                                        AppLocaleController.setLanguage(context, language)
+                                        showLanguageDialog = false
+                                        activity?.recreate()
+                                    }
+                                )
+                                .padding(vertical = Spacing.sm),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = language == currentLanguage,
+                                onClick = {
+                                    AppLocaleController.setLanguage(context, language)
+                                    showLanguageDialog = false
+                                    activity?.recreate()
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(Spacing.sm))
+                            Text(label)
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLanguageDialog = false }) {
+                    Text("Close / إغلاق")
+                }
+            }
+        )
+    }
 
     // Display Currency Dialog
     if (showDisplayCurrencyDialog) {
