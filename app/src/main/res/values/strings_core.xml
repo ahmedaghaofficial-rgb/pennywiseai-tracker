@@ -229,4 +229,6 @@
     <!-- Language -->
     <string name="language_arabic">العربية</string>
     <string name="language_english">English</string>
+    <string name="add_tab_transaction">Transaction</string>
+    <string name="add_tab_subscription">Subscription</string>
 </resources>
