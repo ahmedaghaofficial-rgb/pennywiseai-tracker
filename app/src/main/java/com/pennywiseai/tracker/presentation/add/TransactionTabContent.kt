@@ -28,7 +28,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.AccountBalanceEntity
 import com.pennywiseai.tracker.data.database.entity.BudgetImpactType
 import com.pennywiseai.tracker.data.database.entity.TransactionType
@@ -217,7 +219,7 @@ fun TransactionTabContent(
                 TextField(
                     value = uiState.amount,
                     onValueChange = viewModel::updateTransactionAmount,
-                    label = { Text("Amount *", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.add_amount_required), fontWeight = FontWeight.SemiBold) },
                     textStyle = MaterialTheme.typography.headlineSmall,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = uiState.amountError != null,
@@ -240,7 +242,7 @@ fun TransactionTabContent(
                     TextField(
                         value = uiState.merchant,
                         onValueChange = viewModel::updateTransactionMerchant,
-                        label = { Text("Merchant", fontWeight = FontWeight.SemiBold) },
+                        label = { Text(stringResource(R.string.add_merchant), fontWeight = FontWeight.SemiBold) },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
                         shape = topShape,
@@ -254,7 +256,7 @@ fun TransactionTabContent(
                 TextField(
                     value = uiState.notes,
                     onValueChange = viewModel::updateTransactionNotes,
-                    label = { Text("Notes (Optional)", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.add_notes_optional), fontWeight = FontWeight.SemiBold) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = if (isTransfer) fullShape else bottomShape,
                     leadingIcon = { Icon(Icons.Default.Description, contentDescription = null) },
@@ -467,7 +469,7 @@ fun TransactionTabContent(
                         TextField(
                             value = uiState.category,
                             onValueChange = {},
-                            label = { Text("Category", fontWeight = FontWeight.SemiBold) },
+                            label = { Text(stringResource(R.string.add_category), fontWeight = FontWeight.SemiBold) },
                             readOnly = true,
                             singleLine = true,
                             modifier = Modifier
@@ -520,7 +522,7 @@ fun TransactionTabContent(
                     DropdownMenuItem(
                         text = {
                             Column {
-                                Text("No account (Manual Entry)")
+                                Text(stringResource(R.string.add_no_account_manual))
                                 Text(
                                     "Won't affect account balance",
                                     style = MaterialTheme.typography.bodySmall,
@@ -651,7 +653,7 @@ fun TransactionTabContent(
                 } else {
                     Icon(Icons.Default.Done, contentDescription = null)
                     Spacer(Modifier.width(Spacing.sm))
-                    Text("Save", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.common_save), style = MaterialTheme.typography.titleMedium)
                 }
             }
         }
@@ -677,10 +679,10 @@ fun TransactionTabContent(
                         }
                         showDatePicker = false
                     }
-                ) { Text("OK") }
+                ) { Text(stringResource(R.string.common_ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) { Text("Cancel") }
+                TextButton(onClick = { showDatePicker = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         ) {
             DatePicker(state = datePickerState)
@@ -696,7 +698,7 @@ fun TransactionTabContent(
 
         AlertDialog(
             onDismissRequest = { showTimePicker = false },
-            title = { Text("Select Time") },
+            title = { Text(stringResource(R.string.add_select_time)) },
             text = { TimePicker(state = timePickerState) },
             confirmButton = {
                 TextButton(
@@ -704,10 +706,10 @@ fun TransactionTabContent(
                         viewModel.updateTransactionTime(timePickerState.hour, timePickerState.minute)
                         showTimePicker = false
                     }
-                ) { Text("OK") }
+                ) { Text(stringResource(R.string.common_ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showTimePicker = false }) { Text("Cancel") }
+                TextButton(onClick = { showTimePicker = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -734,7 +736,7 @@ fun ReceiptPickerSection(
         verticalArrangement = Arrangement.spacedBy(Spacing.sm)
     ) {
         Text(
-            text = "Receipt (Optional)",
+            text = stringResource(R.string.add_receipt_optional),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -786,7 +788,7 @@ fun ReceiptPickerSection(
                 ) {
                     Icon(Icons.Default.Image, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small))
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text("Gallery")
+                    Text(stringResource(R.string.add_gallery))
                 }
                 OutlinedButton(
                     onClick = {
@@ -798,7 +800,7 @@ fun ReceiptPickerSection(
                 ) {
                     Icon(Icons.Default.CameraAlt, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small))
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text("Camera")
+                    Text(stringResource(R.string.add_camera))
                 }
             }
         }
@@ -819,7 +821,7 @@ private fun AddBudgetImpactSection(
         verticalArrangement = Arrangement.spacedBy(Spacing.xs)
     ) {
         Text(
-            text = "Budget impact",
+            text = stringResource(R.string.add_budget_impact),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -829,19 +831,19 @@ private fun AddBudgetImpactSection(
                 selected = budgetImpactType == null,
                 onClick = { onImpactTypeChange(null) },
                 shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3),
-                label = { Text("None", style = MaterialTheme.typography.labelSmall) }
+                label = { Text(stringResource(R.string.common_none), style = MaterialTheme.typography.labelSmall) }
             )
             SegmentedButton(
                 selected = budgetImpactType == BudgetImpactType.DEDUCT_SPENT,
                 onClick = { onImpactTypeChange(BudgetImpactType.DEDUCT_SPENT) },
                 shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3),
-                label = { Text("Refund", style = MaterialTheme.typography.labelSmall) }
+                label = { Text(stringResource(R.string.add_refund), style = MaterialTheme.typography.labelSmall) }
             )
             SegmentedButton(
                 selected = budgetImpactType == BudgetImpactType.ADD_TO_LIMIT,
                 onClick = { onImpactTypeChange(BudgetImpactType.ADD_TO_LIMIT) },
                 shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3),
-                label = { Text("Extra budget", style = MaterialTheme.typography.labelSmall) }
+                label = { Text(stringResource(R.string.add_extra_budget), style = MaterialTheme.typography.labelSmall) }
             )
         }
 
@@ -855,7 +857,7 @@ private fun AddBudgetImpactSection(
                     value = budgetCategory ?: "Select category",
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Budget category") },
+                    label = { Text(stringResource(R.string.add_budget_category)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -868,7 +870,7 @@ private fun AddBudgetImpactSection(
                 ) {
                     if (activeBudgetCategories.isEmpty()) {
                         DropdownMenuItem(
-                            text = { Text("No budget categories found") },
+                            text = { Text(stringResource(R.string.add_no_budget_categories)) },
                             onClick = { expanded = false },
                             enabled = false
                         )
