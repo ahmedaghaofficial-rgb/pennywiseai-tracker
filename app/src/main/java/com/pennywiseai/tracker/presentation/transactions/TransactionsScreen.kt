@@ -54,6 +54,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalView
 import android.view.HapticFeedbackConstants
 import androidx.compose.ui.focus.FocusRequester
@@ -61,6 +62,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.CategoryEntity
 import com.pennywiseai.tracker.data.database.entity.TransactionEntity
 import com.pennywiseai.tracker.data.database.entity.TransactionType
@@ -327,23 +329,23 @@ fun TransactionsScreen(
                                 IconButton(onClick = { viewModel.bulkMarkAsTransfer() }) {
                                     Icon(
                                         Icons.Default.SwapHoriz,
-                                        contentDescription = "Mark as transfer"
+                                        contentDescription = stringResource(R.string.transactions_mark_transfer)
                                     )
                                 }
                             }
                             IconButton(onClick = { showBulkCategorySheet = true }) {
-                                Icon(Icons.Default.Category, contentDescription = "Change category")
+                                Icon(Icons.Default.Category, contentDescription = stringResource(R.string.transactions_change_category))
                             }
                             IconButton(onClick = { showBulkGroupSheet = true }) {
                                 Icon(
                                     Icons.AutoMirrored.Filled.PlaylistAdd,
-                                    contentDescription = "Add to group"
+                                    contentDescription = stringResource(R.string.transactions_add_group)
                                 )
                             }
                             IconButton(onClick = { viewModel.bulkDelete() }) {
                                 Icon(
                                     Icons.Default.Delete,
-                                    contentDescription = "Delete selected",
+                                    contentDescription = stringResource(R.string.transactions_delete_selected),
                                     tint = MaterialTheme.colorScheme.error
                                 )
                             }
@@ -355,13 +357,13 @@ fun TransactionsScreen(
                 CustomTitleTopAppBar(
                     scrollBehaviorSmall = scrollBehaviorSmall,
                     scrollBehaviorLarge = scrollBehaviorLarge,
-                    title = "Transactions",
+                    title = stringResource(R.string.transactions_title),
                     hasBackButton = showBackButton,
                     navigationContent = {
                         IconButton(onClick = onNavigateBack) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(R.string.common_back)
                             )
                         }
                     },
@@ -383,7 +385,7 @@ fun TransactionsScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.FileDownload,
-                            contentDescription = "Export to CSV",
+                            contentDescription = stringResource(R.string.transactions_export_csv),
                             modifier = Modifier.size(Dimensions.Icon.medium)
                         )
                     }
@@ -397,7 +399,7 @@ fun TransactionsScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Add Transaction"
+                        contentDescription = stringResource(R.string.home_add_transaction)
                     )
                 }
             }
@@ -692,7 +694,7 @@ fun TransactionsScreen(
                                         ) {
                                             AssistChip(
                                                 onClick = { viewModel.markPairAsTransfer(transaction.id, partnerId) },
-                                                label = { Text("Mark as transfer") },
+                                                label = { Text(stringResource(R.string.transactions_mark_transfer)) },
                                                 leadingIcon = {
                                                     Icon(
                                                         imageVector = Icons.Default.SwapHoriz,
@@ -877,7 +879,7 @@ private fun BulkGroupPickerSheet(
                 OutlinedTextField(
                     value = newGroupName,
                     onValueChange = { newGroupName = it },
-                    label = { Text("Group name") },
+                    label = { Text(stringResource(R.string.transactions_group_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -912,7 +914,7 @@ private fun BulkGroupPickerSheet(
                         modifier = Modifier.size(Dimensions.Icon.small)
                     )
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text("Create new group")
+                    Text(stringResource(R.string.transactions_create_group))
                 }
             }
         }
@@ -966,7 +968,7 @@ private fun SwipeToEditCategory(
                     )
                     Spacer(Modifier.width(Spacing.sm))
                     Text(
-                        text = "Change category",
+                        text = stringResource(R.string.transactions_change_category),
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = MaterialTheme.typography.labelLarge
                     )
@@ -1136,7 +1138,7 @@ private fun TransactionFilterHeader(
                             if (hasAnyActiveFilter) {
                                 HorizontalDivider()
                                 DropdownMenuItem(
-                                    text = { Text("Clear filters") },
+                                    text = { Text(stringResource(R.string.transactions_clear_filters)) },
                                     leadingIcon = {
                                         Icon(
                                             imageVector = Icons.Default.Close,
@@ -1249,7 +1251,7 @@ private fun TransactionFilterHeader(
                             onDismissRequest = onMoreFiltersDismiss
                         ) {
                             DropdownMenuItem(
-                                text = { Text("All categories") },
+                                text = { Text(stringResource(R.string.transactions_all_categories)) },
                                 leadingIcon = {
                                     if (!hasCategoryFilter) {
                                         Icon(Icons.Default.Check, contentDescription = null)
@@ -1280,7 +1282,7 @@ private fun TransactionFilterHeader(
                                 HorizontalDivider()
                             }
                             DropdownMenuItem(
-                                text = { Text("All profiles") },
+                                text = { Text(stringResource(R.string.transactions_all_profiles)) },
                                 leadingIcon = {
                                     if (selectedProfileId == null) {
                                         Icon(Icons.Default.Check, contentDescription = null)
@@ -1325,7 +1327,7 @@ private fun TransactionFilterHeader(
                                 onDismissRequest = onTagDismiss
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("All tags") },
+                                    text = { Text(stringResource(R.string.transactions_all_tags)) },
                                     leadingIcon = {
                                         if (tagFilter == null) {
                                             Icon(Icons.Default.Check, contentDescription = null)
@@ -1370,7 +1372,7 @@ private fun TransactionFilterHeader(
                                 onDismissRequest = onAccountDismiss
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("All accounts") },
+                                    text = { Text(stringResource(R.string.transactions_all_accounts)) },
                                     leadingIcon = {
                                         if (accountFilter == null) {
                                             Icon(Icons.Default.Check, contentDescription = null)
@@ -1441,7 +1443,7 @@ private fun TransactionSearchBar(
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.common_search),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(Dimensions.Icon.medium)
             )
