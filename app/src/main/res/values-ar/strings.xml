@@ -497,4 +497,20 @@
     <string name="flosi_cycle_semiannual">نصف سنوي</string>
     <string name="flosi_cycle_annual">سنوي</string>
     <string name="flosi_cycle_weekly">أسبوعي</string>
+    <string name="flosi_daily_backup_active">نسخة يومية الساعة ٢ صباحًا في المجلد المختار</string>
+    <string name="flosi_daily_backup_pro">Pro · احفظ نسخة يومية في مجلد الساعة ٢ صباحًا</string>
+    <string name="flosi_daily_backup_hint">احفظ نسخة يومية في مجلد الساعة ٢ صباحًا</string>
+    <string name="flosi_last_backup">آخر نسخة احتياطية: %1$s</string>
+    <string name="flosi_run_backup_now">أنشئ نسخة احتياطية في مجلدك الآن</string>
+    <string name="flosi_backup_saved">تم حفظ النسخة الاحتياطية!</string>
+    <string name="flosi_importing_backup">جارٍ استيراد النسخة الاحتياطية…</string>
+    <string name="flosi_importing_transactions">جارٍ استيراد المعاملات…</string>
+    <string name="flosi_nothing_to_delete">لا توجد معاملات لحذفها.</string>
+    <string name="flosi_one_transaction_deleted">تم حذف معاملة واحدة.</string>
+    <string name="flosi_transactions_deleted">تم حذف %1$d معاملات.</string>
+    <string name="flosi_import_success">تم الاستيراد! أُضيفت %1$d معاملات و%2$d تصنيفات، وتُخطيت %3$d نسخ مكررة.</string>
+    <string name="flosi_import_rows_skipped">تعذر استيراد %1$d صفوف.</string>
+    <string name="flosi_backup_save_failed">تعذر حفظ النسخة الاحتياطية</string>
+    <string name="flosi_export_failed">تعذر التصدير</string>
+    <string name="flosi_import_failed">تعذر الاستيراد</string>
 </resources>

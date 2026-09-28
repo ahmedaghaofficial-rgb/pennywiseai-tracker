@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.localizedUiMessage
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
@@ -610,11 +611,11 @@ fun SettingsScreen(
                     iconTint = purple_dark,
                     title = stringResource(R.string.flosi_automatic_folder_backup),
                     subtitle = if (scheduledFolderBackupEnabled) {
-                        "Daily backup at 2:00 AM to your chosen folder"
+                        stringResource(R.string.flosi_daily_backup_active)
                     } else if (!isProEntitled) {
-                        "Pro · Save a backup to a folder every day at 2:00 AM"
+                        stringResource(R.string.flosi_daily_backup_pro)
                     } else {
-                        "Save a backup to a folder every day at 2:00 AM"
+                        stringResource(R.string.flosi_daily_backup_hint)
                     },
                     checked = scheduledFolderBackupEnabled,
                     // Scheduling daily backups is a Pro feature. Turning it ON while
@@ -639,8 +640,8 @@ fun SettingsScreen(
                             val formatted = java.time.Instant.ofEpochMilli(timestamp)
                                 .atZone(java.time.ZoneId.systemDefault())
                                 .format(java.time.format.DateTimeFormatter.ofPattern("MMM d, yyyy h:mm a"))
-                            "Last backup: $formatted"
-                        } ?: "Run a backup to your folder now",
+                            stringResource(R.string.flosi_last_backup, formatted)
+                        } ?: stringResource(R.string.flosi_run_backup_now),
                         onClick = { settingsViewModel.backupToFolderNow() },
                         position = ListItemPosition.Middle
                     )
@@ -1229,7 +1230,7 @@ fun SettingsScreen(
         AlertDialog(
             onDismissRequest = { settingsViewModel.clearDeleteAllTransactionsResult() },
             title = { Text(stringResource(R.string.flosi_transactions)) },
-            text = { Text(message) },
+            text = { Text(localizedUiMessage(message)) },
             confirmButton = {
                 TextButton(onClick = { settingsViewModel.clearDeleteAllTransactionsResult() }) {
                     Text(stringResource(R.string.flosi_ok))
@@ -1251,7 +1252,7 @@ fun SettingsScreen(
             AlertDialog(
                 onDismissRequest = { settingsViewModel.clearImportExportMessage() },
                 title = { Text(stringResource(R.string.flosi_backup_status)) },
-                text = { Text(message) },
+                text = { Text(localizedUiMessage(message)) },
                 confirmButton = {
                     TextButton(onClick = { settingsViewModel.clearImportExportMessage() }) {
                         Text(stringResource(R.string.flosi_ok))

@@ -527,4 +527,20 @@
     <string name="flosi_cycle_semiannual">Semi-Annual</string>
     <string name="flosi_cycle_annual">Annual</string>
     <string name="flosi_cycle_weekly">Weekly</string>
+    <string name="flosi_daily_backup_active">Daily backup at 2:00 AM to your chosen folder</string>
+    <string name="flosi_daily_backup_pro">Pro · Save a backup to a folder every day at 2:00 AM</string>
+    <string name="flosi_daily_backup_hint">Save a backup to a folder every day at 2:00 AM</string>
+    <string name="flosi_last_backup">Last backup: %1$s</string>
+    <string name="flosi_run_backup_now">Run a backup to your folder now</string>
+    <string name="flosi_backup_saved">Backup saved successfully!</string>
+    <string name="flosi_importing_backup">Importing backup...</string>
+    <string name="flosi_importing_transactions">Importing transactions...</string>
+    <string name="flosi_nothing_to_delete">There were no transactions to delete.</string>
+    <string name="flosi_one_transaction_deleted">1 transaction deleted.</string>
+    <string name="flosi_transactions_deleted">%1$d transactions deleted.</string>
+    <string name="flosi_import_success">Import successful! Imported %1$d transactions, %2$d categories. Skipped %3$d duplicates.</string>
+    <string name="flosi_import_rows_skipped">%1$d rows could not be imported.</string>
+    <string name="flosi_backup_save_failed">Failed to save backup</string>
+    <string name="flosi_export_failed">Export failed</string>
+    <string name="flosi_import_failed">Import failed</string>
 </resources>

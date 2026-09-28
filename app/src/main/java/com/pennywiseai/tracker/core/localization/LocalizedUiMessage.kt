@@ -27,5 +27,31 @@ fun localizedUiMessage(message: String): String = when (message) {
     "Category created successfully" -> stringResource(R.string.validation_category_created)
     "Category deleted successfully" -> stringResource(R.string.validation_category_deleted)
     "Cannot delete this category" -> stringResource(R.string.validation_cannot_delete_category)
-    else -> message // Keep unexpected errors intact for diagnosis.
+    "Backup saved successfully!" -> stringResource(R.string.flosi_backup_saved)
+    "Importing backup..." -> stringResource(R.string.flosi_importing_backup)
+    "Importing transactions..." -> stringResource(R.string.flosi_importing_transactions)
+    "There were no transactions to delete." -> stringResource(R.string.flosi_nothing_to_delete)
+    "1 transaction deleted." -> stringResource(R.string.flosi_one_transaction_deleted)
+    else -> {
+        val import = Regex("""Import successful! Imported (\d+) transactions, (\d+) categories\. Skipped (\d+) duplicates\.(?: (\d+) rows could not be imported\.)?""")
+            .matchEntire(message)
+        val deleted = Regex("""(\d+) transactions deleted\.""").matchEntire(message)
+        when {
+            import != null -> {
+                val counts = import.groupValues
+                val summary = stringResource(R.string.flosi_import_success,
+                    counts[1].toInt(), counts[2].toInt(), counts[3].toInt())
+                if (counts[4].isNotEmpty()) summary + " " +
+                    stringResource(R.string.flosi_import_rows_skipped, counts[4].toInt())
+                else summary
+            }
+            deleted != null -> stringResource(R.string.flosi_transactions_deleted, deleted.groupValues[1].toInt())
+            message.startsWith("Failed to save backup: ") -> stringResource(R.string.flosi_backup_save_failed) + ": " + message.substringAfter(": ")
+            message.startsWith("Export failed: ") -> stringResource(R.string.flosi_export_failed) + ": " + message.substringAfter(": ")
+            message.startsWith("Export error: ") -> stringResource(R.string.flosi_export_failed) + ": " + message.substringAfter(": ")
+            message.startsWith("Import failed: ") -> stringResource(R.string.flosi_import_failed) + ": " + message.substringAfter(": ")
+            message.startsWith("Import error: ") -> stringResource(R.string.flosi_import_failed) + ": " + message.substringAfter(": ")
+            else -> message // Preserve unexpected error details for diagnosis.
+        }
+    }
 }
