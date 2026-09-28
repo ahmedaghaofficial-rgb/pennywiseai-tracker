@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -49,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import android.view.HapticFeedbackConstants
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.theme.Dimensions
 import com.pennywiseai.tracker.ui.theme.PennyWiseText
 import dev.chrisbanes.haze.HazeDefaults
@@ -319,12 +321,12 @@ fun BalanceCard(
                             }
 
                             SummaryItem(
-                                label = "Income",
+                                label = stringResource(R.string.flosi_income),
                                 value = if (isBalanceHidden) "••••" else CurrencyFormatter.formatCurrency(currentMonthIncome, currency),
                                 accentColor = incomeColor
                             )
                             SummaryItem(
-                                label = "Expenses",
+                                label = stringResource(R.string.flosi_expenses),
                                 value = if (isBalanceHidden) "••••" else CurrencyFormatter.formatCurrency(currentMonthExpenses, currency),
                                 accentColor = expenseColor
                             )
@@ -351,7 +353,7 @@ fun BalanceCard(
                             Spacer(modifier = Modifier.height(Spacing.md))
 
                             Text(
-                                text = "Accounts",
+                                text = stringResource(R.string.flosi_accounts),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                                 fontWeight = FontWeight.Medium
@@ -395,7 +397,7 @@ fun BalanceCard(
                             if (creditCards.isNotEmpty()) {
                                 Spacer(modifier = Modifier.height(Spacing.sm))
                                 Text(
-                                    text = "Credit Cards",
+                                    text = stringResource(R.string.flosi_credit_cards),
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                                     fontWeight = FontWeight.Medium

@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.transactions
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import android.net.Uri
@@ -68,7 +69,7 @@ class TransactionDetailViewModel @Inject constructor(
     private val _transaction = MutableStateFlow<TransactionEntity?>(null)
     val transaction: StateFlow<TransactionEntity?> = _transaction.asStateFlow()
 
-    private val _primaryCurrency = MutableStateFlow("INR")
+    private val _primaryCurrency = MutableStateFlow(BuildConfig.DEFAULT_CURRENCY)
     val primaryCurrency: StateFlow<String> = _primaryCurrency.asStateFlow()
 
     private val _convertedAmount = MutableStateFlow<BigDecimal?>(null)
@@ -408,7 +409,7 @@ class TransactionDetailViewModel @Inject constructor(
             if (!bankName.isNullOrEmpty()) {
                 com.pennywiseai.tracker.utils.CurrencyFormatter.getBankBaseCurrency(bankName)
             } else {
-                transaction.currency.takeIf { it.isNotEmpty() } ?: "INR"
+                transaction.currency.takeIf { it.isNotEmpty() } ?: BuildConfig.DEFAULT_CURRENCY
             }
         }
         _primaryCurrency.value = primaryCurrency

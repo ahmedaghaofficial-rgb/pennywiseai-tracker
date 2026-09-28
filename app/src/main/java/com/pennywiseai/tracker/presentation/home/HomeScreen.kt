@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.home
 
+import com.pennywiseai.tracker.BuildConfig
 import com.pennywiseai.tracker.data.preferences.HomeSection
 import com.pennywiseai.tracker.data.preferences.HomeSectionLayout
 import android.view.HapticFeedbackConstants
@@ -64,6 +65,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -251,7 +253,7 @@ fun HomeScreen(
             
             scope.launch {
                 val result = snackbarHostState.showSnackbar(
-                    message = "Transaction deleted",
+                    message = stringResource(R.string.flosi_transaction_deleted),
                     actionLabel = "Undo",
                     duration = SnackbarDuration.Short
                 )
@@ -348,7 +350,7 @@ fun HomeScreen(
                             ) {
                                 Icon(
                                     imageVector = profileFilterIcon(uiState.profiles, uiState.selectedProfileId),
-                                    contentDescription = "Profile filter",
+                                    contentDescription = stringResource(R.string.flosi_profile_filter),
                                     tint = MaterialTheme.colorScheme.inverseSurface,
                                     modifier = Modifier.size(Dimensions.Icon.inline)
                                 )
@@ -379,7 +381,7 @@ fun HomeScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.MoreHoriz,
-                                contentDescription = "More options",
+                                contentDescription = stringResource(R.string.flosi_more_options),
                                 tint = MaterialTheme.colorScheme.inverseSurface,
                                 modifier = Modifier.size(Dimensions.Icon.medium)
                             )
@@ -569,11 +571,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Budgets",
+                                            title = stringResource(R.string.flosi_budgets),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToBudgets) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.flosi_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -612,11 +614,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Loans",
+                                            title = stringResource(R.string.flosi_loans),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToLoans) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.flosi_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -662,11 +664,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Groups",
+                                            title = stringResource(R.string.flosi_groups),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToTransactionGroups) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.flosi_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -707,7 +709,7 @@ fun HomeScreen(
                             ) {
                                 Column(modifier = Modifier.padding(horizontal = Dimensions.Padding.content)) {
                                     SectionHeaderV2(
-                                        title = "Recent Transactions",
+                                        title = stringResource(R.string.flosi_recent_transactions),
                                         action = {
                                             Row(
                                                 horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
@@ -720,14 +722,14 @@ fun HomeScreen(
                                                 ) {
                                                     Icon(
                                                         imageVector = Icons.Default.Search,
-                                                        contentDescription = "Search transactions",
+                                                        contentDescription = stringResource(R.string.flosi_search_transactions),
                                                         tint = MaterialTheme.colorScheme.primary
                                                     )
                                                 }
 
                                                 // View All button
                                                 TextButton(onClick = onNavigateToTransactions) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.flosi_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -767,8 +769,8 @@ fun HomeScreen(
                                 ) {
                                     PennyWiseEmptyState(
                                         icon = Icons.Default.Sync,
-                                        headline = "No transactions yet",
-                                        description = "Scan your SMS to get started — we'll find your transactions automatically",
+                                        headline = stringResource(R.string.flosi_no_transactions_yet),
+                                        description = stringResource(R.string.flosi_scan_your_sms_to_get_started_we_ll_find_your_transacti),
                                         actionLabel = "Scan Now",
                                         onAction = { viewModel.scanSmsMessages() },
                                         modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
@@ -847,11 +849,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Bank Accounts",
+                                            title = stringResource(R.string.flosi_bank_accounts),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToManageAccounts) {
-                                                    Text("Manage")
+                                                    Text(stringResource(R.string.flosi_manage))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -901,11 +903,11 @@ fun HomeScreen(
                                         verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                     ) {
                                         SectionHeaderV2(
-                                            title = "Upcoming Subscriptions",
+                                            title = stringResource(R.string.flosi_upcoming_subscriptions),
                                             modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                             action = {
                                                 TextButton(onClick = onNavigateToSubscriptions) {
-                                                    Text("View All")
+                                                    Text(stringResource(R.string.flosi_view_all))
                                                     Icon(
                                                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                                                         contentDescription = null,
@@ -949,7 +951,7 @@ fun HomeScreen(
                                     verticalArrangement = Arrangement.spacedBy(Spacing.Layout.headerToContent)
                                 ) {
                                     SectionHeaderV2(
-                                        title = "Activity",
+                                        title = stringResource(R.string.flosi_activity),
                                         modifier = Modifier.padding(horizontal = Dimensions.Padding.content)
                                     )
                                     com.pennywiseai.tracker.ui.components.cards.HeatmapWidget(
@@ -1003,7 +1005,7 @@ fun HomeScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Add Transaction or Subscription"
+                    contentDescription = stringResource(R.string.flosi_add_transaction_or_subscription)
                 )
             }
             
@@ -1037,7 +1039,7 @@ fun HomeScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Sync,
-                            contentDescription = "Sync SMS (long press for full resync)",
+                            contentDescription = stringResource(R.string.flosi_sync_sms_long_press_for_full_resync),
                             modifier = if (uiState.isScanning) Modifier.rotate(scanRotation) else Modifier,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -1046,7 +1048,7 @@ fun HomeScreen(
                 // Hint for long-press functionality - only show for new users (no transactions yet)
                 if (uiState.recentItems.isEmpty() && !uiState.isLoading) {
                     Text(
-                        text = "Hold for full resync",
+                        text = stringResource(R.string.flosi_hold_for_full_resync),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -1066,7 +1068,7 @@ fun HomeScreen(
                     )
                 },
                 title = {
-                    Text("Full Resync")
+                    Text(stringResource(R.string.flosi_full_resync))
                 },
                 text = {
                     Text(
@@ -1084,14 +1086,14 @@ fun HomeScreen(
                             viewModel.scanSmsMessages(forceResync = true)
                         }
                     ) {
-                        Text("Resync All")
+                        Text(stringResource(R.string.flosi_resync_all))
                     }
                 },
                 dismissButton = {
                     TextButton(
                         onClick = { showFullResyncDialog = false }
                     ) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.flosi_cancel))
                     }
                 }
             )
@@ -1145,7 +1147,7 @@ fun HomeScreen(
             ) {
                 // Title
                 Text(
-                    text = "More Options",
+                    text = stringResource(R.string.flosi_more_options_12),
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -1158,7 +1160,7 @@ fun HomeScreen(
                 // it is rather than "Share ...": the menu sits beside Settings and Rate,
                 // and leading with the ask makes it read as a favour being requested.
                 MenuListItem(
-                    headline = "Monthly recap",
+                    headline = stringResource(R.string.flosi_monthly_recap),
                     icon = { Icon(Icons.Default.Share, contentDescription = null) },
                     position = ListItemPosition.Top,
                     onClick = {
@@ -1169,7 +1171,7 @@ fun HomeScreen(
 
                 // Settings (Middle)
                 MenuListItem(
-                    headline = "Settings",
+                    headline = stringResource(R.string.flosi_settings),
                     icon = { Icon(Icons.Default.Settings, contentDescription = null) },
                     position = ListItemPosition.Middle,
                     onClick = {
@@ -1180,7 +1182,7 @@ fun HomeScreen(
 
                 // Edit home screen (Middle) — reorder / hide Home sections (#770)
                 MenuListItem(
-                    headline = "Edit home screen",
+                    headline = stringResource(R.string.flosi_edit_home_screen),
                     icon = { Icon(Icons.Default.Tune, contentDescription = null) },
                     position = ListItemPosition.Middle,
                     onClick = {
@@ -1264,13 +1266,13 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(Spacing.Layout.groupedListGap)
             ) {
                 Text(
-                    text = "Edit home screen",
+                    text = stringResource(R.string.flosi_edit_home_screen),
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    text = "Reorder or hide sections on your home screen.",
+                    text = stringResource(R.string.flosi_reorder_or_hide_sections_on_your_home_screen),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -1327,7 +1329,7 @@ private fun BreakdownDialog(
     lastMonthIncome: BigDecimal,
     lastMonthExpenses: BigDecimal,
     lastMonthTotal: BigDecimal,
-    currency: String = "INR",
+    currency: String = BuildConfig.DEFAULT_CURRENCY,
     onDismiss: () -> Unit
 ) {
     val now = LocalDate.now()
@@ -1354,7 +1356,7 @@ private fun BreakdownDialog(
                 verticalArrangement = Arrangement.spacedBy(Spacing.lg)
             ) {
                 Text(
-                    text = "Calculation Breakdown",
+                    text = stringResource(R.string.flosi_calculation_breakdown),
                     style = MaterialTheme.typography.headlineSmall
                 )
 
@@ -1394,7 +1396,7 @@ private fun BreakdownDialog(
                     onClick = onDismiss,
                     modifier = Modifier.align(Alignment.End)
                 ) {
-                    Text("Close")
+                    Text(stringResource(R.string.flosi_close))
                 }
             }
         }
@@ -1416,11 +1418,11 @@ private fun BreakdownPeriod(
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary
         )
-        BreakdownRow(label = "Income", amount = income, isIncome = true, currency = currency)
-        BreakdownRow(label = "Expenses", amount = expenses, isIncome = false, currency = currency)
+        BreakdownRow(label = stringResource(R.string.flosi_income), amount = income, isIncome = true, currency = currency)
+        BreakdownRow(label = stringResource(R.string.flosi_expenses), amount = expenses, isIncome = false, currency = currency)
         HorizontalDivider()
         BreakdownRow(
-            label = "Net Worth",
+            label = stringResource(R.string.flosi_net_worth),
             amount = net,
             isIncome = net >= BigDecimal.ZERO,
             isBold = true,
@@ -1435,7 +1437,7 @@ private fun BreakdownRow(
     amount: BigDecimal,
     isIncome: Boolean,
     isBold: Boolean = false,
-    currency: String = "INR"
+    currency: String = BuildConfig.DEFAULT_CURRENCY
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -1466,7 +1468,7 @@ private fun UpcomingSubscriptionsCard(
     totalAmount: BigDecimal,
     totalByCurrency: Map<String, com.pennywiseai.tracker.utils.Money> = emptyMap(),
     isUnified: Boolean = false,
-    currency: String = "INR",
+    currency: String = BuildConfig.DEFAULT_CURRENCY,
     onClick: () -> Unit = {},
     blurEffects: Boolean = false,
     hazeState: HazeState? = null
@@ -1578,7 +1580,7 @@ private fun UpcomingSubscriptionsCard(
                 }
                 Column {
                     Text(
-                        text = "${subscriptions.size} active subscriptions",
+                        text = stringResource(R.string.flosi_active_subscriptions, subscriptions.size),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -1586,7 +1588,7 @@ private fun UpcomingSubscriptionsCard(
                     Text(
                         // Unified mode: one converted figure. Native mode: per-currency
                         // ("₹499 · $10") so a mixed set isn't summed into a mislabel.
-                        text = "Monthly total: " + if (isUnified) {
+                        text = stringResource(R.string.flosi_monthly_total) + if (isUnified) {
                             CurrencyFormatter.formatCurrency(totalAmount, currency)
                         } else {
                             CurrencyFormatter.formatByCurrency(
@@ -1600,7 +1602,7 @@ private fun UpcomingSubscriptionsCard(
                 }
             }
             Text(
-                text = "View",
+                text = stringResource(R.string.flosi_view),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium
@@ -1638,7 +1640,7 @@ private fun ActiveLoansSummaryCard(
             )
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${loans.size} active loan${if (loans.size != 1) "s" else ""}",
+                    text = stringResource(R.string.flosi_active_loans, loans.size),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
@@ -1657,7 +1659,7 @@ private fun ActiveLoansSummaryCard(
                 )
             }
             Text(
-                text = "View",
+                text = stringResource(R.string.flosi_view),
                 style = MaterialTheme.typography.labelLarge,
                 color = loanColor,
                 fontWeight = FontWeight.Medium

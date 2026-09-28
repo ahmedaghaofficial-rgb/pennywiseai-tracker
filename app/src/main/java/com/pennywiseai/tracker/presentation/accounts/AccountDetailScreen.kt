@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.accounts
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import com.pennywiseai.tracker.ui.effects.rememberOverscrollFlingBehavior
 import androidx.compose.material.icons.Icons
@@ -71,7 +73,7 @@ fun AccountDetailScreen(
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 hazeState = hazeState
@@ -142,7 +144,7 @@ fun AccountDetailScreen(
             // Transactions Header
             item {
                 SectionHeaderV2(
-                    title = "Transactions (${uiState.transactions.size})"
+                    title = stringResource(R.string.flosi_transactions_count, uiState.transactions.size)
                 )
             }
             
@@ -151,8 +153,8 @@ fun AccountDetailScreen(
                 item {
                     PennyWiseEmptyState(
                         icon = Icons.Outlined.Receipt,
-                        headline = "No transactions",
-                        description = "Transactions for this account will appear here"
+                        headline = stringResource(R.string.flosi_no_transactions),
+                        description = stringResource(R.string.flosi_transactions_for_this_account_will_appear_here)
                     )
                 }
             } else {
@@ -219,7 +221,7 @@ private fun ExpandableBalanceChart(
                             modifier = Modifier.size(Dimensions.Icon.medium)
                         )
                         Text(
-                            text = "Balance Trend",
+                            text = stringResource(R.string.flosi_balance_trend),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
@@ -284,7 +286,7 @@ private fun CurrentBalanceCard(
             if (isCreditCard) {
                 // Credit card layout
                 Text(
-                    text = "Available Credit",
+                    text = stringResource(R.string.flosi_available_credit),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -318,7 +320,7 @@ private fun CurrentBalanceCard(
                                     color = MaterialTheme.colorScheme.error
                                 )
                                 Text(
-                                    text = "Billed",
+                                    text = stringResource(R.string.flosi_billed),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -331,7 +333,7 @@ private fun CurrentBalanceCard(
                                     color = MaterialTheme.colorScheme.tertiary
                                 )
                                 Text(
-                                    text = "Unbilled",
+                                    text = stringResource(R.string.flosi_unbilled),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -342,7 +344,7 @@ private fun CurrentBalanceCard(
             } else {
                 // Regular account layout
                 Text(
-                    text = "Current Balance",
+                    text = stringResource(R.string.flosi_current_balance_15),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -405,19 +407,19 @@ private fun SummaryStatistics(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 StatisticItem(
-                    label = "Income",
+                    label = stringResource(R.string.flosi_income),
                     value = formatWithEstimatedDisplay(totalIncome, primaryCurrency, hasMultipleCurrencies),
                     icon = Icons.AutoMirrored.Filled.TrendingUp,
                     color = if (!isSystemInDarkTheme()) income_light else income_dark
                 )
                 StatisticItem(
-                    label = "Expenses",
+                    label = stringResource(R.string.flosi_expenses),
                     value = formatWithEstimatedDisplay(totalExpenses, primaryCurrency, hasMultipleCurrencies),
                     icon = Icons.AutoMirrored.Filled.TrendingDown,
                     color = if (!isSystemInDarkTheme()) expense_light else expense_dark
                 )
                 StatisticItem(
-                    label = "Net",
+                    label = stringResource(R.string.flosi_net),
                     value = formatWithEstimatedDisplay(netBalance, primaryCurrency, hasMultipleCurrencies),
                     icon = Icons.Default.AccountBalanceWallet,
                     color = if (netBalance >= BigDecimal.ZERO) {
@@ -592,19 +594,19 @@ private fun AccountTransactionItem(
                 when (transaction.transactionType) {
                     TransactionType.CREDIT -> Icon(
                         Icons.Default.CreditCard,
-                        contentDescription = "Credit",
+                        contentDescription = stringResource(R.string.flosi_credit),
                         modifier = Modifier.size(Dimensions.Icon.small),
                         tint = amountColor
                     )
                     TransactionType.TRANSFER -> Icon(
                         Icons.Default.SwapHoriz,
-                        contentDescription = "Transfer",
+                        contentDescription = stringResource(R.string.flosi_transfer),
                         modifier = Modifier.size(Dimensions.Icon.small),
                         tint = amountColor
                     )
                     TransactionType.INVESTMENT -> Icon(
                         Icons.AutoMirrored.Filled.ShowChart,
-                        contentDescription = "Investment",
+                        contentDescription = stringResource(R.string.flosi_investment),
                         modifier = Modifier.size(Dimensions.Icon.small),
                         tint = amountColor
                     )

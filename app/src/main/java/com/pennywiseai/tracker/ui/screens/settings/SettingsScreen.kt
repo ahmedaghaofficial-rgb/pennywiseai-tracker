@@ -230,7 +230,7 @@ fun SettingsScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Settings",
+                title = stringResource(R.string.flosi_settings),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = { SettingsNavigationContent(onNavigateBack) },
@@ -287,14 +287,14 @@ fun SettingsScreen(
             }
 
             // ── Personalization ──
-            SectionHeaderV2(title = "Personalization")
+            SectionHeaderV2(title = stringResource(R.string.flosi_personalization))
             SettingsGroup {
                 SettingsNavItem(
                     icon = Icons.Default.Palette,
                     iconBgColor = orange_light,
                     iconTint = orange_dark,
-                    title = "Appearance",
-                    subtitle = "Theme, colors, fonts & navigation",
+                    title = stringResource(R.string.flosi_appearance),
+                    subtitle = stringResource(R.string.flosi_theme_colors_fonts_navigation),
                     onClick = onNavigateToAppearance,
                     position = ListItemPosition.Top
                 )
@@ -302,8 +302,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Language,
                     iconBgColor = blue_light,
                     iconTint = blue_dark,
-                    title = "Language / اللغة",
-                    subtitle = "Choose Arabic or English",
+                    title = stringResource(R.string.flosi_language),
+                    subtitle = stringResource(R.string.flosi_choose_arabic_or_english),
                     trailingText = if (currentLanguage == AppLanguage.ARABIC) "العربية" else "English",
                     onClick = { showLanguageDialog = true },
                     position = ListItemPosition.Bottom
@@ -311,14 +311,14 @@ fun SettingsScreen(
             }
 
             // ── Currency ──
-            SectionHeaderV2(title = "Currency")
+            SectionHeaderV2(title = stringResource(R.string.flosi_currency))
             SettingsGroup {
                 SettingsSwitchRow(
                     icon = Icons.Default.CurrencyExchange,
                     iconBgColor = green_light,
                     iconTint = green_dark,
-                    title = "Unified Currency Mode",
-                    subtitle = "Convert all transactions to display currency",
+                    title = stringResource(R.string.flosi_unified_currency_mode),
+                    subtitle = stringResource(R.string.flosi_convert_all_transactions_to_display_currency),
                     checked = unifiedCurrencyMode,
                     onCheckedChange = { settingsViewModel.setUnifiedCurrencyMode(it) },
                     position = ListItemPosition.Top
@@ -328,8 +328,8 @@ fun SettingsScreen(
                         icon = Icons.Default.AttachMoney,
                         iconBgColor = teal_light,
                         iconTint = teal_dark,
-                        title = "Display Currency",
-                        subtitle = "All amounts shown in this currency",
+                        title = stringResource(R.string.flosi_display_currency),
+                        subtitle = stringResource(R.string.flosi_all_amounts_shown_in_this_currency),
                         onClick = { showDisplayCurrencyDialog = true },
                         position = ListItemPosition.Middle,
                         trailingText = "${CurrencyFormatter.getCurrencySymbol(displayCurrency)} $displayCurrency"
@@ -339,8 +339,8 @@ fun SettingsScreen(
                     icon = Icons.Default.SwapHoriz,
                     iconBgColor = blue_light,
                     iconTint = blue_dark,
-                    title = "Exchange Rates",
-                    subtitle = "View and customize rates",
+                    title = stringResource(R.string.flosi_exchange_rates),
+                    subtitle = stringResource(R.string.flosi_view_and_customize_rates),
                     onClick = onNavigateToExchangeRates,
                     position = ListItemPosition.Middle
                 )
@@ -348,7 +348,7 @@ fun SettingsScreen(
                     icon = Icons.Default.CreditCard,
                     iconBgColor = indigo_light,
                     iconTint = indigo_dark,
-                    title = "Count card spend as expense",
+                    title = stringResource(R.string.flosi_count_card_spend_as_expense),
                     subtitle = "Include credit-card spend in \"Spent this month\"",
                     checked = countCreditCardAsExpense,
                     onCheckedChange = { settingsViewModel.setCountCreditCardAsExpense(it) },
@@ -358,8 +358,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Flag,
                     iconBgColor = indigo_light,
                     iconTint = indigo_dark,
-                    title = "Default Currency",
-                    subtitle = "Currency used for conversions",
+                    title = stringResource(R.string.flosi_default_currency),
+                    subtitle = stringResource(R.string.flosi_currency_used_for_conversions),
                     currentValue = "${CurrencyFormatter.getCurrencySymbol(baseCurrency)} $baseCurrency",
                     expanded = showCurrencyDropdown,
                     onExpandedChange = { showCurrencyDropdown = it },
@@ -396,8 +396,8 @@ fun SettingsScreen(
                         icon = Icons.Default.AccountBalanceWallet,
                         iconBgColor = purple_light,
                         iconTint = purple_dark,
-                        title = "Main Account",
-                        subtitle = "Sets your default currency",
+                        title = stringResource(R.string.flosi_main_account),
+                        subtitle = stringResource(R.string.flosi_sets_your_default_currency),
                         currentValue = mainAccount?.let { acc ->
                             val name = acc.alias?.takeIf { it.isNotBlank() } ?: acc.bankName
                             AccountBalanceEntity.accountLabel(name, acc.accountLast4)
@@ -434,8 +434,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Numbers,
                     iconBgColor = green_light,
                     iconTint = green_dark,
-                    title = "Number Format",
-                    subtitle = "How large amounts are grouped",
+                    title = stringResource(R.string.flosi_number_format),
+                    subtitle = stringResource(R.string.flosi_how_large_amounts_are_grouped),
                     onClick = { showNumberFormatDialog = true },
                     position = ListItemPosition.Bottom,
                     trailingText = numberFormatStyleLabel(numberFormatStyle)
@@ -447,13 +447,13 @@ fun SettingsScreen(
             // Home / Analytics bucket transactions, so it lives up here next
             // to the other "display" knobs rather than buried in Data
             // Management with the budgets list.
-            SectionHeaderV2(title = "Budget")
+            SectionHeaderV2(title = stringResource(R.string.flosi_budget))
             SettingsGroup {
                 SettingsNavItem(
                     icon = Icons.Default.DateRange,
                     iconBgColor = teal_light,
                     iconTint = teal_dark,
-                    title = "Budget Cycle Start Day",
+                    title = stringResource(R.string.flosi_budget_cycle_start_day),
                     subtitle = "Shifts the start of each monthly budget period; e.g. 25 means your cycle runs 25th → 24th",
                     onClick = { showBudgetCycleDialog = true },
                     position = ListItemPosition.Single,
@@ -462,13 +462,13 @@ fun SettingsScreen(
             }
 
             // ── Contacts ──
-            SectionHeaderV2(title = "Contacts")
+            SectionHeaderV2(title = stringResource(R.string.flosi_contacts))
             SettingsGroup {
                 SettingsSwitchRow(
                     icon = Icons.Default.Contacts,
                     iconBgColor = teal_light,
                     iconTint = teal_dark,
-                    title = "Replace UPI VPAs with contact names",
+                    title = stringResource(R.string.flosi_replace_upi_vpas_with_contact_names),
                     subtitle = "Show 'John Doe' instead of '9876543210@paytm'. Needs contacts permission.",
                     checked = useContactsForVpa,
                     onCheckedChange = { wantsOn ->
@@ -492,13 +492,13 @@ fun SettingsScreen(
             }
 
             // ── Security ──
-            SectionHeaderV2(title = "Security")
+            SectionHeaderV2(title = stringResource(R.string.flosi_security))
             SettingsGroup {
                 SettingsSwitchRow(
                     icon = Icons.Default.Lock,
                     iconBgColor = red_light,
                     iconTint = red_dark,
-                    title = "App Lock",
+                    title = stringResource(R.string.flosi_app_lock),
                     subtitle = if (appLockUiState.canUseBiometric) {
                         "Protect your data with biometric authentication"
                     } else {
@@ -514,7 +514,7 @@ fun SettingsScreen(
                         icon = Icons.Default.Timer,
                         iconBgColor = pink_light,
                         iconTint = pink_dark,
-                        title = "Lock Timeout",
+                        title = stringResource(R.string.flosi_lock_timeout),
                         subtitle = when (appLockUiState.timeoutMinutes) {
                             0 -> "Lock immediately"
                             1 -> "After 1 minute"
@@ -527,14 +527,14 @@ fun SettingsScreen(
             }
 
             // ── Data Management ──
-            SectionHeaderV2(title = "Data Management")
+            SectionHeaderV2(title = stringResource(R.string.flosi_data_management))
             SettingsGroup {
                 SettingsNavItem(
                     icon = Icons.Default.AccountBalance,
                     iconBgColor = red_light,
                     iconTint = red_dark,
-                    title = "Manage Accounts",
-                    subtitle = "View and manage your bank accounts",
+                    title = stringResource(R.string.flosi_manage_accounts),
+                    subtitle = stringResource(R.string.flosi_view_and_manage_your_bank_accounts),
                     onClick = onNavigateToManageAccounts,
                     position = ListItemPosition.Top
                 )
@@ -542,8 +542,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Category,
                     iconBgColor = purple_light,
                     iconTint = purple_dark,
-                    title = "Categories",
-                    subtitle = "Manage expense and income categories",
+                    title = stringResource(R.string.flosi_categories),
+                    subtitle = stringResource(R.string.flosi_manage_expense_and_income_categories),
                     onClick = onNavigateToCategories,
                     position = ListItemPosition.Middle
                 )
@@ -551,8 +551,8 @@ fun SettingsScreen(
                     icon = Icons.Default.AutoAwesome,
                     iconBgColor = orange_light,
                     iconTint = orange_dark,
-                    title = "Smart Rules",
-                    subtitle = "Automatic transaction categorization",
+                    title = stringResource(R.string.flosi_smart_rules),
+                    subtitle = stringResource(R.string.flosi_automatic_transaction_categorization),
                     onClick = onNavigateToRules,
                     position = ListItemPosition.Middle
                 )
@@ -560,8 +560,8 @@ fun SettingsScreen(
                     icon = Icons.Default.AccountBalanceWallet,
                     iconBgColor = green_light,
                     iconTint = green_dark,
-                    title = "Budgets",
-                    subtitle = "Track spending limits by category",
+                    title = stringResource(R.string.flosi_budgets),
+                    subtitle = stringResource(R.string.flosi_track_spending_limits_by_category),
                     onClick = onNavigateToBudgets,
                     position = ListItemPosition.Middle
                 )
@@ -569,8 +569,8 @@ fun SettingsScreen(
                     icon = Icons.Default.SwapHoriz,
                     iconBgColor = amber_light,
                     iconTint = amber_dark,
-                    title = "Loans",
-                    subtitle = "Track money lent and borrowed",
+                    title = stringResource(R.string.flosi_loans),
+                    subtitle = stringResource(R.string.flosi_track_money_lent_and_borrowed),
                     onClick = onNavigateToLoans,
                     position = ListItemPosition.Middle
                 )
@@ -578,8 +578,8 @@ fun SettingsScreen(
                     icon = Icons.Default.EventRepeat,
                     iconBgColor = green_light,
                     iconTint = green_dark,
-                    title = "Recurring",
-                    subtitle = "Auto-add scheduled cash & manual transactions",
+                    title = stringResource(R.string.flosi_recurring),
+                    subtitle = stringResource(R.string.flosi_auto_add_scheduled_cash_manual_transactions),
                     onClick = onNavigateToRecurring,
                     position = ListItemPosition.Middle
                 )
@@ -587,8 +587,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Folder,
                     iconBgColor = MaterialTheme.colorScheme.secondaryContainer,
                     iconTint = MaterialTheme.colorScheme.onSecondaryContainer,
-                    title = "Transaction Groups",
-                    subtitle = "Organise transactions under a topic",
+                    title = stringResource(R.string.flosi_transaction_groups),
+                    subtitle = stringResource(R.string.flosi_organise_transactions_under_a_topic),
                     onClick = onNavigateToTransactionGroups,
                     position = ListItemPosition.Middle
                 )
@@ -596,8 +596,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Upload,
                     iconBgColor = blue_light,
                     iconTint = blue_dark,
-                    title = "Export Data",
-                    subtitle = "Backup all data to a file",
+                    title = stringResource(R.string.flosi_export_data),
+                    subtitle = stringResource(R.string.flosi_backup_all_data_to_a_file),
                     onClick = { settingsViewModel.exportBackup() },
                     position = ListItemPosition.Middle
                 )
@@ -605,7 +605,7 @@ fun SettingsScreen(
                     icon = Icons.Default.Backup,
                     iconBgColor = purple_light,
                     iconTint = purple_dark,
-                    title = "Automatic Folder Backup",
+                    title = stringResource(R.string.flosi_automatic_folder_backup),
                     subtitle = if (scheduledFolderBackupEnabled) {
                         "Daily backup at 2:00 AM to your chosen folder"
                     } else if (!isProEntitled) {
@@ -631,7 +631,7 @@ fun SettingsScreen(
                         icon = Icons.Default.SaveAlt,
                         iconBgColor = green_light,
                         iconTint = green_dark,
-                        title = "Back Up Now",
+                        title = stringResource(R.string.flosi_back_up_now),
                         subtitle = scheduledFolderBackupLastTimestamp?.let { timestamp ->
                             val formatted = java.time.Instant.ofEpochMilli(timestamp)
                                 .atZone(java.time.ZoneId.systemDefault())
@@ -645,8 +645,8 @@ fun SettingsScreen(
                         icon = Icons.Default.FolderOpen,
                         iconBgColor = amber_light,
                         iconTint = amber_dark,
-                        title = "Change Backup Folder",
-                        subtitle = "Pick a different folder for automatic backups",
+                        title = stringResource(R.string.flosi_change_backup_folder),
+                        subtitle = stringResource(R.string.flosi_pick_a_different_folder_for_automatic_backups),
                         onClick = { settingsViewModel.requestChangeBackupFolder() },
                         position = ListItemPosition.Middle
                     )
@@ -655,8 +655,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Download,
                     iconBgColor = cyan_light,
                     iconTint = cyan_dark,
-                    title = "Import Data",
-                    subtitle = "Restore data from backup",
+                    title = stringResource(R.string.flosi_import_data),
+                    subtitle = stringResource(R.string.flosi_restore_data_from_backup),
                     onClick = { importLauncher.launch("*/*") },
                     position = ListItemPosition.Middle
                 )
@@ -664,8 +664,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Download,
                     iconBgColor = cyan_light,
                     iconTint = cyan_dark,
-                    title = "Import Transactions (CSV)",
-                    subtitle = "Import from a PennyWise CSV export",
+                    title = stringResource(R.string.flosi_import_transactions_csv),
+                    subtitle = stringResource(R.string.flosi_import_from_a_pennywise_csv_export),
                     onClick = { csvImportLauncher.launch("*/*") },
                     position = ListItemPosition.Middle
                 )
@@ -673,8 +673,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Description,
                     iconBgColor = indigo_light,
                     iconTint = indigo_dark,
-                    title = "Import Statement",
-                    subtitle = "Import from GPay, PhonePe, Paytm",
+                    title = stringResource(R.string.flosi_import_statement),
+                    subtitle = stringResource(R.string.flosi_import_from_gpay_phonepe_paytm),
                     onClick = onNavigateToImportStatement,
                     position = ListItemPosition.Middle
                 )
@@ -682,8 +682,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Sms,
                     iconBgColor = orange_light,
                     iconTint = orange_dark,
-                    title = "Unrecognized SMS",
-                    subtitle = "View and report unsupported bank messages",
+                    title = stringResource(R.string.flosi_unrecognized_sms),
+                    subtitle = stringResource(R.string.flosi_view_and_report_unsupported_bank_messages),
                     onClick = onNavigateToUnrecognizedSms,
                     position = ListItemPosition.Middle
                 )
@@ -691,7 +691,7 @@ fun SettingsScreen(
                     icon = Icons.Default.CalendarMonth,
                     iconBgColor = teal_light,
                     iconTint = teal_dark,
-                    title = "SMS Scan Period",
+                    title = stringResource(R.string.flosi_sms_scan_period),
                     subtitle = when {
                         smsScanAllTime -> "Scan all SMS messages"
                         smsScanUseCustomDate -> {
@@ -716,21 +716,21 @@ fun SettingsScreen(
                     icon = Icons.Default.DeleteForever,
                     iconBgColor = red_light,
                     iconTint = red_dark,
-                    title = "Delete All Transactions",
-                    subtitle = "Clear your transaction history — accounts and budgets stay",
+                    title = stringResource(R.string.flosi_delete_all_transactions),
+                    subtitle = stringResource(R.string.flosi_clear_your_transaction_history_accounts_and_budgets_stay),
                     onClick = { settingsViewModel.requestDeleteAllTransactions() },
                     position = ListItemPosition.Bottom
                 )
             }
 
             // ── Notifications ──
-            SectionHeaderV2(title = "Notifications")
+            SectionHeaderV2(title = stringResource(R.string.flosi_notifications))
             SettingsGroup {
                 SettingsNavItem(
                     icon = Icons.Default.Notifications,
                     iconBgColor = indigo_light,
                     iconTint = indigo_dark,
-                    title = "Bank Notification Access",
+                    title = stringResource(R.string.flosi_bank_notification_access),
                     subtitle = if (hasNotificationAccess) "Enabled" else "Tap to enable bank app notifications",
                     onClick = {
                         val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
@@ -742,7 +742,7 @@ fun SettingsScreen(
             }
 
             // ── AI Features ──
-            SectionHeaderV2(title = "AI Features")
+            SectionHeaderV2(title = stringResource(R.string.flosi_ai_features))
             SettingsGroup {
                 AiChatSettingsItem(
                     downloadState = downloadState,
@@ -756,14 +756,14 @@ fun SettingsScreen(
             }
 
             // ── Developer ──
-            SectionHeaderV2(title = "Developer")
+            SectionHeaderV2(title = stringResource(R.string.flosi_developer))
             SettingsGroup {
                 SettingsSwitchRow(
                     icon = Icons.Default.Code,
                     iconBgColor = grey_light,
                     iconTint = grey_dark,
-                    title = "Developer Mode",
-                    subtitle = "Show technical information in chat",
+                    title = stringResource(R.string.flosi_developer_mode),
+                    subtitle = stringResource(R.string.flosi_show_technical_information_in_chat),
                     checked = isDeveloperModeEnabled,
                     onCheckedChange = { settingsViewModel.toggleDeveloperMode(it) },
                     position = ListItemPosition.Single
@@ -771,14 +771,14 @@ fun SettingsScreen(
             }
 
             // ── Support & Community ──
-            SectionHeaderV2(title = "Support & Community")
+            SectionHeaderV2(title = stringResource(R.string.flosi_support_community))
             SettingsGroup {
                 SettingsNavItem(
                     icon = Icons.AutoMirrored.Filled.Help,
                     iconBgColor = pink_light,
                     iconTint = pink_dark,
-                    title = "Help & FAQ",
-                    subtitle = "Frequently asked questions and help",
+                    title = stringResource(R.string.flosi_help_faq),
+                    subtitle = stringResource(R.string.flosi_frequently_asked_questions_and_help),
                     onClick = onNavigateToFaq,
                     position = ListItemPosition.Top
                 )
@@ -786,8 +786,8 @@ fun SettingsScreen(
                     icon = Icons.Default.BugReport,
                     iconBgColor = blue_light,
                     iconTint = blue_dark,
-                    title = "Report an Issue",
-                    subtitle = "Submit bug reports on GitHub",
+                    title = stringResource(R.string.flosi_report_an_issue),
+                    subtitle = stringResource(R.string.flosi_submit_bug_reports_on_github),
                     onClick = {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/sarim2000/pennywiseai-tracker/issues/new/choose"))
                         context.startActivity(intent)
@@ -816,7 +816,7 @@ fun SettingsScreen(
     if (showLanguageDialog) {
         AlertDialog(
             onDismissRequest = { showLanguageDialog = false },
-            title = { Text("Language / اللغة") },
+            title = { Text(stringResource(R.string.flosi_language)) },
             text = {
                 Column {
                     listOf(
@@ -853,7 +853,7 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showLanguageDialog = false }) {
-                    Text("Close / إغلاق")
+                    Text(stringResource(R.string.flosi_close))
                 }
             }
         )
@@ -863,7 +863,7 @@ fun SettingsScreen(
     if (showDisplayCurrencyDialog) {
         AlertDialog(
             onDismissRequest = { showDisplayCurrencyDialog = false },
-            title = { Text("Display Currency") },
+            title = { Text(stringResource(R.string.flosi_display_currency)) },
             text = {
                 // Scrollable: the full currency list overflows the dialog's max
                 // height, so without this the entries below the fold (e.g. MXN)
@@ -903,7 +903,7 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showDisplayCurrencyDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -913,7 +913,7 @@ fun SettingsScreen(
     if (showNumberFormatDialog) {
         AlertDialog(
             onDismissRequest = { showNumberFormatDialog = false },
-            title = { Text("Number Format") },
+            title = { Text(stringResource(R.string.flosi_number_format)) },
             text = {
                 Column {
                     NumberFormatStyle.entries.forEach { style ->
@@ -955,7 +955,7 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showNumberFormatDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -965,7 +965,7 @@ fun SettingsScreen(
     if (showBudgetCycleDialog) {
         AlertDialog(
             onDismissRequest = { showBudgetCycleDialog = false },
-            title = { Text("Budget Cycle Start Day") },
+            title = { Text(stringResource(R.string.flosi_budget_cycle_start_day)) },
             text = {
                 Column(
                     modifier = Modifier.verticalScroll(rememberScrollState())
@@ -1008,7 +1008,7 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showBudgetCycleDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -1018,13 +1018,13 @@ fun SettingsScreen(
     if (showSmsScanDialog) {
         AlertDialog(
             onDismissRequest = { showSmsScanDialog = false },
-            title = { Text("SMS Scan Period") },
+            title = { Text(stringResource(R.string.flosi_sms_scan_period)) },
             text = {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                 ) {
                     Text(
-                        text = "Choose how far back to scan SMS messages for transactions",
+                        text = stringResource(R.string.flosi_choose_how_far_back_to_scan_sms_messages_for_transactions),
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.height(Spacing.md))
@@ -1099,7 +1099,7 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showSmsScanDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -1143,12 +1143,12 @@ fun SettingsScreen(
                         showSmsScanDatePicker = false
                     }
                 ) {
-                    Text("OK")
+                    Text(stringResource(R.string.flosi_ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { reopenScanDialog() }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         ) {
@@ -1174,7 +1174,7 @@ fun SettingsScreen(
                     tint = MaterialTheme.colorScheme.error
                 )
             },
-            title = { Text("Delete all transactions?") },
+            title = { Text(stringResource(R.string.flosi_delete_all_transactions)) },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
                     Text(
@@ -1195,7 +1195,7 @@ fun SettingsScreen(
                         onValueChange = { confirmationText = it },
                         singleLine = true,
                         enabled = !isDeletingAllTransactions,
-                        label = { Text("Type DELETE to confirm") },
+                        label = { Text(stringResource(R.string.flosi_type_delete_to_confirm)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -1216,7 +1216,7 @@ fun SettingsScreen(
                     onClick = { settingsViewModel.cancelDeleteAllTransactions() },
                     enabled = !isDeletingAllTransactions
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -1225,11 +1225,11 @@ fun SettingsScreen(
     deleteAllTransactionsResult?.let { message ->
         AlertDialog(
             onDismissRequest = { settingsViewModel.clearDeleteAllTransactionsResult() },
-            title = { Text("Transactions") },
+            title = { Text(stringResource(R.string.flosi_transactions)) },
             text = { Text(message) },
             confirmButton = {
                 TextButton(onClick = { settingsViewModel.clearDeleteAllTransactionsResult() }) {
-                    Text("OK")
+                    Text(stringResource(R.string.flosi_ok))
                 }
             }
         )
@@ -1247,11 +1247,11 @@ fun SettingsScreen(
 
             AlertDialog(
                 onDismissRequest = { settingsViewModel.clearImportExportMessage() },
-                title = { Text("Backup Status") },
+                title = { Text(stringResource(R.string.flosi_backup_status)) },
                 text = { Text(message) },
                 confirmButton = {
                     TextButton(onClick = { settingsViewModel.clearImportExportMessage() }) {
-                        Text("OK")
+                        Text(stringResource(R.string.flosi_ok))
                     }
                 }
             )
@@ -1270,12 +1270,12 @@ fun SettingsScreen(
                 showExportOptionsDialog = false
                 settingsViewModel.clearImportExportMessage()
             },
-            title = { Text("Save Backup") },
+            title = { Text(stringResource(R.string.flosi_save_backup)) },
             text = {
                 Column {
-                    Text("Backup created successfully!")
+                    Text(stringResource(R.string.flosi_backup_created_successfully))
                     Spacer(modifier = Modifier.height(Spacing.sm))
-                    Text("Choose how you want to save it:", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.flosi_choose_how_you_want_to_save_it), style = MaterialTheme.typography.bodyMedium)
                 }
             },
             confirmButton = {
@@ -1289,7 +1289,7 @@ fun SettingsScreen(
                     ) {
                         Icon(Icons.Default.SaveAlt, contentDescription = null)
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Save to Files")
+                        Text(stringResource(R.string.flosi_save_to_files))
                     }
 
                     TextButton(
@@ -1301,7 +1301,7 @@ fun SettingsScreen(
                     ) {
                         Icon(Icons.Default.Share, contentDescription = null)
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Share")
+                        Text(stringResource(R.string.flosi_share))
                     }
                 }
             },
@@ -1312,7 +1312,7 @@ fun SettingsScreen(
                         settingsViewModel.clearImportExportMessage()
                     }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -1322,13 +1322,13 @@ fun SettingsScreen(
     if (showTimeoutDialog) {
         AlertDialog(
             onDismissRequest = { showTimeoutDialog = false },
-            title = { Text("Lock Timeout") },
+            title = { Text(stringResource(R.string.flosi_lock_timeout)) },
             text = {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                 ) {
                     Text(
-                        text = "Choose when to lock the app after it goes to background",
+                        text = stringResource(R.string.flosi_choose_when_to_lock_the_app_after_it_goes_to_background),
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.height(Spacing.md))
@@ -1369,7 +1369,7 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = { showTimeoutDialog = false }) {
-                    Text("Done")
+                    Text(stringResource(R.string.flosi_done))
                 }
             }
         )
@@ -1497,7 +1497,7 @@ private fun SettingsDropdownItem(
                 value = currentValue,
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Currency") },
+                label = { Text(stringResource(R.string.flosi_currency)) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 },
@@ -1549,7 +1549,7 @@ private fun AiChatSettingsItem(
                 contentColor = yellow_dark
             )
             RowLabels(
-                title = "AI Chat Assistant",
+                title = stringResource(R.string.flosi_ai_chat_assistant),
                 subtitle = when (downloadState) {
                     DownloadState.NOT_DOWNLOADED -> "Download AI model (${Constants.ModelDownload.MODEL_SIZE_MB} MB)"
                     DownloadState.DOWNLOADING -> "Downloading AI model..."
@@ -1565,7 +1565,7 @@ private fun AiChatSettingsItem(
                     Button(onClick = onDownload) {
                         Icon(Icons.Default.Download, contentDescription = null)
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Download")
+                        Text(stringResource(R.string.flosi_download))
                     }
                 }
                 DownloadState.DOWNLOADING -> {
@@ -1580,7 +1580,7 @@ private fun AiChatSettingsItem(
                     Button(onClick = onDownload) {
                         Icon(Icons.Default.Download, contentDescription = null)
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Retry")
+                        Text(stringResource(R.string.flosi_retry))
                     }
                 }
                 DownloadState.COMPLETED -> {
@@ -1590,12 +1590,12 @@ private fun AiChatSettingsItem(
                     ) {
                         Icon(
                             Icons.Default.CheckCircle,
-                            contentDescription = "Downloaded",
+                            contentDescription = stringResource(R.string.flosi_downloaded),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(Dimensions.Icon.medium)
                         )
                         TextButton(onClick = onDelete) {
-                            Text("Delete")
+                            Text(stringResource(R.string.flosi_delete))
                         }
                     }
                 }
@@ -1608,13 +1608,13 @@ private fun AiChatSettingsItem(
                     ) {
                         Icon(Icons.Default.Refresh, contentDescription = null)
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Retry")
+                        Text(stringResource(R.string.flosi_retry))
                     }
                 }
                 DownloadState.ERROR_INSUFFICIENT_SPACE -> {
                     Icon(
                         Icons.Default.Error,
-                        contentDescription = "Error",
+                        contentDescription = stringResource(R.string.flosi_error),
                         tint = MaterialTheme.colorScheme.error,
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
@@ -1691,7 +1691,7 @@ private fun SettingsNavigationContent(onNavigateBack: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = stringResource(R.string.flosi_back),
                 modifier = Modifier.size(Dimensions.Icon.inline)
             )
         }

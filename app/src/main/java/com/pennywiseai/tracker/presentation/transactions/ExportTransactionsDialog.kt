@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.presentation.transactions
 
 import android.content.Intent
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.BuildConfig
 import com.pennywiseai.tracker.data.database.entity.TransactionEntity
 import com.pennywiseai.tracker.data.export.ExportResult
@@ -139,7 +141,7 @@ fun ExportTransactionsDialog(
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        text = "Total transactions:",
+                                        text = stringResource(R.string.flosi_total_transactions),
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                     Text(
@@ -161,7 +163,7 @@ fun ExportTransactionsDialog(
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
                                         Text(
-                                            text = "Date range:",
+                                            text = stringResource(R.string.flosi_date_range),
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -195,7 +197,7 @@ fun ExportTransactionsDialog(
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                                 ) {
                                     Text(
-                                        text = "Unlock all",
+                                        text = stringResource(R.string.flosi_unlock_all),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Medium,
@@ -295,7 +297,7 @@ fun ExportTransactionsDialog(
                                 onClick = onDismiss,
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Cancel")
+                                Text(stringResource(R.string.flosi_cancel))
                             }
                             
                             Button(
@@ -348,7 +350,7 @@ fun ExportTransactionsDialog(
                                 onClick = onDismiss,
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Done")
+                                Text(stringResource(R.string.flosi_done))
                             }
                             
                             Button(
@@ -370,7 +372,7 @@ fun ExportTransactionsDialog(
                                     modifier = Modifier.size(Dimensions.Icon.small)
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Share")
+                                Text(stringResource(R.string.flosi_share))
                             }
                         }
                         
@@ -379,7 +381,7 @@ fun ExportTransactionsDialog(
                                 onClick = onDismiss,
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Close")
+                                Text(stringResource(R.string.flosi_close))
                             }
                             
                             Button(
@@ -388,7 +390,7 @@ fun ExportTransactionsDialog(
                                 },
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Retry")
+                                Text(stringResource(R.string.flosi_retry))
                             }
                         }
                     }

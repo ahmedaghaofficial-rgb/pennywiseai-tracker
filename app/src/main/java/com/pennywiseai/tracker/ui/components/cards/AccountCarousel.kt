@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -53,7 +54,7 @@ fun AccountCarousel(
     onAccountClick: (bankName: String, accountLast4: String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier,
     isUnifiedMode: Boolean = false,
-    selectedCurrency: String = "INR",
+    selectedCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     blurEffects: Boolean = false,
     hazeState: HazeState? = null
 ) {
@@ -104,7 +105,7 @@ private fun AccountCarouselCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isUnifiedMode: Boolean = false,
-    selectedCurrency: String = "INR",
+    selectedCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     blurEffects: Boolean = false,
     hazeState: HazeState? = null
 ) {

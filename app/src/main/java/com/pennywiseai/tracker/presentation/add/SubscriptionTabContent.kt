@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.add
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.theme.Spacing
 import com.pennywiseai.tracker.data.database.entity.AccountBalanceEntity
 import com.pennywiseai.tracker.domain.model.displayName
@@ -119,7 +121,7 @@ fun SubscriptionTabContent(
                         )
                     },
                     shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                    label = { Text("Expense") }
+                    label = { Text(stringResource(R.string.flosi_expense)) }
                 )
                 SegmentedButton(
                     selected = isIncome,
@@ -129,7 +131,7 @@ fun SubscriptionTabContent(
                         )
                     },
                     shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                    label = { Text("Income") }
+                    label = { Text(stringResource(R.string.flosi_income)) }
                 )
             }
 
@@ -199,7 +201,7 @@ fun SubscriptionTabContent(
                 TextField(
                     value = uiState.amount,
                     onValueChange = viewModel::updateSubscriptionAmount,
-                    label = { Text("Amount *", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.flosi_amount), fontWeight = FontWeight.SemiBold) },
                     textStyle = MaterialTheme.typography.headlineSmall,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = uiState.amountError != null,
@@ -226,7 +228,7 @@ fun SubscriptionTabContent(
                         value = uiState.billingCycle,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Billing Cycle", fontWeight = FontWeight.SemiBold) },
+                        label = { Text(stringResource(R.string.flosi_billing_cycle), fontWeight = FontWeight.SemiBold) },
                         leadingIcon = { Icon(Icons.Default.EventRepeat, contentDescription = null) },
                         trailingIcon = { Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = null) },
                         modifier = Modifier
@@ -308,7 +310,7 @@ fun SubscriptionTabContent(
                 TextField(
                     value = uiState.serviceName,
                     onValueChange = viewModel::updateSubscriptionService,
-                    label = { Text("Service Name *", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.flosi_service_name), fontWeight = FontWeight.SemiBold) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = subTopShape,
@@ -326,7 +328,7 @@ fun SubscriptionTabContent(
                     TextField(
                         value = uiState.category,
                         onValueChange = {},
-                        label = { Text("Category", fontWeight = FontWeight.SemiBold) },
+                        label = { Text(stringResource(R.string.flosi_category), fontWeight = FontWeight.SemiBold) },
                         readOnly = true,
                         singleLine = true,
                         modifier = Modifier
@@ -364,7 +366,7 @@ fun SubscriptionTabContent(
                 TextField(
                     value = uiState.notes,
                     onValueChange = viewModel::updateSubscriptionNotes,
-                    label = { Text("Notes (Optional)", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.flosi_notes_optional), fontWeight = FontWeight.SemiBold) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = subBottomShape,
                     leadingIcon = { Icon(Icons.Default.Description, contentDescription = null) },
@@ -430,7 +432,7 @@ fun SubscriptionTabContent(
                         ) {
                             Icon(
                                 Icons.Default.Clear,
-                                contentDescription = "Clear",
+                                contentDescription = stringResource(R.string.flosi_clear),
                                 modifier = Modifier.size(16.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -452,9 +454,9 @@ fun SubscriptionTabContent(
                 DropdownMenuItem(
                     text = {
                         Column {
-                            Text("No account")
+                            Text(stringResource(R.string.flosi_no_account))
                             Text(
-                                "Won't affect any balance",
+                                stringResource(R.string.flosi_won_t_affect_any_balance),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -554,7 +556,7 @@ fun SubscriptionTabContent(
                 } else {
                     Icon(Icons.Default.Done, contentDescription = null)
                     Spacer(Modifier.width(Spacing.sm))
-                    Text("Save", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.flosi_save), style = MaterialTheme.typography.titleMedium)
                 }
             }
         }
@@ -579,10 +581,10 @@ fun SubscriptionTabContent(
                         }
                         showDatePicker = false
                     }
-                ) { Text("OK") }
+                ) { Text(stringResource(R.string.flosi_ok)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) { Text("Cancel") }
+                TextButton(onClick = { showDatePicker = false }) { Text(stringResource(R.string.flosi_cancel)) }
             }
         ) {
             DatePicker(state = datePickerState)

@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.transactions
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.database.dao.TransactionSplitDao
@@ -136,7 +137,7 @@ class TransactionsViewModel @Inject constructor(
     private val _sortOption = MutableStateFlow(SortOption.DATE_NEWEST)
     val sortOption: StateFlow<SortOption> = _sortOption.asStateFlow()
 
-    private val _selectedCurrency = MutableStateFlow("INR") // Will be initialized from preferences
+    private val _selectedCurrency = MutableStateFlow(BuildConfig.DEFAULT_CURRENCY) // Will be initialized from preferences
     val selectedCurrency: StateFlow<String> = _selectedCurrency.asStateFlow()
 
     private val _isUnifiedMode = MutableStateFlow(false)

@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.accounts
 
+import com.pennywiseai.tracker.BuildConfig
+
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,7 +43,7 @@ data class AccountFormState(
     val balance: String = "",
     val creditLimit: String = "",
     val accountType: AccountType = AccountType.SAVINGS,
-    val currency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
     val isValid: Boolean = false,
     val errorMessage: String? = null
 )
@@ -90,7 +92,7 @@ class ManageAccountsViewModel @Inject constructor(
     val pendingProfileReassign: StateFlow<PendingProfileReassign?> = _pendingProfileReassign.asStateFlow()
     
     /** User's base currency — the default for a new manual account. */
-    private var baseCurrency: String = "INR"
+    private var baseCurrency: String = BuildConfig.DEFAULT_CURRENCY
 
     init {
         loadAccounts()

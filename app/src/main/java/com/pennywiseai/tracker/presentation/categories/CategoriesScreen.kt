@@ -1,11 +1,13 @@
 package com.pennywiseai.tracker.presentation.categories
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.items
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import com.pennywiseai.tracker.ui.effects.rememberOverscrollFlingBehavior
 import androidx.compose.material.icons.Icons
@@ -72,12 +74,12 @@ fun CategoriesScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Categories",
+                title = stringResource(R.string.flosi_categories),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 hazeState = hazeState
@@ -90,7 +92,7 @@ fun CategoriesScreen(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Category")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.flosi_add_category_12))
             }
         }
     ) { paddingValues ->
@@ -114,7 +116,7 @@ fun CategoriesScreen(
             // Expense Categories Section
             if (expenseCategories.isNotEmpty()) {
                 item {
-                    SectionHeaderV2(title = "Expense Categories")
+                    SectionHeaderV2(title = stringResource(R.string.flosi_expense_categories))
                 }
 
                 items(
@@ -136,7 +138,7 @@ fun CategoriesScreen(
             // Income Categories Section
             if (incomeCategories.isNotEmpty()) {
                 item {
-                    SectionHeaderV2(title = "Income Categories")
+                    SectionHeaderV2(title = stringResource(R.string.flosi_income_categories))
                 }
 
                 items(
@@ -220,7 +222,7 @@ private fun SwipeableCategoryItem(
                     if (dismissState.targetValue == SwipeToDismissBoxValue.EndToStart) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.flosi_delete),
                             tint = MaterialTheme.colorScheme.onError
                         )
                     }
@@ -284,7 +286,7 @@ private fun CategoryItem(
                     modifier = Modifier.padding(start = Spacing.sm)
                 ) {
                     Text(
-                        text = "System",
+                        text = stringResource(R.string.flosi_system),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier.padding(
@@ -297,7 +299,7 @@ private fun CategoryItem(
                 // Edit icon for non-system categories
                 Icon(
                     Icons.Default.Edit,
-                    contentDescription = "Edit",
+                    contentDescription = stringResource(R.string.flosi_edit),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .size(Dimensions.Icon.medium)

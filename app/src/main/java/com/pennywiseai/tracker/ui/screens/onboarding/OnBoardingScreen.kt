@@ -59,11 +59,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -92,6 +95,7 @@ fun OnBoardingScreen(
     val stepOrder = remember {
         OnBoardingStep.entries.toList()
     }
+    val slideDirection = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1 else 1
     Scaffold(
         bottomBar = {
             OnBoardingBottomBar(
@@ -135,9 +139,9 @@ fun OnBoardingScreen(
                 val targetIndex = stepOrder.indexOf(targetState)
                 val initialIndex = stepOrder.indexOf(initialState)
                 if (targetIndex > initialIndex) {
-                    slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
+                    slideInHorizontally { it * slideDirection } togetherWith slideOutHorizontally { -it * slideDirection }
                 } else {
-                    slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
+                    slideInHorizontally { -it * slideDirection } togetherWith slideOutHorizontally { it * slideDirection }
                 }
             },
             label = "onboarding_step"
@@ -172,6 +176,7 @@ private fun WelcomeStep() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(Spacing.lg),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -188,7 +193,7 @@ private fun WelcomeStep() {
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "Welcome to ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME}",
+            text = stringResource(R.string.flosi_welcome_to_app, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -197,7 +202,7 @@ private fun WelcomeStep() {
         Spacer(modifier = Modifier.height(Spacing.md))
 
         Text(
-            text = "Your AI-powered expense tracker that automatically detects transactions from SMS messages.",
+            text = stringResource(R.string.flosi_your_ai_powered_expense_tracker_that_automatically_det),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -208,8 +213,8 @@ private fun WelcomeStep() {
         val activity = LocalActivity.current
         val localeContext = androidx.compose.ui.platform.LocalContext.current
         val currentLanguage = AppLocaleController.getLanguage(localeContext)
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Spacing.sm),
             modifier = Modifier.fillMaxWidth()
         ) {
             OutlinedButton(
@@ -219,7 +224,7 @@ private fun WelcomeStep() {
                         activity?.recreate()
                     }
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text("العربية")
             }
@@ -230,7 +235,7 @@ private fun WelcomeStep() {
                         activity?.recreate()
                     }
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text("English")
             }
@@ -247,13 +252,13 @@ private fun WelcomeStep() {
         ) {
             Column(modifier = Modifier.padding(Spacing.md)) {
                 Text(
-                    text = "What you'll set up:",
+                    text = stringResource(R.string.flosi_what_you_ll_set_up),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "1. Your profile\n2. SMS permissions for auto-detection\n3. Initial transaction scan\n4. Your main bank account",
+                    text = stringResource(R.string.flosi_setup_steps),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -285,7 +290,7 @@ private fun ProfileStep(
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "What should we call you?",
+            text = stringResource(R.string.flosi_what_should_we_call_you),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -296,7 +301,7 @@ private fun ProfileStep(
         TextField(
             value = uiState.userName,
             onValueChange = { viewModel.updateUserName(it) },
-            label = { Text("Your name") },
+            label = { Text(stringResource(R.string.flosi_your_name)) },
             singleLine = true,
             shape = MaterialTheme.shapes.large,
             modifier = Modifier.fillMaxWidth(),
@@ -313,7 +318,7 @@ private fun ProfileStep(
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "Choose an avatar",
+            text = stringResource(R.string.flosi_choose_an_avatar),
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -378,7 +383,7 @@ private fun ProfileStep(
                     if (uiState.profileImageUri != null) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = "Photo selected",
+                            contentDescription = stringResource(R.string.flosi_photo_selected),
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(Dimensions.Icon.large)
                         )
@@ -396,7 +401,7 @@ private fun ProfileStep(
         Spacer(modifier = Modifier.height(Spacing.xl))
 
         Text(
-            text = "Pick a background color",
+            text = stringResource(R.string.flosi_pick_a_background_color),
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -427,7 +432,7 @@ private fun ProfileStep(
                     if (isSelected) {
                         Icon(
                             imageVector = Icons.Default.Check,
-                            contentDescription = "Selected",
+                            contentDescription = stringResource(R.string.flosi_selected),
                             tint = MaterialTheme.colorScheme.surface,
                             modifier = Modifier.size(Dimensions.Icon.medium)
                         )
@@ -472,7 +477,7 @@ private fun PermissionsStep(
 
         if (!smsCaptureAvailable) {
             Text(
-                text = "Automatic Detection Is Off In This Test Build",
+                text = stringResource(R.string.flosi_automatic_detection_is_off_in_this_test_build),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -481,7 +486,7 @@ private fun PermissionsStep(
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "This sideload test intentionally disables SMS and bank-notification access so Android can install it safely. You can still test manual transactions, accounts, budgets, search, analytics, backup and AI.",
+                text = stringResource(R.string.flosi_this_sideload_test_intentionally_disables_sms_and_bank),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -497,7 +502,7 @@ private fun PermissionsStep(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Automatic transaction capture is not being removed from فلوسي. It stays in the future full/release build; only this test APK has it disabled.",
+                    text = stringResource(R.string.flosi_automatic_transaction_capture_is_not_being_removed_fro),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.padding(Spacing.md)
@@ -510,14 +515,14 @@ private fun PermissionsStep(
                 onClick = onContinueWithoutSms,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Continue Without SMS")
+                Text(stringResource(R.string.flosi_continue_without_sms))
             }
 
             return@Column
         }
 
         Text(
-            text = "Enable Automatic Detection",
+            text = stringResource(R.string.flosi_enable_automatic_detection),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold
@@ -543,7 +548,7 @@ private fun PermissionsStep(
         ) {
             Column(modifier = Modifier.padding(Spacing.md)) {
                 Text(
-                    text = "Your Privacy Matters",
+                    text = stringResource(R.string.flosi_your_privacy_matters),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
@@ -581,7 +586,7 @@ private fun PermissionsStep(
                     )
                     Spacer(modifier = Modifier.width(Spacing.sm))
                     Text(
-                        text = "Permissions granted! Tap Continue to proceed.",
+                        text = stringResource(R.string.flosi_permissions_granted_tap_continue_to_proceed),
                         style = MaterialTheme.typography.bodyMedium,
                         color = incomeColor
                     )
@@ -601,7 +606,7 @@ private fun PermissionsStep(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Enable Permissions")
+                Text(stringResource(R.string.flosi_enable_permissions))
             }
         }
     }
@@ -624,7 +629,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
             Spacer(modifier = Modifier.height(Spacing.lg))
 
             Text(
-                text = "Scanning your messages...",
+                text = stringResource(R.string.flosi_scanning_your_messages),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -663,7 +668,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "Preparing scan...",
+                    text = stringResource(R.string.flosi_preparing_scan),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -679,7 +684,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
             Spacer(modifier = Modifier.height(Spacing.lg))
 
             Text(
-                text = "Scan Complete!",
+                text = stringResource(R.string.flosi_scan_complete),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -696,7 +701,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
                 )
             } else {
                 Text(
-                    text = "No transactions found. You can add them manually later.",
+                    text = stringResource(R.string.flosi_no_transactions_found_you_can_add_them_manually_later),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -714,7 +719,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
             Spacer(modifier = Modifier.height(Spacing.lg))
 
             Text(
-                text = "Scan Your Messages",
+                text = stringResource(R.string.flosi_scan_your_messages),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -723,7 +728,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "We'll scan your SMS messages to find bank transactions and set up your accounts automatically.",
+                text = stringResource(R.string.flosi_we_ll_scan_your_sms_messages_to_find_bank_transactions),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -758,7 +763,7 @@ private fun AccountSetupStep(
             Spacer(modifier = Modifier.height(Spacing.lg))
 
             Text(
-                text = "You're all set!",
+                text = stringResource(R.string.flosi_you_re_all_set),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -767,14 +772,14 @@ private fun AccountSetupStep(
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "No accounts were detected yet. You can set up your main account later in Settings.",
+                text = stringResource(R.string.flosi_no_accounts_were_detected_yet_you_can_set_up_your_main),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         } else {
             Text(
-                text = "Select Your Main Account",
+                text = stringResource(R.string.flosi_select_your_main_account),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
@@ -783,7 +788,7 @@ private fun AccountSetupStep(
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "Choose the account you use most often. This will be shown on your home screen.",
+                text = stringResource(R.string.flosi_choose_the_account_you_use_most_often_this_will_be_sho),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -856,7 +861,7 @@ private fun AccountSetupStep(
                             Spacer(modifier = Modifier.width(Spacing.sm))
                             Icon(
                                 imageVector = Icons.Default.Check,
-                                contentDescription = "Selected",
+                                contentDescription = stringResource(R.string.flosi_selected),
                                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier.size(Dimensions.Icon.inline)
                             )
@@ -934,7 +939,7 @@ private fun OnBoardingBottomBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(R.string.flosi_back)
                 )
             }
         } else {
@@ -949,7 +954,7 @@ private fun OnBoardingBottomBar(
             when (uiState.currentStep) {
                 OnBoardingStep.WELCOME -> {
                     Button(onClick = onNext) {
-                        Text("Get Started")
+                        Text(stringResource(R.string.flosi_get_started))
                     }
                 }
 
@@ -958,24 +963,24 @@ private fun OnBoardingBottomBar(
                         onClick = onNext,
                         enabled = uiState.userName.isNotBlank()
                     ) {
-                        Text("Save & Continue")
+                        Text(stringResource(R.string.flosi_save_continue))
                     }
                 }
 
                 OnBoardingStep.PERMISSIONS -> {
                     if (!smsCaptureAvailable) {
                         Button(onClick = onNext) {
-                            Text("Continue")
+                            Text(stringResource(R.string.flosi_continue))
                         }
                     } else {
                         if (!uiState.smsPermissionGranted) {
                             TextButton(onClick = onSkip) {
-                                Text("Skip")
+                                Text(stringResource(R.string.flosi_skip))
                             }
                         }
                         if (uiState.smsPermissionGranted) {
                             Button(onClick = onNext) {
-                                Text("Continue")
+                                Text(stringResource(R.string.flosi_continue))
                             }
                         }
                     }
@@ -984,18 +989,18 @@ private fun OnBoardingBottomBar(
                 OnBoardingStep.SMS_SCAN -> {
                     if (!uiState.isScanning && !uiState.scanCompleted) {
                         TextButton(onClick = onSkip) {
-                            Text("Skip")
+                            Text(stringResource(R.string.flosi_skip))
                         }
                         Button(onClick = onStartScan) {
-                            Text("Start Scanning")
+                            Text(stringResource(R.string.flosi_start_scanning))
                         }
                     } else if (uiState.isScanning) {
                         TextButton(onClick = onSkip) {
-                            Text("Skip")
+                            Text(stringResource(R.string.flosi_skip))
                         }
                     } else if (uiState.scanCompleted) {
                         Button(onClick = onNext) {
-                            Text("Continue")
+                            Text(stringResource(R.string.flosi_continue))
                         }
                     }
                 }
@@ -1003,12 +1008,12 @@ private fun OnBoardingBottomBar(
                 OnBoardingStep.ACCOUNT_SETUP -> {
                     if (uiState.accounts.isEmpty()) {
                         Button(onClick = onNext) {
-                            Text("Finish")
+                            Text(stringResource(R.string.flosi_finish))
                         }
                     } else {
                         if (uiState.selectedAccountKey == null) {
                             TextButton(onClick = onSkip) {
-                                Text("Skip")
+                                Text(stringResource(R.string.flosi_skip))
                             }
                         }
                         Button(
@@ -1021,7 +1026,7 @@ private fun OnBoardingBottomBar(
                                     strokeWidth = 2.dp
                                 )
                             } else {
-                                Text("Finish")
+                                Text(stringResource(R.string.flosi_finish))
                             }
                         }
                     }

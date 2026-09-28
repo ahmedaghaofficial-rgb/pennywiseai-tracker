@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -48,12 +49,12 @@ fun CustomDateRangePickerDialog(
                 enabled = dateRangePickerState.selectedStartDateMillis != null &&
                          dateRangePickerState.selectedEndDateMillis != null
             ) {
-                Text("OK")
+                Text(stringResource(R.string.flosi_ok))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.flosi_cancel))
             }
         },
         modifier = modifier

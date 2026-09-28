@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.budgetgroups
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -11,6 +12,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import com.pennywiseai.tracker.ui.effects.rememberOverscrollFlingBehavior
 import androidx.compose.foundation.shape.CircleShape
@@ -100,7 +102,7 @@ fun BudgetGroupEditScreen(
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 actionContent = {
@@ -108,7 +110,7 @@ fun BudgetGroupEditScreen(
                         IconButton(onClick = { showDeleteDialog = true }) {
                             Icon(
                                 Icons.Default.Delete,
-                                contentDescription = "Delete budget",
+                                contentDescription = stringResource(R.string.flosi_delete_budget_13),
                                 tint = MaterialTheme.colorScheme.error
                             )
                         }
@@ -214,7 +216,7 @@ fun BudgetGroupEditScreen(
 
             // Color (#763) — shown as a dot next to the name wherever the budget appears.
             item {
-                SectionHeaderV2(title = "Color")
+                SectionHeaderV2(title = stringResource(R.string.flosi_color))
                 Spacer(modifier = Modifier.height(Spacing.xs))
                 PennyWiseCardV2(modifier = Modifier.fillMaxWidth()) {
                     ColorSwatchRow(selected = uiState.color, onSelect = { viewModel.updateColor(it) })
@@ -232,7 +234,7 @@ fun BudgetGroupEditScreen(
             // (the row's persisted [startDate, endDate] cache is refreshed
             // on save so the home card / widget stay in sync).
             item {
-                SectionHeaderV2(title = "Budget Period")
+                SectionHeaderV2(title = stringResource(R.string.flosi_budget_period))
                 Spacer(modifier = Modifier.height(Spacing.xs))
                 PennyWiseCardV2(modifier = Modifier.fillMaxWidth()) {
                     Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
@@ -283,13 +285,13 @@ fun BudgetGroupEditScreen(
                             }
                             BudgetPeriodType.CUSTOM -> {
                                 OneTimeDateRow(
-                                    label = "Start date",
+                                    label = stringResource(R.string.flosi_start_date),
                                     date = uiState.startDate,
                                     formatter = dateFormatter,
                                     onClick = { showStartDatePicker = true }
                                 )
                                 OneTimeDateRow(
-                                    label = "End date",
+                                    label = stringResource(R.string.flosi_end_date),
                                     date = uiState.endDate,
                                     formatter = dateFormatter,
                                     onClick = { showEndDatePicker = true }
@@ -326,7 +328,7 @@ fun BudgetGroupEditScreen(
                             Spacer(modifier = Modifier.width(Spacing.sm))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "Current window",
+                                    text = stringResource(R.string.flosi_current_window),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -342,7 +344,7 @@ fun BudgetGroupEditScreen(
 
             // Categories Section
             item {
-                SectionHeaderV2(title = "Category Limits (optional)")
+                SectionHeaderV2(title = stringResource(R.string.flosi_category_limits_optional))
                 Spacer(modifier = Modifier.height(Spacing.xs))
                 PennyWiseCardV2(
                     modifier = Modifier
@@ -359,7 +361,7 @@ fun BudgetGroupEditScreen(
                     ) {
                         if (uiState.categories.isEmpty()) {
                             Text(
-                                text = "No categories added. This budget will track all expenses.",
+                                text = stringResource(R.string.flosi_no_categories_added_this_budget_will_track_all_expenses),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(vertical = Spacing.sm)
@@ -420,7 +422,7 @@ fun BudgetGroupEditScreen(
                                     modifier = Modifier.size(Dimensions.Icon.small)
                                 )
                                 Spacer(modifier = Modifier.width(Spacing.xs))
-                                Text("Add Category")
+                                Text(stringResource(R.string.flosi_add_category_12))
                             }
 
                             DropdownMenu(
@@ -503,11 +505,11 @@ fun BudgetGroupEditScreen(
                             viewModel.updateStartDate(LocalDate.ofEpochDay(millis / 86_400_000))
                         }
                         showStartDatePicker = false
-                    }) { Text("OK") }
+                    }) { Text(stringResource(R.string.flosi_ok)) }
                 },
                 dismissButton = {
                     TextButton(onClick = { showStartDatePicker = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.flosi_cancel))
                     }
                 }
             ) {
@@ -528,11 +530,11 @@ fun BudgetGroupEditScreen(
                             viewModel.updateEndDate(LocalDate.ofEpochDay(millis / 86_400_000))
                         }
                         showEndDatePicker = false
-                    }) { Text("OK") }
+                    }) { Text(stringResource(R.string.flosi_ok)) }
                 },
                 dismissButton = {
                     TextButton(onClick = { showEndDatePicker = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.flosi_cancel))
                     }
                 }
             ) {
@@ -543,7 +545,7 @@ fun BudgetGroupEditScreen(
         if (showDeleteDialog) {
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = false },
-                title = { Text("Delete Budget") },
+                title = { Text(stringResource(R.string.flosi_delete_budget)) },
                 text = { Text("Are you sure you want to delete \"${uiState.name}\"? This cannot be undone.") },
                 confirmButton = {
                     Button(
@@ -555,12 +557,12 @@ fun BudgetGroupEditScreen(
                             containerColor = MaterialTheme.colorScheme.error
                         )
                     ) {
-                        Text("Delete")
+                        Text(stringResource(R.string.flosi_delete))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showDeleteDialog = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.flosi_cancel))
                     }
                 }
             )
@@ -623,7 +625,7 @@ private fun BudgetHeaderCard(
                             Box {
                                 if (name.isEmpty()) {
                                     Text(
-                                        text = "Budget name",
+                                        text = stringResource(R.string.flosi_budget_name),
                                         style = MaterialTheme.typography.titleMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -652,7 +654,7 @@ private fun BudgetHeaderCard(
                         // Affordance: the name looked static, so users never found it (#763)
                         Icon(
                             Icons.Default.Edit,
-                            contentDescription = "Edit name",
+                            contentDescription = stringResource(R.string.flosi_edit_name),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(Dimensions.Icon.small)
                         )
@@ -805,7 +807,7 @@ private fun CategoryBudgetRow(
         ) {
             Icon(
                 Icons.Default.Close,
-                contentDescription = "Remove",
+                contentDescription = stringResource(R.string.flosi_remove),
                 modifier = Modifier.size(Dimensions.Icon.small),
                 tint = MaterialTheme.colorScheme.error
             )
@@ -854,7 +856,7 @@ private fun WeekdayAnchorRow(
         Spacer(modifier = Modifier.width(Spacing.sm))
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "Week starts on",
+                text = stringResource(R.string.flosi_week_starts_on),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -912,7 +914,7 @@ private fun MonthAnchorRow(
         Spacer(modifier = Modifier.width(Spacing.sm))
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "Month starts on day",
+                text = stringResource(R.string.flosi_month_starts_on_day),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -930,14 +932,14 @@ private fun MonthAnchorRow(
                 onClick = { onMonthDaySelected(monthStartDay - 1) },
                 enabled = monthStartDay > 1
             ) {
-                Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Decrease day")
+                Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.flosi_decrease_day))
             }
             Spacer(modifier = Modifier.width(Spacing.xs))
             OutlinedIconButton(
                 onClick = { onMonthDaySelected(monthStartDay + 1) },
                 enabled = monthStartDay < 31
             ) {
-                Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Increase day")
+                Icon(Icons.Default.KeyboardArrowUp, contentDescription = stringResource(R.string.flosi_increase_day))
             }
         }
     }

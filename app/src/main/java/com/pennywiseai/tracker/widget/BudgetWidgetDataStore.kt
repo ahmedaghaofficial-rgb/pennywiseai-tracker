@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.widget
 
+import com.pennywiseai.tracker.BuildConfig
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
@@ -36,7 +37,7 @@ object BudgetWidgetDataStore {
                 netSavings = prefs[NET_SAVINGS]?.toBigDecimalOrNull() ?: BigDecimal.ZERO,
                 savingsRate = prefs[SAVINGS_RATE] ?: 0f,
                 savingsDelta = prefs[SAVINGS_DELTA]?.takeIf { it.isNotBlank() }?.toBigDecimalOrNull(),
-                currency = prefs[CURRENCY] ?: "INR"
+                currency = prefs[CURRENCY] ?: BuildConfig.DEFAULT_CURRENCY
             )
         }
     }

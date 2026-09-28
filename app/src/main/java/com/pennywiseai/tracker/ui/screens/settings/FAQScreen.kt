@@ -2,12 +2,14 @@ package com.pennywiseai.tracker.ui.screens.settings
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -53,7 +55,7 @@ fun FAQScreen(
     val faqCategories = remember {
         listOf(
             FAQCategory(
-                title = "Transaction Types",
+                title = stringResource(R.string.flosi_transaction_types),
                 icon = { Icon(Icons.Default.SwapHoriz, contentDescription = null) },
                 items = listOf(
                     FAQItem(
@@ -75,7 +77,7 @@ fun FAQScreen(
                 )
             ),
             FAQCategory(
-                title = "SMS Parsing",
+                title = stringResource(R.string.flosi_sms_parsing),
                 icon = { Icon(Icons.AutoMirrored.Filled.Message, contentDescription = null) },
                 items = listOf(
                     FAQItem(
@@ -93,7 +95,7 @@ fun FAQScreen(
                 )
             ),
             FAQCategory(
-                title = "Privacy & Data",
+                title = stringResource(R.string.flosi_privacy_data),
                 icon = { Icon(Icons.Default.Security, contentDescription = null) },
                 items = listOf(
                     FAQItem(
@@ -111,7 +113,7 @@ fun FAQScreen(
                 )
             ),
             FAQCategory(
-                title = "AI Features",
+                title = stringResource(R.string.flosi_ai_features),
                 icon = { Icon(Icons.Default.Psychology, contentDescription = null) },
                 items = listOf(
                     FAQItem(
@@ -125,7 +127,7 @@ fun FAQScreen(
                 )
             ),
             FAQCategory(
-                title = "Account Management",
+                title = stringResource(R.string.flosi_account_management),
                 icon = { Icon(Icons.Default.AccountBalance, contentDescription = null) },
                 items = listOf(
                     FAQItem(
@@ -154,12 +156,12 @@ fun FAQScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "FAQ",
+                title = stringResource(R.string.flosi_faq),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 hazeState = hazeState
@@ -266,7 +268,7 @@ fun FAQScreen(
             }
             
             // Still need help section
-            SectionHeaderV2(title = "Still Need Help?")
+            SectionHeaderV2(title = stringResource(R.string.flosi_still_need_help))
             
             PennyWiseCardV2(
                 modifier = Modifier
@@ -295,12 +297,12 @@ fun FAQScreen(
                         )
                         Column {
                             Text(
-                                text = "Report an Issue",
+                                text = stringResource(R.string.flosi_report_an_issue),
                                 style = MaterialTheme.typography.bodyLarge,
                                 fontWeight = FontWeight.Medium
                             )
                             Text(
-                                text = "Submit bug reports, bank requests, or feature improvements on GitHub",
+                                text = stringResource(R.string.flosi_submit_bug_reports_bank_requests_or_feature_improvemen),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )

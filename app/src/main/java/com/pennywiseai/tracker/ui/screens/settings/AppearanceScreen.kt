@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.ui.screens.settings
 
 import android.os.Build
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -60,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.preferences.AccentColor
 import com.pennywiseai.tracker.data.preferences.AppFont
 import com.pennywiseai.tracker.data.preferences.CoverStyle
@@ -169,7 +171,7 @@ fun AppearanceScreen(
         modifier = Modifier.nestedScroll(scrollBehaviorLarge.nestedScrollConnection),
         topBar = {
             CustomTitleTopAppBar(
-                title = "Appearance",
+                title = stringResource(R.string.flosi_appearance),
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
                 hazeState = hazeState,
@@ -251,8 +253,8 @@ fun AppearanceScreen(
                     GroupedList {
                         if (showAmoled) {
                             PreferenceSwitch(
-                                title = "AMOLED Black",
-                                subtitle = "Use pure black background for deeper contrast",
+                                title = stringResource(R.string.flosi_amoled_black),
+                                subtitle = stringResource(R.string.flosi_use_pure_black_background_for_deeper_contrast),
                                 checked = themeUiState.isAmoledMode,
                                 onCheckedChange = { themeViewModel.updateAmoledMode(it) },
                                 leadingIcon = {
@@ -272,8 +274,8 @@ fun AppearanceScreen(
 
                         if (showBlur) {
                             PreferenceSwitch(
-                                title = "Blur Effects",
-                                subtitle = "Enable glassmorphism blur effects in UI components",
+                                title = stringResource(R.string.flosi_blur_effects),
+                                subtitle = stringResource(R.string.flosi_enable_glassmorphism_blur_effects_in_ui_components),
                                 checked = themeUiState.blurEffectsEnabled,
                                 onCheckedChange = { themeViewModel.updateBlurEffects(it) },
                                 position = ListItemPosition.from(toggleCount - 1, toggleCount)
@@ -284,7 +286,7 @@ fun AppearanceScreen(
 
                 // Navigation Style Section
                 SectionHeaderV2(
-                    title = "Navigation",
+                    title = stringResource(R.string.flosi_navigation),
                     modifier = Modifier.padding(start = Dimensions.Padding.content)
                 )
                 NavBarStyleSelector(
@@ -294,7 +296,7 @@ fun AppearanceScreen(
 
                 // Cover Style Section
                 SectionHeaderV2(
-                    title = "Cover Style",
+                    title = stringResource(R.string.flosi_cover_style),
                     modifier = Modifier.padding(start = Dimensions.Padding.content)
                 )
                 CoverStyleSelector(
@@ -305,7 +307,7 @@ fun AppearanceScreen(
 
                 // Font Selection Section
                 SectionHeaderV2(
-                    title = "Fonts",
+                    title = stringResource(R.string.flosi_fonts),
                     modifier = Modifier.padding(start = Dimensions.Padding.content)
                 )
                 FontSelector(
@@ -342,7 +344,7 @@ private fun NavigationContent(onNavigateBack: () -> Unit) {
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = stringResource(R.string.flosi_back),
                 modifier = Modifier.size(Dimensions.Icon.small)
             )
         }
@@ -460,7 +462,7 @@ private fun ThemeStyleSelector(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Dynamic",
+                            text = stringResource(R.string.flosi_dynamic),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             color = if (currentStyle == ThemeStyle.DYNAMIC)
@@ -468,7 +470,7 @@ private fun ThemeStyleSelector(
                             else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "Wallpaper Colors",
+                            text = stringResource(R.string.flosi_wallpaper_colors),
                             style = MaterialTheme.typography.labelSmall,
                             color = if (currentStyle == ThemeStyle.DYNAMIC)
                                 MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
@@ -494,7 +496,7 @@ private fun ThemeStyleSelector(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Default",
+                        text = stringResource(R.string.flosi_default),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         color = if (currentStyle == ThemeStyle.BRANDED)
@@ -627,7 +629,7 @@ private fun NavBarStyleSelector(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Floating",
+                        text = stringResource(R.string.flosi_floating),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         color = if (currentStyle == NavBarStyle.FLOATING)
@@ -635,7 +637,7 @@ private fun NavBarStyleSelector(
                         else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "Modern & Sleek",
+                        text = stringResource(R.string.flosi_modern_sleek),
                         style = MaterialTheme.typography.labelSmall,
                         color = if (currentStyle == NavBarStyle.FLOATING)
                             MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.7f)
@@ -665,7 +667,7 @@ private fun NavBarStyleSelector(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Normal",
+                        text = stringResource(R.string.flosi_normal),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         color = if (currentStyle == NavBarStyle.NORMAL)
@@ -728,7 +730,7 @@ private fun CoverStyleSelector(
             ) {
                 if (style == CoverStyle.NONE) {
                     Text(
-                        text = "None",
+                        text = stringResource(R.string.flosi_none),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -736,7 +738,7 @@ private fun CoverStyleSelector(
                 if (isSelected) {
                     Icon(
                         Icons.Default.Check,
-                        contentDescription = "Selected",
+                        contentDescription = stringResource(R.string.flosi_selected),
                         tint = Color.White,
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
@@ -782,7 +784,7 @@ private fun FontSelector(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Default",
+                        text = stringResource(R.string.flosi_default),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.Default,
@@ -791,7 +793,7 @@ private fun FontSelector(
                         else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "System",
+                        text = stringResource(R.string.flosi_system),
                         style = MaterialTheme.typography.labelSmall,
                         fontFamily = FontFamily.Default,
                         color = if (currentFont == AppFont.SYSTEM)

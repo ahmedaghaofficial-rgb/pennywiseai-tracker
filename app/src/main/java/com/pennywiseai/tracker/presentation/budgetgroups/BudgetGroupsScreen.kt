@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.budgetgroups
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import com.pennywiseai.tracker.ui.effects.rememberOverscrollFlingBehavior
 import androidx.compose.foundation.shape.CircleShape
@@ -85,12 +87,12 @@ fun BudgetGroupsScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Budgets",
+                title = stringResource(R.string.flosi_budgets),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 hazeState = hazeState
@@ -99,7 +101,7 @@ fun BudgetGroupsScreen(
         floatingActionButton = {
             if (uiState.hasGroups) {
                 FloatingActionButton(onClick = { onNavigateToGroupEdit(-1L) }) {
-                    Icon(Icons.Default.Add, contentDescription = "Add Budget")
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.flosi_add_budget))
                 }
             }
         }
@@ -192,13 +194,13 @@ private fun EmptyBudgetState(
                 )
 
                 Text(
-                    text = "Set Up Your Budget",
+                    text = stringResource(R.string.flosi_set_up_your_budget),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    text = "Organize your spending into budgets to track where your money goes.",
+                    text = stringResource(R.string.flosi_organize_your_spending_into_budgets_to_track_where_you),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -210,14 +212,14 @@ private fun EmptyBudgetState(
                 ) {
                     Icon(Icons.Default.AutoAwesome, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small))
                     Spacer(modifier = Modifier.width(Spacing.sm))
-                    Text("Use Smart Defaults")
+                    Text(stringResource(R.string.flosi_use_smart_defaults))
                 }
 
                 OutlinedButton(
                     onClick = onCreateNew,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Create Custom Budget")
+                    Text(stringResource(R.string.flosi_create_custom_budget))
                 }
             }
         }
@@ -331,7 +333,7 @@ private fun BudgetGroupsContent(
     if (deleteGroupId != null) {
         AlertDialog(
             onDismissRequest = { deleteGroupId = null },
-            title = { Text("Delete Budget") },
+            title = { Text(stringResource(R.string.flosi_delete_budget)) },
             text = { Text("Are you sure you want to delete \"$deleteGroupName\"? This cannot be undone.") },
             confirmButton = {
                 Button(
@@ -343,12 +345,12 @@ private fun BudgetGroupsContent(
                         containerColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.flosi_delete))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { deleteGroupId = null }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -377,7 +379,7 @@ private fun MonthSelector(
         ) {
             Icon(
                 Icons.Default.ChevronLeft,
-                contentDescription = "Previous month",
+                contentDescription = stringResource(R.string.flosi_previous_month),
                 modifier = Modifier.size(Dimensions.Icon.medium)
             )
         }
@@ -406,7 +408,7 @@ private fun MonthSelector(
         ) {
             Icon(
                 Icons.Default.ChevronRight,
-                contentDescription = "Next month",
+                contentDescription = stringResource(R.string.flosi_next_month),
                 modifier = Modifier.size(Dimensions.Icon.medium)
             )
         }
@@ -509,7 +511,7 @@ private fun BudgetCard(
                     ) {
                         Icon(
                             Icons.Default.Edit,
-                            contentDescription = "Edit budget",
+                            contentDescription = stringResource(R.string.flosi_edit_budget),
                             modifier = Modifier.size(Dimensions.Icon.small),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -520,7 +522,7 @@ private fun BudgetCard(
                     ) {
                         Icon(
                             Icons.Default.Delete,
-                            contentDescription = "Delete budget",
+                            contentDescription = stringResource(R.string.flosi_delete_budget_13),
                             modifier = Modifier.size(Dimensions.Icon.small),
                             tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
                         )
@@ -533,7 +535,7 @@ private fun BudgetCard(
                         ) {
                             Icon(
                                 Icons.Default.MoreVert,
-                                contentDescription = "More options",
+                                contentDescription = stringResource(R.string.flosi_more_options),
                                 modifier = Modifier.size(Dimensions.Icon.small),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -543,7 +545,7 @@ private fun BudgetCard(
                             onDismissRequest = { showMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("View this period history") },
+                                text = { Text(stringResource(R.string.flosi_view_this_period_history)) },
                                 onClick = {
                                     showMenu = false
                                     onViewHistory()
@@ -553,7 +555,7 @@ private fun BudgetCard(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Move up") },
+                                text = { Text(stringResource(R.string.flosi_move_up)) },
                                 onClick = {
                                     showMenu = false
                                     onMoveUp()
@@ -564,7 +566,7 @@ private fun BudgetCard(
                                 enabled = !isFirst
                             )
                             DropdownMenuItem(
-                                text = { Text("Move down") },
+                                text = { Text(stringResource(R.string.flosi_move_down)) },
                                 onClick = {
                                     showMenu = false
                                     onMoveDown()
@@ -686,7 +688,7 @@ private fun BudgetCard(
                 )
                 Spacer(modifier = Modifier.height(Spacing.xs))
                 Text(
-                    text = "Tracking all expenses",
+                    text = stringResource(R.string.flosi_tracking_all_expenses),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -841,7 +843,7 @@ private fun SpendingPaceChart(
                     .height(120.dp),
                 data = listOf(
                     Line(
-                        label = "Actual",
+                        label = stringResource(R.string.flosi_actual),
                         values = cumulativeSpending,
                         color = SolidColor(spendingColor),
                         firstGradientFillColor = spendingColor.copy(alpha = 0.2f),
@@ -855,7 +857,7 @@ private fun SpendingPaceChart(
                         )
                     ),
                     Line(
-                        label = "Budget Pace",
+                        label = stringResource(R.string.flosi_budget_pace),
                         values = budgetPace,
                         color = SolidColor(themeColors.onSurfaceVariant.copy(alpha = 0.4f)),
                         drawStyle = DrawStyle.Stroke(width = 1.5.dp),
@@ -905,7 +907,7 @@ private fun SpendingPaceChart(
                 )
                 Spacer(modifier = Modifier.width(Spacing.xs))
                 Text(
-                    text = "Actual",
+                    text = stringResource(R.string.flosi_actual),
                     style = MaterialTheme.typography.labelSmall,
                     color = themeColors.onSurfaceVariant
                 )
@@ -918,7 +920,7 @@ private fun SpendingPaceChart(
                 )
                 Spacer(modifier = Modifier.width(Spacing.xs))
                 Text(
-                    text = "Budget Pace",
+                    text = stringResource(R.string.flosi_budget_pace),
                     style = MaterialTheme.typography.labelSmall,
                     color = themeColors.onSurfaceVariant
                 )

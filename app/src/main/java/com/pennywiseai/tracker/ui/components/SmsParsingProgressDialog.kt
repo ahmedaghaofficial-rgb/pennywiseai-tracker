@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -18,6 +19,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.components.cards.PennyWiseCardV2
 import com.pennywiseai.tracker.ui.theme.Dimensions
 import com.pennywiseai.tracker.ui.theme.Spacing
@@ -94,7 +96,7 @@ fun SmsParsingProgressDialog(
                             onClick = onDismiss,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Done")
+                            Text(stringResource(R.string.flosi_done))
                         }
                     } else if (workInfo.state == WorkInfo.State.FAILED) {
                         TextButton(
@@ -104,7 +106,7 @@ fun SmsParsingProgressDialog(
                                 contentColor = MaterialTheme.colorScheme.error
                             )
                         ) {
-                            Text("Close")
+                            Text(stringResource(R.string.flosi_close))
                         }
                     }
                 }

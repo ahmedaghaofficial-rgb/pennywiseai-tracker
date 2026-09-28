@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.accounts
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -277,7 +278,7 @@ data class AccountDetailUiState(
     val totalIncome: BigDecimal = BigDecimal.ZERO,
     val totalExpenses: BigDecimal = BigDecimal.ZERO,
     val netBalance: BigDecimal = BigDecimal.ZERO,
-    val primaryCurrency: String = "INR",
+    val primaryCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     val hasMultipleCurrencies: Boolean = false,
     val isLoading: Boolean = true,
     val billedOutstanding: BigDecimal? = null,

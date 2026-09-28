@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.transactions
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.expandVertically
@@ -22,6 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.BasicTextField
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import com.pennywiseai.tracker.ui.effects.rememberOverscrollFlingBehavior
 import androidx.compose.material.icons.Icons
@@ -259,7 +261,7 @@ fun TransactionsScreen(
             
             scope.launch {
                 val result = snackbarHostState.showSnackbar(
-                    message = "Transaction deleted",
+                    message = stringResource(R.string.flosi_transaction_deleted),
                     actionLabel = "Undo",
                     duration = SnackbarDuration.Short
                 )
@@ -308,12 +310,12 @@ fun TransactionsScreen(
                 CustomTitleTopAppBar(
                     scrollBehaviorSmall = scrollBehaviorSmall,
                     scrollBehaviorLarge = scrollBehaviorLarge,
-                    title = "${selectedIds.size} selected",
+                    title = stringResource(R.string.flosi_selected_count, selectedIds.size),
                     hasBackButton = true,
                     hasActionButton = true,
                     navigationContent = {
                         IconButton(onClick = { viewModel.clearSelection() }) {
-                            Icon(Icons.Default.Close, contentDescription = "Exit selection")
+                            Icon(Icons.Default.Close, contentDescription = stringResource(R.string.flosi_exit_selection))
                         }
                     },
                     actionContent = {
@@ -327,23 +329,23 @@ fun TransactionsScreen(
                                 IconButton(onClick = { viewModel.bulkMarkAsTransfer() }) {
                                     Icon(
                                         Icons.Default.SwapHoriz,
-                                        contentDescription = "Mark as transfer"
+                                        contentDescription = stringResource(R.string.flosi_mark_as_transfer)
                                     )
                                 }
                             }
                             IconButton(onClick = { showBulkCategorySheet = true }) {
-                                Icon(Icons.Default.Category, contentDescription = "Change category")
+                                Icon(Icons.Default.Category, contentDescription = stringResource(R.string.flosi_change_category))
                             }
                             IconButton(onClick = { showBulkGroupSheet = true }) {
                                 Icon(
                                     Icons.AutoMirrored.Filled.PlaylistAdd,
-                                    contentDescription = "Add to group"
+                                    contentDescription = stringResource(R.string.flosi_add_to_group)
                                 )
                             }
                             IconButton(onClick = { viewModel.bulkDelete() }) {
                                 Icon(
                                     Icons.Default.Delete,
-                                    contentDescription = "Delete selected",
+                                    contentDescription = stringResource(R.string.flosi_delete_selected),
                                     tint = MaterialTheme.colorScheme.error
                                 )
                             }
@@ -355,13 +357,13 @@ fun TransactionsScreen(
                 CustomTitleTopAppBar(
                     scrollBehaviorSmall = scrollBehaviorSmall,
                     scrollBehaviorLarge = scrollBehaviorLarge,
-                    title = "Transactions",
+                    title = stringResource(R.string.flosi_transactions),
                     hasBackButton = showBackButton,
                     navigationContent = {
                         IconButton(onClick = onNavigateBack) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(R.string.flosi_back)
                             )
                         }
                     },
@@ -383,7 +385,7 @@ fun TransactionsScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.FileDownload,
-                            contentDescription = "Export to CSV",
+                            contentDescription = stringResource(R.string.flosi_export_to_csv),
                             modifier = Modifier.size(Dimensions.Icon.medium)
                         )
                     }
@@ -397,7 +399,7 @@ fun TransactionsScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Add Transaction"
+                        contentDescription = stringResource(R.string.flosi_add_transaction)
                     )
                 }
             }
@@ -573,7 +575,7 @@ fun TransactionsScreen(
                                 netBalance = cardTotals.netBalance,
                                 credit = if (selectionMode) cardTotals.credit else null,
                                 title = if (selectionMode) {
-                                    "${selectedIds.size} selected"
+                                    stringResource(R.string.flosi_selected_count, selectedIds.size)
                                 } else {
                                     null
                                 },
@@ -609,7 +611,7 @@ fun TransactionsScreen(
                                         tint = MaterialTheme.colorScheme.onSecondaryContainer
                                     )
                                     Text(
-                                        text = "Totals may differ from budget due to split transactions",
+                                        text = stringResource(R.string.flosi_totals_may_differ_from_budget_due_to_split_transactions),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSecondaryContainer
                                     )
@@ -692,7 +694,7 @@ fun TransactionsScreen(
                                         ) {
                                             AssistChip(
                                                 onClick = { viewModel.markPairAsTransfer(transaction.id, partnerId) },
-                                                label = { Text("Mark as transfer") },
+                                                label = { Text(stringResource(R.string.flosi_mark_as_transfer)) },
                                                 leadingIcon = {
                                                     Icon(
                                                         imageVector = Icons.Default.SwapHoriz,
@@ -877,7 +879,7 @@ private fun BulkGroupPickerSheet(
                 OutlinedTextField(
                     value = newGroupName,
                     onValueChange = { newGroupName = it },
-                    label = { Text("Group name") },
+                    label = { Text(stringResource(R.string.flosi_group_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -897,7 +899,7 @@ private fun BulkGroupPickerSheet(
                             },
                             enabled = newGroupName.isNotBlank()
                         ) {
-                            Icon(Icons.Default.Check, contentDescription = "Create")
+                            Icon(Icons.Default.Check, contentDescription = stringResource(R.string.flosi_create))
                         }
                     }
                 )
@@ -912,7 +914,7 @@ private fun BulkGroupPickerSheet(
                         modifier = Modifier.size(Dimensions.Icon.small)
                     )
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text("Create new group")
+                    Text(stringResource(R.string.flosi_create_new_group))
                 }
             }
         }
@@ -966,7 +968,7 @@ private fun SwipeToEditCategory(
                     )
                     Spacer(Modifier.width(Spacing.sm))
                     Text(
-                        text = "Change category",
+                        text = stringResource(R.string.flosi_change_category),
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         style = MaterialTheme.typography.labelLarge
                     )
@@ -1098,7 +1100,7 @@ private fun TransactionFilterHeader(
                         IconButton(onClick = onSortClick) {
                             Icon(
                                 imageVector = Icons.Rounded.MoreHoriz,
-                                contentDescription = "More options",
+                                contentDescription = stringResource(R.string.flosi_more_options),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
@@ -1136,7 +1138,7 @@ private fun TransactionFilterHeader(
                             if (hasAnyActiveFilter) {
                                 HorizontalDivider()
                                 DropdownMenuItem(
-                                    text = { Text("Clear filters") },
+                                    text = { Text(stringResource(R.string.flosi_clear_filters)) },
                                     leadingIcon = {
                                         Icon(
                                             imageVector = Icons.Default.Close,
@@ -1249,7 +1251,7 @@ private fun TransactionFilterHeader(
                             onDismissRequest = onMoreFiltersDismiss
                         ) {
                             DropdownMenuItem(
-                                text = { Text("All categories") },
+                                text = { Text(stringResource(R.string.flosi_all_categories)) },
                                 leadingIcon = {
                                     if (!hasCategoryFilter) {
                                         Icon(Icons.Default.Check, contentDescription = null)
@@ -1280,7 +1282,7 @@ private fun TransactionFilterHeader(
                                 HorizontalDivider()
                             }
                             DropdownMenuItem(
-                                text = { Text("All profiles") },
+                                text = { Text(stringResource(R.string.flosi_all_profiles)) },
                                 leadingIcon = {
                                     if (selectedProfileId == null) {
                                         Icon(Icons.Default.Check, contentDescription = null)
@@ -1325,7 +1327,7 @@ private fun TransactionFilterHeader(
                                 onDismissRequest = onTagDismiss
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("All tags") },
+                                    text = { Text(stringResource(R.string.flosi_all_tags)) },
                                     leadingIcon = {
                                         if (tagFilter == null) {
                                             Icon(Icons.Default.Check, contentDescription = null)
@@ -1370,7 +1372,7 @@ private fun TransactionFilterHeader(
                                 onDismissRequest = onAccountDismiss
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("All accounts") },
+                                    text = { Text(stringResource(R.string.flosi_all_accounts)) },
                                     leadingIcon = {
                                         if (accountFilter == null) {
                                             Icon(Icons.Default.Check, contentDescription = null)
@@ -1441,7 +1443,7 @@ private fun TransactionSearchBar(
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.flosi_search),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(Dimensions.Icon.medium)
             )
@@ -1474,7 +1476,7 @@ private fun TransactionSearchBar(
                 IconButton(onClick = { onQueryChange("") }) {
                     Icon(
                         imageVector = Icons.Default.Clear,
-                        contentDescription = "Clear search",
+                        contentDescription = stringResource(R.string.flosi_clear_search),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }

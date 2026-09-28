@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.screens.analytics
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import com.pennywiseai.tracker.ui.effects.rememberOverscrollFlingBehavior
 import androidx.compose.foundation.shape.CircleShape
@@ -702,7 +704,7 @@ private fun AnalyticsFilterBar(
             item {
                 AssistChip(
                     onClick = onResetFilters,
-                    label = { Text("Clear") },
+                    label = { Text(stringResource(R.string.flosi_clear)) },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Close,
@@ -863,7 +865,7 @@ private fun AnalyticsFilterBar(
                         shape = MaterialTheme.shapes.large
                     ) {
                         DropdownMenuItem(
-                            text = { Text("All categories") },
+                            text = { Text(stringResource(R.string.flosi_all_categories)) },
                             leadingIcon = {
                                 if (categoryFilter == null) {
                                     Icon(Icons.Default.Check, contentDescription = null)
@@ -921,7 +923,7 @@ private fun AnalyticsFilterBar(
                         shape = MaterialTheme.shapes.large
                     ) {
                         DropdownMenuItem(
-                            text = { Text("All accounts") },
+                            text = { Text(stringResource(R.string.flosi_all_accounts)) },
                             leadingIcon = {
                                 if (accountFilter == null) {
                                     Icon(Icons.Default.Check, contentDescription = null)

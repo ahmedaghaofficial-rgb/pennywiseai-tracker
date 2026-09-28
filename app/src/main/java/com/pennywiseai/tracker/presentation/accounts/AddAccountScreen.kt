@@ -1,11 +1,13 @@
 package com.pennywiseai.tracker.presentation.accounts
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -52,12 +54,12 @@ fun AddAccountScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Add Account",
+                title = stringResource(R.string.flosi_add_account),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 hazeState = hazeState
@@ -95,7 +97,7 @@ fun AddAccountScreen(
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
                     Text(
-                        text = "Add accounts not tracked via SMS like cash, wallets, credit cards, or investment accounts.",
+                        text = stringResource(R.string.flosi_add_accounts_not_tracked_via_sms_like_cash_wallets_cre),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -159,7 +161,7 @@ fun AddAccountScreen(
                     },
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Account Type", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.flosi_account_type), fontWeight = FontWeight.SemiBold) },
                     trailingIcon = { Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = null) },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -217,7 +219,7 @@ fun AddAccountScreen(
                     value = "${formState.currency}  ${CurrencyFormatter.getCurrencySymbol(formState.currency)}",
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Currency", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.flosi_currency), fontWeight = FontWeight.SemiBold) },
                     trailingIcon = { Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = null) },
                     leadingIcon = { Icon(Icons.Default.Payments, contentDescription = null) },
                     modifier = Modifier
@@ -251,7 +253,7 @@ fun AddAccountScreen(
                 TextField(
                     value = formState.bankName,
                     onValueChange = viewModel::updateBankName,
-                    label = { Text("Account Name *", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.flosi_account_name), fontWeight = FontWeight.SemiBold) },
                     leadingIcon = { Icon(Icons.Default.Business, contentDescription = null) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
@@ -280,7 +282,7 @@ fun AddAccountScreen(
                 TextField(
                     value = formState.balance,
                     onValueChange = viewModel::updateBalance,
-                    label = { Text("Current Balance *", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.flosi_current_balance), fontWeight = FontWeight.SemiBold) },
                     leadingIcon = { Icon(Icons.Default.Payments, contentDescription = null) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
@@ -294,9 +296,9 @@ fun AddAccountScreen(
                     TextField(
                         value = formState.creditLimit,
                         onValueChange = viewModel::updateCreditLimit,
-                        label = { Text("Credit Limit", fontWeight = FontWeight.SemiBold) },
+                        label = { Text(stringResource(R.string.flosi_credit_limit), fontWeight = FontWeight.SemiBold) },
                         leadingIcon = { Icon(Icons.Default.CreditScore, contentDescription = null) },
-                        supportingText = { Text("Optional: Set credit limit for utilization tracking") },
+                        supportingText = { Text(stringResource(R.string.flosi_optional_set_credit_limit_for_utilization_tracking)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -321,7 +323,7 @@ fun AddAccountScreen(
             ) {
                 Icon(Icons.Default.Done, contentDescription = null)
                 Spacer(Modifier.width(Spacing.sm))
-                Text("Save", style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.flosi_save), style = MaterialTheme.typography.titleMedium)
             }
 
             Spacer(modifier = Modifier.height(Spacing.md))

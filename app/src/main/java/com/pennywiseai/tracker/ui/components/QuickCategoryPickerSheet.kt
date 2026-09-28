@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.FontWeight
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.CategoryEntity
 import com.pennywiseai.tracker.data.database.entity.TransactionEntity
 import com.pennywiseai.tracker.ui.theme.Dimensions
@@ -92,7 +94,7 @@ fun QuickCategoryPickerSheet(
             )
         }
         Text(
-            text = "Change category",
+            text = stringResource(R.string.flosi_change_category),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(
                 start = Dimensions.Padding.content,

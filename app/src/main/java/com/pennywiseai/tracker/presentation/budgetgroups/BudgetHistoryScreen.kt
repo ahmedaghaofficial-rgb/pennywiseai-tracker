@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.budgetgroups
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.BudgetPeriodType
 import com.pennywiseai.tracker.data.repository.PastWindowSpending
 import com.pennywiseai.tracker.ui.components.PennyWiseScaffold
@@ -71,21 +73,21 @@ fun BudgetHistoryScreen(
             IconButton(onClick = onNavigateBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(R.string.flosi_back)
                 )
             }
         }
     ) { padding ->
         if (state.isLoading) {
             Box(modifier = Modifier.padding(padding).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Text("Loading…", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.flosi_loading), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             return@PennyWiseScaffold
         }
         val budget = state.budget
         if (budget == null) {
             Box(modifier = Modifier.padding(padding).fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Text("Budget not found", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.flosi_budget_not_found), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             return@PennyWiseScaffold
         }
@@ -209,7 +211,7 @@ private fun HistoryRow(
                 )
                 if (isDisplayed) {
                     Text(
-                        text = "Current",
+                        text = stringResource(R.string.flosi_current),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier
@@ -249,7 +251,7 @@ private fun LiveBadge() {
                 .background(MaterialTheme.colorScheme.tertiary)
         )
         Text(
-            text = "Live · still accumulating",
+            text = stringResource(R.string.flosi_live_still_accumulating),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.tertiary
         )
@@ -344,7 +346,7 @@ private fun BreakdownSheet(
             if (!breakdown.isTrackingAll && breakdown.categorySpending.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(Spacing.xs))
                 Text(
-                    text = "Categories",
+                    text = stringResource(R.string.flosi_categories),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

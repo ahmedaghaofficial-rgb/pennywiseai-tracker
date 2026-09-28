@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.ui.components
 
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.BuildConfig
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,7 +29,7 @@ fun UnifiedAccountsCard(
     bankAccounts: List<AccountBalanceEntity>,
     totalBalance: BigDecimal,
     totalAvailableCredit: BigDecimal,
-    selectedCurrency: String = "INR",
+    selectedCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     onAccountClick: (bankName: String, accountLast4: String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
@@ -95,7 +98,7 @@ fun UnifiedAccountsCard(
                 ) {
                     Icon(
                         imageVector = Icons.Default.CreditCard,
-                        contentDescription = "Available Credit",
+                        contentDescription = stringResource(R.string.flosi_available_credit),
                         modifier = Modifier.size(Dimensions.Icon.medium),
                         tint = MaterialTheme.colorScheme.secondary
                     )
@@ -138,7 +141,7 @@ fun UnifiedAccountsCard(
                                 bankName = account.bankName,
                                 accountLast4 = account.accountLast4,
                                 formattedAmount = CurrencyFormatter.formatCurrency(account.balance, selectedCurrency),
-                                subtitle = "Balance",
+                                subtitle = stringResource(R.string.flosi_balance),
                                 isCredit = false,
                                 onClick = { onAccountClick(account.bankName, account.accountLast4) }
                             )
