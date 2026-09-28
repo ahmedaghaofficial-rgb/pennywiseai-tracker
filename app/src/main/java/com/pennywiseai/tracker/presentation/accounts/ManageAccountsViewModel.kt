@@ -279,7 +279,7 @@ class ManageAccountsViewModel @Inject constructor(
                     // stored INR default. See [CurrencyFormatter.resolveAccountCurrency].
                     currency = CurrencyFormatter.resolveAccountCurrency(
                         sourceType = latestBalance?.sourceType,
-                        storedCurrency = latestBalance?.currency ?: "INR",
+                        storedCurrency = latestBalance?.currency ?: BuildConfig.DEFAULT_CURRENCY,
                         bankName = bankName
                     ),
                     accountType = latestBalance?.accountType,
@@ -309,7 +309,7 @@ class ManageAccountsViewModel @Inject constructor(
                     // MANUAL doesn't flip an SMS-tracked non-INR card to stored INR.
                     currency = CurrencyFormatter.resolveAccountCurrency(
                         sourceType = latestBalance?.sourceType,
-                        storedCurrency = latestBalance?.currency ?: "INR",
+                        storedCurrency = latestBalance?.currency ?: BuildConfig.DEFAULT_CURRENCY,
                         bankName = bankName
                     ),
                     accountType = latestBalance?.accountType,
@@ -780,7 +780,7 @@ class ManageAccountsViewModel @Inject constructor(
                 val latestBalance = accountBalanceRepository.getLatestBalance(newBankName, accountLast4)
                 val resolvedCurrency = newCurrency ?: CurrencyFormatter.resolveAccountCurrency(
                     sourceType = latestBalance?.sourceType,
-                    storedCurrency = latestBalance?.currency ?: "INR",
+                    storedCurrency = latestBalance?.currency ?: BuildConfig.DEFAULT_CURRENCY,
                     bankName = newBankName
                 )
 

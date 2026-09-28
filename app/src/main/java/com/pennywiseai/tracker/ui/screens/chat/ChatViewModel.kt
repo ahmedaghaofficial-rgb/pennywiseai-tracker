@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.screens.chat
 
+import com.pennywiseai.tracker.BuildConfig
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
@@ -162,7 +163,7 @@ class ChatViewModel @Inject constructor(
     val pendingAction: StateFlow<com.pennywiseai.tracker.data.model.PendingChatAction?> = llmRepository.pendingAction
 
     val baseCurrency: StateFlow<String> = userPreferencesRepository.baseCurrency
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), "INR")
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), BuildConfig.DEFAULT_CURRENCY)
 
     private val _isConfirming = MutableStateFlow(false)
     val isConfirming: StateFlow<Boolean> = _isConfirming.asStateFlow()

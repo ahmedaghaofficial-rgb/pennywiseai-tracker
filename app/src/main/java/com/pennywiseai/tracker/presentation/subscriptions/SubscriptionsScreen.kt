@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.subscriptions
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -442,7 +443,7 @@ private fun TotalSubscriptionsSummary(
         amount = when {
             !isUnified -> CurrencyFormatter.formatByCurrency(
                 totalByCurrency,
-                fallbackCurrency = currency ?: "INR"
+                fallbackCurrency = currency ?: BuildConfig.DEFAULT_CURRENCY
             )
             currency != null -> CurrencyFormatter.formatCurrency(totalAmount, currency)
             else -> totalAmount.toPlainString()

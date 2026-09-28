@@ -262,7 +262,7 @@ class AccountDetailViewModel @Inject constructor(
     private fun primaryCurrencyForAccount(latestBalance: AccountBalanceEntity?): String {
         return CurrencyFormatter.resolveAccountCurrency(
             sourceType = latestBalance?.sourceType,
-            storedCurrency = latestBalance?.currency ?: "INR",
+            storedCurrency = latestBalance?.currency ?: BuildConfig.DEFAULT_CURRENCY,
             bankName = bankName
         )
     }

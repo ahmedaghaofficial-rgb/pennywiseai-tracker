@@ -254,6 +254,7 @@ fun TransactionsScreen(
     }
     
     // Handle delete undo snackbar
+    val transactionDeletedMessage = stringResource(R.string.flosi_transaction_deleted)
     LaunchedEffect(deletedTransaction) {
         deletedTransaction?.let { transaction ->
             // Clear the state immediately to prevent re-triggering
@@ -261,7 +262,7 @@ fun TransactionsScreen(
             
             scope.launch {
                 val result = snackbarHostState.showSnackbar(
-                    message = stringResource(R.string.flosi_transaction_deleted),
+                    message = transactionDeletedMessage,
                     actionLabel = "Undo",
                     duration = SnackbarDuration.Short
                 )

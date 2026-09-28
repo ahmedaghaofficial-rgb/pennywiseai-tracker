@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.budgetgroups
 
+import com.pennywiseai.tracker.BuildConfig
 import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -50,7 +51,7 @@ data class BudgetGroupEditUiState(
     val availableTypeBuckets: List<TypeBucketOption> = emptyList(),
     val categorySpending: Map<String, BigDecimal> = emptyMap(),
     val typeSpending: Map<String, BigDecimal> = emptyMap(),
-    val currency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
     val availableCurrencies: List<String> = emptyList(),
     /**
      * The cadence this budget runs on.

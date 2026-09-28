@@ -52,8 +52,7 @@ fun FAQScreen(
 ) {
     val context = LocalContext.current
     
-    val faqCategories = remember {
-        listOf(
+    val faqCategories = listOf(
             FAQCategory(
                 title = stringResource(R.string.flosi_transaction_types),
                 icon = { Icon(Icons.Default.SwapHoriz, contentDescription = null) },
@@ -141,7 +140,6 @@ fun FAQScreen(
                 )
             )
         )
-    }
     
     var expandedCategories by remember { mutableStateOf(setOf<Int>()) }
 

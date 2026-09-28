@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.domain.usecase
 
+import com.pennywiseai.tracker.BuildConfig
 import android.util.Log
 import com.pennywiseai.tracker.data.database.entity.SubscriptionDirection
 import com.pennywiseai.tracker.data.database.entity.SubscriptionEntity
@@ -22,7 +23,7 @@ class AddSubscriptionUseCase @Inject constructor(
         autoRenewal: Boolean = true,
         paymentReminder: Boolean = true,
         notes: String? = null,
-        currency: String = "INR",
+        currency: String = BuildConfig.DEFAULT_CURRENCY,
         direction: SubscriptionDirection = SubscriptionDirection.EXPENSE,
         bankName: String? = null,
         accountLast4: String? = null
