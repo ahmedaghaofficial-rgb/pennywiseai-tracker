@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
+
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -79,35 +83,45 @@ fun TransactionItem(
     // tag below. (#383)
     val description = transaction.description?.takeIf { it.isNotBlank() }
 
-    val subtitle = remember(transaction, dateTimeText, isEffectivelyBusiness) {
+    val categoryLabel = localizedCategoryName(transaction.category)
+    val creditLabel = stringResource(R.string.flosi_credit)
+    val transferLabel = stringResource(R.string.flosi_transfer)
+    val investmentLabel = stringResource(R.string.flosi_investment)
+    val recurringLabel = stringResource(R.string.flosi_recurring)
+    val businessLabel = stringResource(R.string.flosi_business)
+    val excludedLabel = stringResource(R.string.flosi_excluded)
+    val balanceLabel = stringResource(R.string.flosi_balance_prefix, "")
+    val subtitle = remember(transaction, dateTimeText, isEffectivelyBusiness, categoryLabel,
+        creditLabel, transferLabel, investmentLabel, recurringLabel, businessLabel,
+        excludedLabel, balanceLabel) {
         buildList {
             if (description != null) add(description)
             add(dateTimeText)
             if (transaction.category.isNotBlank() &&
                 !transaction.category.equals("Uncategorized", ignoreCase = true)
             ) {
-                add(transaction.category)
+                add(categoryLabel)
             }
 
             if (showTypeLabel) {
                 when (transaction.transactionType) {
-                    TransactionType.CREDIT -> add("Credit")
+                    TransactionType.CREDIT -> add(creditLabel)
                     TransactionType.TRANSFER -> {
                         if (transferTitleOverride(transaction) == null) {
-                            add("Transfer")
+                            add(transferLabel)
                         }
                     }
-                    TransactionType.INVESTMENT -> add("Investment")
+                    TransactionType.INVESTMENT -> add(investmentLabel)
                     else -> {}
                 }
             }
-            if (transaction.isRecurring) add("Recurring")
-            if (isEffectivelyBusiness) add("Business")
+            if (transaction.isRecurring) add(recurringLabel)
+            if (isEffectivelyBusiness) add(businessLabel)
             // Mark rows the user excluded from analytics so it's visible in the
             // list which ones are skipped by spending stats (#451).
-            if (transaction.excludedFromAnalytics) add("Excluded")
+            if (transaction.excludedFromAnalytics) add(excludedLabel)
             transaction.balanceAfter?.let { balance ->
-                add("Bal ${CurrencyFormatter.formatCurrency(balance, transaction.currency)}")
+                add("$balanceLabel${CurrencyFormatter.formatCurrency(balance, transaction.currency)}")
             }
         }.joinToString(" \u00B7 ")
     }

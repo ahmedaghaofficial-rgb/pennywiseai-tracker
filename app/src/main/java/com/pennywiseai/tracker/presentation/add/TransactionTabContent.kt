@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.presentation.add
 
+import com.pennywiseai.tracker.core.localization.localizedUiMessage
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
+
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -223,7 +226,7 @@ fun TransactionTabContent(
                     textStyle = MaterialTheme.typography.headlineSmall,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = uiState.amountError != null,
-                    supportingText = uiState.amountError?.let { { Text(it) } },
+                    supportingText = uiState.amountError?.let { { Text(localizedUiMessage(it)) } },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
                     shape = fullShape,
@@ -248,7 +251,7 @@ fun TransactionTabContent(
                         shape = topShape,
                         leadingIcon = { Icon(Icons.Default.Store, contentDescription = null) },
                         isError = uiState.merchantError != null,
-                        supportingText = uiState.merchantError?.let { { Text(it) } },
+                        supportingText = uiState.merchantError?.let { { Text(localizedUiMessage(it)) } },
                         colors = filledFieldColors()
                     )
                 }
@@ -467,7 +470,7 @@ fun TransactionTabContent(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         TextField(
-                            value = uiState.category,
+                            value = localizedCategoryName(uiState.category),
                             onValueChange = {},
                             label = { Text(stringResource(R.string.flosi_category), fontWeight = FontWeight.SemiBold) },
                             readOnly = true,
@@ -483,7 +486,7 @@ fun TransactionTabContent(
                                 Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = null)
                             },
                             isError = uiState.categoryError != null,
-                            supportingText = uiState.categoryError?.let { { Text(it) } },
+                            supportingText = uiState.categoryError?.let { { Text(localizedUiMessage(it)) } },
                             colors = filledFieldColors()
                         )
 
@@ -495,7 +498,7 @@ fun TransactionTabContent(
                                 DropdownMenuItem(
                                     text = {
                                         Text(
-                                            category.name,
+                                            localizedCategoryName(category.name),
                                             modifier = Modifier.padding(start = if (category.parentId != null) Spacing.lg else Spacing.none)
                                         )
                                     },

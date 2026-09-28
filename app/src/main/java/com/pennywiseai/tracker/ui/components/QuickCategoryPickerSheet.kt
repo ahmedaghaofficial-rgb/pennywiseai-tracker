@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.components
 
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
+
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -128,7 +130,7 @@ fun QuickCategoryPickerSheet(
                 ) {
                     CategoryChip(category = category, showText = false)
                     Text(
-                        text = category.name,
+                        text = localizedCategoryName(category.name),
                         modifier = Modifier.weight(1f),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal

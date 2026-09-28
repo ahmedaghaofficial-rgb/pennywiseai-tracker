@@ -166,7 +166,7 @@ fun TransactionTotalsCard(
                                 )
                             },
                             // Four tiles leave no room for the plural — it wraps.
-                            label = if (credit != null) "Expense" else "Expenses",
+                            label = stringResource(if (credit != null) R.string.flosi_expense else R.string.flosi_expenses),
                             amount = CurrencyFormatter.formatCurrency(expenses, currency),
                             color = if (!isSystemInDarkTheme()) expense_light else expense_dark,
                             modifier = Modifier.alpha(expenseAlpha)

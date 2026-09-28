@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.theme.Spacing
 import com.pennywiseai.tracker.ui.theme.credit
 import com.pennywiseai.tracker.ui.theme.investment
@@ -75,13 +77,13 @@ fun CashFlowCard(
         onClick = onToggleBalanceVisibility
     ) {
         Text(
-            text = "Money in motion",
+            text = stringResource(R.string.flosi_money_in_motion),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface
         )
         Text(
-            text = "Channels outside your net cash flow this month",
+            text = stringResource(R.string.flosi_channels_outside_your_net_cash_flow_this_month),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

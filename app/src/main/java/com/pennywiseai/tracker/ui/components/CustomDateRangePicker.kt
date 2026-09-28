@@ -65,7 +65,7 @@ fun CustomDateRangePickerDialog(
             modifier = Modifier,
             title = {
                 Text(
-                    text = "Select Date Range",
+                    text = stringResource(R.string.flosi_select_date_range),
                     modifier = Modifier.padding(start = 24.dp, end = 12.dp, top = 16.dp)
                 )
             },

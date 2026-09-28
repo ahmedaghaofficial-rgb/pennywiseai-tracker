@@ -904,6 +904,7 @@ private fun StepIndicator(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun OnBoardingBottomBar(
     uiState: OnBoardingUiState,
@@ -927,12 +928,12 @@ private fun OnBoardingBottomBar(
                 .padding(bottom = Spacing.sm)
         )
 
-    Row(
+    FlowRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = Spacing.lg, vertical = Spacing.md),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalArrangement = Arrangement.spacedBy(Spacing.sm)
     ) {
         // Back button
         if (canGoBack) {
@@ -947,9 +948,9 @@ private fun OnBoardingBottomBar(
         }
 
         // Skip / CTA button area
-        Row(
+        FlowRow(
             horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.spacedBy(Spacing.sm)
         ) {
             when (uiState.currentStep) {
                 OnBoardingStep.WELCOME -> {

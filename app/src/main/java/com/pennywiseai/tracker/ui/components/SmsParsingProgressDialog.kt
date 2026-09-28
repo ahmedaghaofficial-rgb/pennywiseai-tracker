@@ -54,7 +54,7 @@ fun SmsParsingProgressDialog(
                 ) {
                     // Title
                     Text(
-                        text = "Scanning SMS Messages",
+                        text = stringResource(R.string.flosi_scanning_sms_messages),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
@@ -89,7 +89,7 @@ fun SmsParsingProgressDialog(
                                 modifier = Modifier.size(Dimensions.Icon.small)
                             )
                             Spacer(modifier = Modifier.width(Spacing.sm))
-                            Text("Cancel Scan")
+                            Text(stringResource(R.string.flosi_cancel_scan))
                         }
                     } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                         TextButton(
@@ -217,7 +217,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         strokeWidth = 2.dp
                     )
                     Text(
-                        text = "Processing...",
+                        text = stringResource(R.string.flosi_processing),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -235,7 +235,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
                     Text(
-                        text = "Scan completed successfully!",
+                        text = stringResource(R.string.flosi_scan_completed_successfully),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -253,7 +253,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
                     Text(
-                        text = "Scan failed. Please try again.",
+                        text = stringResource(R.string.flosi_scan_failed_please_try_again),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
                     )
@@ -271,7 +271,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
                     Text(
-                        text = "Scan cancelled",
+                        text = stringResource(R.string.flosi_scan_cancelled),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -288,7 +288,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         strokeWidth = 2.dp
                     )
                     Text(
-                        text = "Starting scan...",
+                        text = stringResource(R.string.flosi_starting_scan),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

@@ -55,6 +55,9 @@ import com.pennywiseai.tracker.ui.theme.*
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.draw.graphicsLayer
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import com.pennywiseai.tracker.utils.CurrencyFormatter
 import com.pennywiseai.tracker.ui.theme.Dimensions
 import com.pennywiseai.tracker.ui.theme.PennyWiseText
@@ -380,7 +383,9 @@ private fun MonthSelector(
             Icon(
                 Icons.Default.ChevronLeft,
                 contentDescription = stringResource(R.string.flosi_previous_month),
-                modifier = Modifier.size(Dimensions.Icon.medium)
+                modifier = Modifier.size(Dimensions.Icon.medium).graphicsLayer(
+                    scaleX = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f
+                )
             )
         }
 
@@ -409,7 +414,9 @@ private fun MonthSelector(
             Icon(
                 Icons.Default.ChevronRight,
                 contentDescription = stringResource(R.string.flosi_next_month),
-                modifier = Modifier.size(Dimensions.Icon.medium)
+                modifier = Modifier.size(Dimensions.Icon.medium).graphicsLayer(
+                    scaleX = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f
+                )
             )
         }
     }

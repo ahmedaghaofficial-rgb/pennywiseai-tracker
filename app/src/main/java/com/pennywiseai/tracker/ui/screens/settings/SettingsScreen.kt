@@ -39,6 +39,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import com.pennywiseai.tracker.R
+import androidx.compose.ui.draw.graphicsLayer
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -1429,7 +1432,11 @@ private fun SettingsNavItem(
             trailingIcon,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(Dimensions.Icon.inline)
+            modifier = Modifier.size(Dimensions.Icon.inline).then(
+                if (trailingIcon == Icons.Default.ChevronRight &&
+                    LocalLayoutDirection.current == LayoutDirection.Rtl
+                ) Modifier.graphicsLayer(scaleX = -1f) else Modifier
+            )
         )
     }
 }
@@ -1650,7 +1657,7 @@ private fun AiChatSettingsItem(
                 ) {
                     Icon(Icons.Default.Cancel, contentDescription = null)
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text("Cancel Download")
+                    Text(stringResource(R.string.flosi_cancel_download))
                 }
             }
         }

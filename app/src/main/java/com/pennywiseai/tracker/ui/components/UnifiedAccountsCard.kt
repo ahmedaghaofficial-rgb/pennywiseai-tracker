@@ -41,7 +41,7 @@ fun UnifiedAccountsCard(
         Column {
             // Header
             Text(
-                text = "Accounts Overview",
+                text = stringResource(R.string.flosi_accounts_overview),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -61,7 +61,7 @@ fun UnifiedAccountsCard(
                 ) {
                     Icon(
                         imageVector = Icons.Default.AccountBalance,
-                        contentDescription = "Bank Balance",
+                        contentDescription = stringResource(R.string.flosi_bank_balance),
                         modifier = Modifier.size(Dimensions.Icon.medium),
                         tint = MaterialTheme.colorScheme.primary
                     )

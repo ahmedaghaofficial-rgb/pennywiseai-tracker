@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.categories
 
+import com.pennywiseai.tracker.core.localization.localizedUiMessage
 import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -50,8 +51,9 @@ fun CategoriesScreen(
     val scope = rememberCoroutineScope()
     
     // Show snackbar messages
-    LaunchedEffect(snackbarMessage) {
-        snackbarMessage?.let {
+    val translatedSnackbar = snackbarMessage?.let { localizedUiMessage(it) }
+    LaunchedEffect(translatedSnackbar) {
+        translatedSnackbar?.let {
             scope.launch {
                 snackbarHostState.showSnackbar(it)
                 viewModel.clearSnackbarMessage()

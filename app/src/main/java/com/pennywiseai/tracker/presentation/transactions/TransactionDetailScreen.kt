@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.transactions
 
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
+
 import com.pennywiseai.tracker.BuildConfig
 import android.content.Intent
 import android.net.Uri
@@ -33,6 +35,7 @@ import com.pennywiseai.tracker.presentation.add.ReceiptPickerSection
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.automirrored.filled.TrendingDown
@@ -816,9 +819,9 @@ private fun TransactionReceipt(
 
             // Category
             val categoryValue = if (hasSplits && splits.isNotEmpty()) {
-                "Split (${splits.size} categories)"
+                stringResource(R.string.flosi_split_categories, splits.size)
             } else {
-                transaction.category
+                localizedCategoryName(transaction.category)
             }
             DetailInfoRow(
                 icon = Icons.Default.Category,
@@ -863,7 +866,7 @@ private fun TransactionReceipt(
                 DetailInfoRow(
                     icon = Icons.Default.Repeat,
                     label = stringResource(R.string.flosi_status),
-                    value = "Recurring"
+                    value = stringResource(R.string.flosi_recurring)
                 )
             }
 
@@ -874,7 +877,7 @@ private fun TransactionReceipt(
             DetailInfoRow(
                 icon = if (isEffectivelyBusiness) Icons.Default.Business else Icons.Default.Person,
                 label = stringResource(R.string.flosi_classification),
-                value = if (isEffectivelyBusiness) "Business" else "Personal"
+                value = stringResource(if (isEffectivelyBusiness) R.string.flosi_business else R.string.flosi_personal)
             )
 
             // Account info
@@ -1101,7 +1104,7 @@ private fun TransferFlowRow(
         }
 
         Icon(
-            Icons.Default.ArrowForward,
+            Icons.AutoMirrored.Filled.ArrowForward,
             contentDescription = null,
             modifier = Modifier.size(Dimensions.Icon.small),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1670,7 +1673,7 @@ private fun CategoryDropdown(
         onExpandedChange = { expanded = it }
     ) {
         TextField(
-            value = selectedCategory,
+            value = localizedCategoryName(selectedCategory),
             onValueChange = { },
             label = { Text(stringResource(R.string.flosi_category), fontWeight = FontWeight.SemiBold) },
             leadingIcon = {

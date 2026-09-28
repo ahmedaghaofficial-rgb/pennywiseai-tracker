@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.categories
 
+import com.pennywiseai.tracker.core.localization.localizedUiMessage
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -86,7 +87,7 @@ fun CategoryEditDialog(
                     },
                     label = { Text(stringResource(R.string.flosi_category_name), fontWeight = FontWeight.SemiBold) },
                     isError = nameError != null,
-                    supportingText = nameError?.let { { Text(it) } },
+                    supportingText = nameError?.let { { Text(localizedUiMessage(it)) } },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,

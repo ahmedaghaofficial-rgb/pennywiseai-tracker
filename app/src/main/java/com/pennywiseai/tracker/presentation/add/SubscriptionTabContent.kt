@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.presentation.add
 
+import com.pennywiseai.tracker.core.localization.localizedUiMessage
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
+
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -205,7 +208,7 @@ fun SubscriptionTabContent(
                     textStyle = MaterialTheme.typography.headlineSmall,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = uiState.amountError != null,
-                    supportingText = uiState.amountError?.let { { Text(it) } },
+                    supportingText = uiState.amountError?.let { { Text(localizedUiMessage(it)) } },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
                     shape = subFullShape,
@@ -316,7 +319,7 @@ fun SubscriptionTabContent(
                     shape = subTopShape,
                     leadingIcon = { Icon(Icons.Default.Subscriptions, contentDescription = null) },
                     isError = uiState.serviceError != null,
-                    supportingText = uiState.serviceError?.let { { Text(it) } },
+                    supportingText = uiState.serviceError?.let { { Text(localizedUiMessage(it)) } },
                     colors = subFilledColors()
                 )
 
@@ -326,7 +329,7 @@ fun SubscriptionTabContent(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TextField(
-                        value = uiState.category,
+                        value = localizedCategoryName(uiState.category),
                         onValueChange = {},
                         label = { Text(stringResource(R.string.flosi_category), fontWeight = FontWeight.SemiBold) },
                         readOnly = true,
@@ -338,7 +341,7 @@ fun SubscriptionTabContent(
                         leadingIcon = { Icon(Icons.Default.Category, contentDescription = null) },
                         trailingIcon = { Icon(Icons.Rounded.KeyboardArrowDown, contentDescription = null) },
                         isError = uiState.categoryError != null,
-                        supportingText = uiState.categoryError?.let { { Text(it) } },
+                        supportingText = uiState.categoryError?.let { { Text(localizedUiMessage(it)) } },
                         colors = subFilledColors()
                     )
 
@@ -350,7 +353,7 @@ fun SubscriptionTabContent(
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        category.name,
+                                        localizedCategoryName(category.name),
                                         modifier = Modifier.padding(start = if (category.parentId != null) Spacing.lg else Spacing.none)
                                     )
                                 },
