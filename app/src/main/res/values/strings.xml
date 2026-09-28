@@ -514,4 +514,17 @@
     <string name="flosi_this_month">This month</string>
     <string name="flosi_total">Total:</string>
     <string name="flosi_total_5">Total</string>
+    <string name="flosi_transaction_tab">Transaction</string>
+    <string name="flosi_subscription_tab">Subscription</string>
+    <string name="flosi_account_savings">Savings</string>
+    <string name="flosi_account_current">Current</string>
+    <string name="flosi_account_credit">Credit</string>
+    <string name="flosi_account_cash">Cash</string>
+    <string name="flosi_identifier_optional">Identifier (Optional)</string>
+    <string name="flosi_last_four_digits">Last 4 Digits *</string>
+    <string name="flosi_cycle_monthly">Monthly</string>
+    <string name="flosi_cycle_quarterly">Quarterly</string>
+    <string name="flosi_cycle_semiannual">Semi-Annual</string>
+    <string name="flosi_cycle_annual">Annual</string>
+    <string name="flosi_cycle_weekly">Weekly</string>
 </resources>

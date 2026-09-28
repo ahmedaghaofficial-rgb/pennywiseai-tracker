@@ -228,7 +228,7 @@ fun SubscriptionTabContent(
                     modifier = Modifier.weight(1f)
                 ) {
                     TextField(
-                        value = uiState.billingCycle,
+                        value = billingCycleLabel(uiState.billingCycle),
                         onValueChange = {},
                         readOnly = true,
                         label = { Text(stringResource(R.string.flosi_billing_cycle), fontWeight = FontWeight.SemiBold) },
@@ -248,7 +248,7 @@ fun SubscriptionTabContent(
                     ) {
                         billingCycles.forEach { cycle ->
                             DropdownMenuItem(
-                                text = { Text(cycle) },
+                                text = { Text(billingCycleLabel(cycle)) },
                                 onClick = {
                                     viewModel.updateSubscriptionBillingCycle(cycle)
                                     showBillingCycleMenu = false
@@ -593,4 +593,14 @@ fun SubscriptionTabContent(
             DatePicker(state = datePickerState)
         }
     }
+}
+
+@Composable
+private fun billingCycleLabel(cycle: String): String = when (cycle) {
+    "Monthly" -> stringResource(R.string.flosi_cycle_monthly)
+    "Quarterly" -> stringResource(R.string.flosi_cycle_quarterly)
+    "Semi-Annual" -> stringResource(R.string.flosi_cycle_semiannual)
+    "Annual" -> stringResource(R.string.flosi_cycle_annual)
+    "Weekly" -> stringResource(R.string.flosi_cycle_weekly)
+    else -> cycle
 }

@@ -484,4 +484,17 @@
     <string name="flosi_this_month">هذا الشهر</string>
     <string name="flosi_total">الإجمالي:</string>
     <string name="flosi_total_5">الإجمالي</string>
+    <string name="flosi_transaction_tab">معاملة</string>
+    <string name="flosi_subscription_tab">اشتراك</string>
+    <string name="flosi_account_savings">توفير</string>
+    <string name="flosi_account_current">جارٍ</string>
+    <string name="flosi_account_credit">ائتمان</string>
+    <string name="flosi_account_cash">نقدي</string>
+    <string name="flosi_identifier_optional">معرّف (اختياري)</string>
+    <string name="flosi_last_four_digits">آخر ٤ أرقام *</string>
+    <string name="flosi_cycle_monthly">شهري</string>
+    <string name="flosi_cycle_quarterly">ربع سنوي</string>
+    <string name="flosi_cycle_semiannual">نصف سنوي</string>
+    <string name="flosi_cycle_annual">سنوي</string>
+    <string name="flosi_cycle_weekly">أسبوعي</string>
 </resources>

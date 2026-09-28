@@ -45,7 +45,6 @@ import com.pennywiseai.tracker.ui.theme.*
 import com.pennywiseai.tracker.utils.CurrencyFormatter
 import com.pennywiseai.tracker.ui.theme.Spacing
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 // Reusable filled text field colors with no indicator
 @Composable
@@ -287,9 +286,13 @@ fun TransactionTabContent(
                         selected = uiState.transactionType == type,
                         onClick = { viewModel.updateTransactionType(type) },
                         label = {
-                            Text(type.name.lowercase(Locale.getDefault()).let { s ->
-                                if (s.isEmpty()) s else s.substring(0, 1).uppercase(Locale.getDefault()) + s.substring(1)
-                            })
+                            Text(stringResource(when (type) {
+                                TransactionType.INCOME -> R.string.flosi_income
+                                TransactionType.EXPENSE -> R.string.flosi_expense
+                                TransactionType.CREDIT -> R.string.flosi_credit
+                                TransactionType.TRANSFER -> R.string.flosi_transfer
+                                TransactionType.INVESTMENT -> R.string.flosi_investment
+                            }))
                         },
                         leadingIcon = if (uiState.transactionType == type) {
                             {

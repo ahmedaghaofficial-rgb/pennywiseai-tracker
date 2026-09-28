@@ -156,9 +156,7 @@ fun AddAccountScreen(
                 onExpandedChange = { showTypeDropdown = it }
             ) {
                 TextField(
-                    value = formState.accountType.name.lowercase().let { s ->
-                        if (s.isEmpty()) s else s.substring(0, 1).uppercase() + s.substring(1)
-                    },
+                    value = accountTypeLabel(formState.accountType),
                     onValueChange = {},
                     readOnly = true,
                     label = { Text(stringResource(R.string.flosi_account_type), fontWeight = FontWeight.SemiBold) },
@@ -187,9 +185,7 @@ fun AddAccountScreen(
                     AccountType.values().forEach { type ->
                         DropdownMenuItem(
                             text = {
-                                Text(type.name.lowercase().let { s ->
-                                    if (s.isEmpty()) s else s.substring(0, 1).uppercase() + s.substring(1)
-                                })
+                                Text(accountTypeLabel(type))
                             },
                             onClick = {
                                 viewModel.updateAccountType(type)
@@ -267,7 +263,7 @@ fun AddAccountScreen(
                     onValueChange = viewModel::updateAccountLast4,
                     label = {
                         Text(
-                            if (formState.accountType == AccountType.CASH) "Identifier (Optional)" else "Last 4 Digits *",
+                            stringResource(if (formState.accountType == AccountType.CASH) R.string.flosi_identifier_optional else R.string.flosi_last_four_digits),
                             fontWeight = FontWeight.SemiBold
                         )
                     },
@@ -330,3 +326,10 @@ fun AddAccountScreen(
         }
     }
 }
+@Composable
+private fun accountTypeLabel(type: AccountType): String = stringResource(when (type) {
+    AccountType.SAVINGS -> R.string.flosi_account_savings
+    AccountType.CURRENT -> R.string.flosi_account_current
+    AccountType.CREDIT -> R.string.flosi_account_credit
+    AccountType.CASH -> R.string.flosi_account_cash
+})

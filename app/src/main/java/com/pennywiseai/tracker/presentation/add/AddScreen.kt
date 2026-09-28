@@ -26,7 +26,7 @@ fun AddScreen(
     val coroutineScope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsState()
     
-    val tabs = listOf("Transaction", "Subscription")
+    val tabs = listOf(stringResource(R.string.flosi_transaction_tab), stringResource(R.string.flosi_subscription_tab))
     
     PennyWiseScaffold(
         title = stringResource(R.string.flosi_add_new),
