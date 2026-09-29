@@ -371,9 +371,9 @@ private fun ThemeModeSelector(
         )
 
         val options = listOf(
-            ModeOption("System", Icons.Default.AutoAwesome, null, 16, 4, 16, 4),
-            ModeOption("Light", Icons.Default.LightMode, false, 4, 4, 4, 4),
-            ModeOption("Dark", Icons.Default.DarkMode, true, 4, 16, 4, 16)
+            ModeOption(stringResource(R.string.flosi_system), Icons.Default.AutoAwesome, null, 16, 4, 16, 4),
+            ModeOption(stringResource(R.string.flosi_light), Icons.Default.LightMode, false, 4, 4, 4, 4),
+            ModeOption(stringResource(R.string.flosi_dark), Icons.Default.DarkMode, true, 4, 16, 4, 16)
         )
 
         options.forEachIndexed { index, option ->
@@ -504,7 +504,7 @@ private fun ThemeStyleSelector(
                         else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "Rose Pine Colors",
+                        text = stringResource(R.string.flosi_rose_pine_colors),
                         style = MaterialTheme.typography.labelSmall,
                         color = if (currentStyle == ThemeStyle.BRANDED)
                             MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
@@ -675,7 +675,7 @@ private fun NavBarStyleSelector(
                         else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "Standard M3",
+                        text = stringResource(R.string.flosi_standard_m3),
                         style = MaterialTheme.typography.labelSmall,
                         color = if (currentStyle == NavBarStyle.NORMAL)
                             MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
@@ -833,7 +833,7 @@ private fun FontSelector(
                         else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "Modern Mono",
+                        text = stringResource(R.string.flosi_modern_mono),
                         style = MaterialTheme.typography.labelSmall,
                         fontFamily = SNProFontFamily,
                         color = if (currentFont == AppFont.SN_PRO)

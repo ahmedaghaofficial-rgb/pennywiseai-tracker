@@ -124,7 +124,7 @@ fun AccountDetailScreen(
                     ExpandableBalanceChart(
                         primaryCurrency = uiState.primaryCurrency,
                         balanceHistory = uiState.balanceChartData,
-                        selectedTimeframe = selectedDateRange.label
+                        selectedTimeframe = localizedDateRange(selectedDateRange)
                     )
                 }
             }
@@ -135,7 +135,7 @@ fun AccountDetailScreen(
                     totalIncome = uiState.totalIncome,
                     totalExpenses = uiState.totalExpenses,
                     netBalance = uiState.netBalance,
-                    period = selectedDateRange.label,
+                    period = localizedDateRange(selectedDateRange),
                     primaryCurrency = uiState.primaryCurrency,
                     hasMultipleCurrencies = uiState.hasMultipleCurrencies
                 )
@@ -185,6 +185,16 @@ fun AccountDetailScreen(
         }
     }
 }
+
+@Composable
+private fun localizedDateRange(range: DateRange): String = stringResource(when (range) {
+    DateRange.LAST_7_DAYS -> R.string.flosi_last_7_days
+    DateRange.LAST_30_DAYS -> R.string.flosi_last_30_days
+    DateRange.LAST_3_MONTHS -> R.string.flosi_last_3_months
+    DateRange.LAST_6_MONTHS -> R.string.flosi_last_6_months
+    DateRange.LAST_YEAR -> R.string.flosi_last_year
+    DateRange.ALL_TIME -> R.string.flosi_all_time
+})
 
 @Composable
 private fun ExpandableBalanceChart(
@@ -495,7 +505,7 @@ private fun DateRangeFilter(
             FilterChip(
                 selected = selectedRange == range,
                 onClick = { onRangeSelected(range) },
-                label = { Text(range.label) },
+                label = { Text(localizedDateRange(range)) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                     selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer

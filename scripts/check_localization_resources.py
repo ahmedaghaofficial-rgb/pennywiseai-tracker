@@ -46,4 +46,10 @@ for name, source in english.items():
                 f"Unexpected format argument: {name}/{quantity}"
             )
 
+loan_en = {item.attrib["quantity"]: item.text for item in english["flosi_active_loans"]}
+loan_ar = {item.attrib["quantity"]: item.text for item in arabic["flosi_active_loans"]}
+assert loan_en["one"] == "%1$d active loan"
+assert loan_en["other"] == "%1$d active loans"
+assert loan_ar["one"] != loan_ar["few"] and loan_ar["two"] != loan_ar["many"]
+
 print(f"Localization resources OK: {len(english)} paired strings/plurals")

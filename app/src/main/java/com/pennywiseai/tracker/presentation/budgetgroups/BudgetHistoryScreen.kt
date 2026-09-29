@@ -68,7 +68,7 @@ fun BudgetHistoryScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     PennyWiseScaffold(
-        title = state.budget?.name ?: "Budget History",
+        title = state.budget?.name ?: stringResource(R.string.flosi_budget_history),
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
                 Icon(
@@ -120,14 +120,14 @@ fun BudgetHistoryScreen(
                         }
                         Spacer(modifier = Modifier.height(Spacing.xs))
                         Text(
-                            text = "${CurrencyFormatter.formatCurrency(state.totalSpent, state.currency)} of ${CurrencyFormatter.formatCurrency(state.budgetAmount, state.currency)}",
+                            text = stringResource(R.string.flosi_amount_of_budget, CurrencyFormatter.formatCurrency(state.totalSpent, state.currency), CurrencyFormatter.formatCurrency(state.budgetAmount, state.currency)),
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Bold
                             )
                         )
                         val longFormatter = DateTimeFormatter.ofPattern("d MMM yyyy")
                         Text(
-                            text = "Window: ${state.displayedWindowStart.format(longFormatter)} – ${state.displayedWindowEnd.format(longFormatter)}",
+                            text = stringResource(R.string.flosi_budget_window, state.displayedWindowStart.format(longFormatter), state.displayedWindowEnd.format(longFormatter)),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -146,9 +146,9 @@ fun BudgetHistoryScreen(
             item {
                 Text(
                     text = when (budget.periodType) {
-                        BudgetPeriodType.WEEKLY -> "Per-week breakdown"
-                        BudgetPeriodType.MONTHLY -> "Cycle"
-                        BudgetPeriodType.CUSTOM -> "Range"
+                        BudgetPeriodType.WEEKLY -> stringResource(R.string.flosi_weekly_breakdown)
+                        BudgetPeriodType.MONTHLY -> stringResource(R.string.flosi_cycle)
+                        BudgetPeriodType.CUSTOM -> stringResource(R.string.flosi_range)
                     },
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
                     color = MaterialTheme.colorScheme.onSurface,
@@ -272,7 +272,7 @@ private fun FrozenBadge(capDate: LocalDate) {
                 .background(MaterialTheme.colorScheme.onSurfaceVariant)
         )
         Text(
-            text = "Frozen as of ${capDate.format(formatter)}",
+            text = stringResource(R.string.flosi_frozen_as_of, capDate.format(formatter)),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -334,8 +334,8 @@ private fun BreakdownSheet(
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
             )
             Text(
-                text = if (breakdown.isTrackingAll) "Tracking all expenses"
-                else "${CurrencyFormatter.formatCurrency(totalActual, currency)} of ${CurrencyFormatter.formatCurrency(totalBudget, currency)}",
+                text = if (breakdown.isTrackingAll) stringResource(R.string.flosi_tracking_all_expenses)
+                else stringResource(R.string.flosi_amount_of_budget, CurrencyFormatter.formatCurrency(totalActual, currency), CurrencyFormatter.formatCurrency(totalBudget, currency)),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -383,9 +383,9 @@ private fun BreakdownSheet(
             Spacer(modifier = Modifier.height(Spacing.xs))
             Text(
                 text = when {
-                    isOver -> "Over by ${CurrencyFormatter.formatCurrency(-remaining, currency)}"
-                    remaining > BigDecimal.ZERO -> "${CurrencyFormatter.formatCurrency(remaining, currency)} remaining"
-                    else -> "0 remaining"
+                    isOver -> stringResource(R.string.flosi_over_by_amount, CurrencyFormatter.formatCurrency(-remaining, currency))
+                    remaining > BigDecimal.ZERO -> stringResource(R.string.flosi_remaining_amount, CurrencyFormatter.formatCurrency(remaining, currency))
+                    else -> stringResource(R.string.flosi_remaining_amount, CurrencyFormatter.formatCurrency(BigDecimal.ZERO, currency))
                 },
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = if (isOver) MaterialTheme.colorScheme.error

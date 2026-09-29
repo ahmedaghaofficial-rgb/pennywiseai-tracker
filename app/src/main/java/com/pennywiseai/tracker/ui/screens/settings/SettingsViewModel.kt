@@ -703,7 +703,7 @@ class SettingsViewModel @Inject constructor(
                         _importExportMessage.value = uiText(R.string.flosi_backup_created_choose_location)
                     }
                     is ExportResult.Error -> {
-                        _importExportMessage.value = uiText(R.string.flosi_export_error_detail, result.message)
+                        _importExportMessage.value = uiText(R.string.flosi_export_failed)
                         Log.e("SettingsViewModel", "Export failed: ${result.message}")
                     }
                     else -> {}
@@ -775,7 +775,8 @@ class SettingsViewModel @Inject constructor(
                         _importExportMessage.value = uiText(R.string.flosi_import_success, result.importedTransactions, result.importedCategories, result.skippedDuplicates) + skipped
                     }
                     is ImportResult.Error -> {
-                        _importExportMessage.value = uiText(R.string.flosi_import_error_detail, result.message)
+                        _importExportMessage.value = if (result.message == "Incompatible backup version")
+                            uiText(R.string.flosi_incompatible_backup_version) else uiText(R.string.flosi_import_failed)
                         Log.e("SettingsViewModel", "Import failed: ${result.message}")
                     }
                 }
@@ -803,7 +804,7 @@ class SettingsViewModel @Inject constructor(
                             uiText(R.string.flosi_csv_import_success, result.imported, result.skippedDuplicate) + failedSuffix
                     }
                     is com.pennywiseai.tracker.data.csv.ImportCsvUseCase.Result.Error -> {
-                        _importExportMessage.value = result.message
+                        _importExportMessage.value = uiText(R.string.flosi_import_failed)
                         Log.e("SettingsViewModel", "CSV import failed: ${result.message}")
                     }
                 }
@@ -908,7 +909,7 @@ class SettingsViewModel @Inject constructor(
                 }
             }
             is ExportBytesResult.Error -> {
-                _importExportMessage.value = exportResult.message
+                _importExportMessage.value = uiText(R.string.flosi_backup_save_failed)
                 false
             }
         }

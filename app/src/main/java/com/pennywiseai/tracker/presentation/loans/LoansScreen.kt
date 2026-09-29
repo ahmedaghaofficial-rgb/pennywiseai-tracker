@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.presentation.loans
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
+import com.pennywiseai.tracker.R
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -55,7 +59,7 @@ fun LoansScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Loans",
+                title = stringResource(R.string.flosi_loans),
                 hasBackButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
@@ -85,8 +89,8 @@ fun LoansScreen(
             ) {
                 PennyWiseEmptyState(
                     icon = Icons.Default.SwapHoriz,
-                    headline = "No loans yet",
-                    description = "Mark a transaction as \"Lent\" or \"Borrowed\" to start tracking"
+                    headline = stringResource(R.string.flosi_no_loans_yet),
+                    description = stringResource(R.string.flosi_start_tracking_loans)
                 )
             }
             return@Scaffold
@@ -122,7 +126,7 @@ fun LoansScreen(
             if (uiState.activeLoans.isNotEmpty()) {
                 item {
                     Text(
-                        "Active",
+                        stringResource(R.string.flosi_active),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(vertical = Spacing.xs)
@@ -144,7 +148,7 @@ fun LoansScreen(
                             modifier = Modifier.size(Dimensions.Icon.small)
                         )
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Settled (${uiState.settledLoans.size})")
+                        Text(pluralStringResource(R.plurals.flosi_settled_loans_count, uiState.settledLoans.size, uiState.settledLoans.size))
                     }
                 }
                 if (uiState.showSettledLoans) {
@@ -173,7 +177,7 @@ private fun LoanSummaryCard(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Owed to you", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.flosi_owed_to_you_label), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(
                     CurrencyFormatter.formatCurrency(totalLent, currency),
                     style = MaterialTheme.typography.titleMedium,
@@ -182,7 +186,7 @@ private fun LoanSummaryCard(
                 )
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("You owe", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(stringResource(R.string.flosi_you_owe_label), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(
                     CurrencyFormatter.formatCurrency(totalBorrowed, currency),
                     style = MaterialTheme.typography.titleMedium,
@@ -263,20 +267,20 @@ fun LoanListItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        if (loan.direction == LoanDirection.LENT) "Lent" else "Borrowed",
+                        stringResource(if (loan.direction == LoanDirection.LENT) R.string.flosi_lent else R.string.flosi_borrowed),
                         style = MaterialTheme.typography.labelSmall,
                         color = directionColor
                     )
                     if (loan.status == LoanStatus.SETTLED) {
                         Text(
-                            "Settled",
+                            stringResource(R.string.flosi_settled),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     } else {
                         Text(
-                            "of ${CurrencyFormatter.formatCurrency(loan.originalAmount, loan.currency)}",
+                            stringResource(R.string.flosi_of_amount, CurrencyFormatter.formatCurrency(loan.originalAmount, loan.currency)),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

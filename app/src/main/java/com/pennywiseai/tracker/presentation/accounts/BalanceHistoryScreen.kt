@@ -279,12 +279,12 @@ private fun BalanceHistoryItem(
                         
                         // Source type badge
                         val sourceInfo: Triple<androidx.compose.ui.graphics.vector.ImageVector?, String, androidx.compose.ui.graphics.Color> = when (balance.sourceType) {
-                            "TRANSACTION" -> Triple(Icons.Default.SwapHoriz, "Transaction", MaterialTheme.colorScheme.tertiary)
-                            "SMS_BALANCE" -> Triple(Icons.AutoMirrored.Filled.Message, "Balance SMS", MaterialTheme.colorScheme.secondary)
-                            "CARD_LINK" -> Triple(Icons.Default.CreditCard, "Card Link", MaterialTheme.colorScheme.primary)
-                            "MANUAL" -> Triple(Icons.Default.Edit, "Manual", MaterialTheme.colorScheme.onSurfaceVariant)
+                            "TRANSACTION" -> Triple(Icons.Default.SwapHoriz, stringResource(R.string.flosi_transaction_tab), MaterialTheme.colorScheme.tertiary)
+                            "SMS_BALANCE" -> Triple(Icons.AutoMirrored.Filled.Message, stringResource(R.string.flosi_balance_sms), MaterialTheme.colorScheme.secondary)
+                            "CARD_LINK" -> Triple(Icons.Default.CreditCard, stringResource(R.string.flosi_card_link), MaterialTheme.colorScheme.primary)
+                            "MANUAL" -> Triple(Icons.Default.Edit, stringResource(R.string.flosi_manual), MaterialTheme.colorScheme.onSurfaceVariant)
                             else -> if (balance.transactionId != null)
-                                Triple(Icons.Default.SwapHoriz, "Transaction", MaterialTheme.colorScheme.tertiary)
+                                Triple(Icons.Default.SwapHoriz, stringResource(R.string.flosi_transaction_tab), MaterialTheme.colorScheme.tertiary)
                             else
                                 Triple(null, "", MaterialTheme.colorScheme.onSurfaceVariant)
                         }
@@ -505,7 +505,7 @@ private fun BalanceHistoryItem(
 
                                 Icon(
                                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                    contentDescription = if (isExpanded) "Collapse SMS source" else "Expand SMS source",
+                                    contentDescription = stringResource(if (isExpanded) R.string.flosi_collapse_sms_source else R.string.flosi_expand_sms_source),
                                     modifier = Modifier.size(Dimensions.Icon.medium),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

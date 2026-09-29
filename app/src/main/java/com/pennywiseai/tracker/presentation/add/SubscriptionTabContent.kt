@@ -155,9 +155,9 @@ fun SubscriptionTabContent(
                     )
                     Text(
                         text = if (isIncome)
-                            "Track recurring income (wallet top-ups, allowance). A transaction is auto-created on each scheduled date."
+                            stringResource(R.string.flosi_recurring_income_hint)
                         else
-                            "Track recurring expenses. You'll need to add transactions manually each month.",
+                            stringResource(R.string.flosi_recurring_expense_hint),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -413,7 +413,7 @@ fun SubscriptionTabContent(
                             // doesn't change name when the menu closes (#637).
                             text = uiState.selectedAccount
                                 ?.let { it.alias?.takeIf { a -> a.isNotBlank() } ?: it.bankName }
-                                ?: "Paid from (optional)",
+                                ?: stringResource(R.string.flosi_paid_from_optional),
                             style = MaterialTheme.typography.bodyLarge,
                             color = if (uiState.selectedAccount != null)
                                 MaterialTheme.colorScheme.onSurface
@@ -514,7 +514,7 @@ fun SubscriptionTabContent(
                             },
                             trailingIcon = {
                                 if (uiState.selectedAccount?.id == account.id) {
-                                    Icon(Icons.Default.Check, "Selected", tint = MaterialTheme.colorScheme.primary)
+                                    Icon(Icons.Default.Check, stringResource(R.string.flosi_selected), tint = MaterialTheme.colorScheme.primary)
                                 }
                             }
                         )

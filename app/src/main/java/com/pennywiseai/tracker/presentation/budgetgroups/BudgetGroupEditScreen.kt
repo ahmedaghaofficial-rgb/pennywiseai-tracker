@@ -832,7 +832,6 @@ private fun dayOfWeekName(value: Int): String = stringResource(when (value.coerc
     6 -> R.string.flosi_saturday
     else -> R.string.flosi_sunday
 })
-}
 
 /**
  * Weekly cadence row — dropdown to pick the day-of-week the week starts
