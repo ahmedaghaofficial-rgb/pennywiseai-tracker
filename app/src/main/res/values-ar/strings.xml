@@ -681,7 +681,7 @@
     </plurals>
     <plurals name="flosi_delete_transactions_warning">
         <item quantity="zero">لا توجد معاملات لحذفها.</item>
-        <item quantity="one">سيُحذف المعاملة الوحيدة وتقسيماتها ووسومها نهائيًا. لا يمكن التراجع.</item>
+        <item quantity="one">ستُحذف المعاملة الوحيدة وتقسيماتها ووسومها نهائيًا. لا يمكن التراجع.</item>
         <item quantity="two">ستُحذف المعاملتان وتقسيماتهما ووسومهما نهائيًا. لا يمكن التراجع.</item>
         <item quantity="few">ستُحذف %1$d معاملات وتقسيماتها ووسومها نهائيًا. لا يمكن التراجع.</item>
         <item quantity="many">ستُحذف %1$d معاملة وتقسيماتها ووسومها نهائيًا. لا يمكن التراجع.</item>
