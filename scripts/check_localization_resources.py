@@ -2,6 +2,7 @@
 """Check parity and count formatting for the Personal Arabic UI resources."""
 
 from pathlib import Path
+from collections import Counter
 import re
 import xml.etree.ElementTree as ET
 
@@ -13,6 +14,9 @@ ARABIC_QUANTITIES = {"zero", "one", "two", "few", "many", "other"}
 
 def read(locale):
     elements = ET.parse(RES / locale / "strings.xml").getroot()
+    names = [element.attrib["name"] for element in elements if element.tag in {"string", "plurals"}]
+    duplicates = [name for name, count in Counter(names).items() if count > 1]
+    assert not duplicates, f"Duplicate {locale} resources: {duplicates}"
     return {
         element.attrib["name"]: element
         for element in elements

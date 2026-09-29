@@ -456,7 +456,6 @@
     <string name="flosi_sms_source_content">SMS: %1$s</string>
     <string name="flosi_sms_source_expand_hint">SMS: %1$s… (tap to expand)</string>
     <string name="flosi_delete_category_warning">&quot;%1$s&quot; will be removed. Existing transactions keep their current label. This can\'t be undone.</string>
-    <string name="flosi_spent_of_budget">%1$s of %2$s</string>
     <string name="flosi_of_budget_percent">of %1$s · %2$d%%</string>
     <string name="flosi_percent_used">%1$d%% used</string>
     <string name="flosi_estimated_amount">est. %1$s</string>
