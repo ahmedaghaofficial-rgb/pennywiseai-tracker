@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.presentation.transactions
 
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.expandVertically
@@ -206,9 +207,10 @@ fun TransactionsScreen(
     val customRangeLabel = remember(customDateRange) {
         DateRangeUtils.formatDateRange(customDateRange)
     }
-    val periodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel) {
+    val rawPeriodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel) {
         selectedPeriod.chipLabel(budgetCycleStartDay, customRangeLabel)
     }
+    val periodChipLabel = if (rawPeriodChipLabel == selectedPeriod.label) localizedPeriodLabel(selectedPeriod) else rawPeriodChipLabel
     
     // Apply initial filters only once when screen is first created
     LaunchedEffect(Unit) {
@@ -426,7 +428,7 @@ fun TransactionsScreen(
                 ?: categoryFilter?.let { setOf(it) }
                 ?: availableCategories.toSet(),
             onCategoryToggled = { viewModel.toggleCategory(it, availableCategories) },
-            selectedProfileName = profiles.firstOrNull { it.id == selectedProfileId }?.name ?: "Profile",
+            selectedProfileName = profiles.firstOrNull { it.id == selectedProfileId }?.name ?: stringResource(R.string.flosi_profile),
             hasProfileFilter = selectedProfileId != null,
             hasAnyActiveFilter = hasAnyActiveFilter,
             showSortMenu = showSortMenu,
@@ -632,7 +634,7 @@ fun TransactionsScreen(
                         uiState.groupedTransactions[dateGroup]?.let { transactions ->
                             // Date group header
                             val headerContent: @Composable LazyItemScope.(Int) -> Unit = { _ ->
-                                TransactionDateHeader(title = dateGroup.label)
+                                TransactionDateHeader(title = localizedDateGroupLabel(dateGroup))
                             }
                             stickyHeader(content = headerContent)
                             
@@ -793,11 +795,12 @@ fun TransactionsScreen(
     }
 
     // Bulk action snackbar with Undo (#369).
-    LaunchedEffect(bulkSnack) {
+    val undoActionLabel = stringResource(R.string.flosi_undo)
+    LaunchedEffect(bulkSnack, undoActionLabel) {
         bulkSnack?.let { snack ->
             val result = snackbarHostState.showSnackbar(
                 message = snack.message,
-                actionLabel = snack.undo?.let { "Undo" },
+                actionLabel = snack.undo?.let { undoActionLabel },
                 duration = SnackbarDuration.Short
             )
             if (result == SnackbarResult.ActionPerformed) snack.undo?.invoke()
@@ -838,7 +841,7 @@ private fun BulkGroupPickerSheet(
                 .padding(bottom = Dimensions.Padding.content)
         ) {
             Text(
-                text = "Add $selectedCount to group",
+                text = stringResource(R.string.flosi_add_count_to_group, selectedCount),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = Spacing.md)
@@ -1124,7 +1127,7 @@ private fun TransactionFilterHeader(
                                                 onClick = null,
                                                 modifier = Modifier.size(Dimensions.Icon.medium)
                                             )
-                                            Text(option.label)
+                                            Text(localizedSortLabel(option))
                                         }
                                     },
                                     leadingIcon = {
@@ -1185,7 +1188,7 @@ private fun TransactionFilterHeader(
                         ) {
                             timePeriods.forEach { period ->
                                 DropdownMenuItem(
-                                    text = { Text(period.label) },
+                                    text = { Text(localizedPeriodLabel(period)) },
                                     leadingIcon = {
                                         if (selectedPeriod == period) {
                                             Icon(Icons.Default.Check, contentDescription = null)
@@ -1214,7 +1217,7 @@ private fun TransactionFilterHeader(
                         ) {
                             TransactionTypeFilter.values().forEach { typeFilter ->
                                 DropdownMenuItem(
-                                    text = { Text(typeFilter.label) },
+                                    text = { Text(typeFilter.shortLabel()) },
                                     leadingIcon = {
                                         if (transactionTypeFilter == typeFilter) {
                                             Icon(Icons.Default.Check, contentDescription = null)
@@ -1364,7 +1367,7 @@ private fun TransactionFilterHeader(
                                 accountOptions.firstOrNull { it.key == accountFilter }?.label
                             ExpressiveFilterChip(
                                 selected = accountFilter != null,
-                                text = selectedAccountLabel ?: "Account",
+                                text = selectedAccountLabel ?: stringResource(R.string.flosi_account),
                                 icon = Icons.Outlined.AccountBalanceWallet,
                                 onClick = onAccountClick
                             )
@@ -1406,6 +1409,7 @@ private fun TransactionFilterHeader(
     }
 }
 
+@Composable
 private fun moreFiltersLabel(
     categoryLabel: String?,
     selectedProfileName: String,
@@ -1413,10 +1417,10 @@ private fun moreFiltersLabel(
     hasProfileFilter: Boolean
 ): String {
     return when {
-        hasCategoryFilter && hasProfileFilter -> "2 Filters"
-        hasCategoryFilter -> categoryLabel ?: "Category"
+        hasCategoryFilter && hasProfileFilter -> stringResource(R.string.flosi_two_filters)
+        hasCategoryFilter -> categoryLabel ?: stringResource(R.string.flosi_category)
         hasProfileFilter -> selectedProfileName
-        else -> "Filters"
+        else -> stringResource(R.string.flosi_filters)
     }
 }
 
@@ -1462,8 +1466,8 @@ private fun TransactionSearchBar(
                     Box(contentAlignment = Alignment.CenterStart) {
                         if (query.isEmpty()) {
                             Text(
-                                text = if (categoryFilter != null) "Search in $categoryFilter..."
-                                else "Search transactions...",
+                                text = if (categoryFilter != null) stringResource(R.string.flosi_search_in_category, categoryFilter)
+                                else stringResource(R.string.flosi_search_transactions_ellipsis),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 maxLines = 1,
@@ -1496,16 +1500,16 @@ private fun EmptyTransactionsState(
     onAddClick: () -> Unit = {}
 ) {
     val headline = when {
-        searchQuery.isNotEmpty() -> "No results for \"$searchQuery\""
-        selectedPeriod != TimePeriod.ALL -> "Nothing for ${selectedPeriod.label.lowercase()}"
-        else -> "No transactions yet"
+        searchQuery.isNotEmpty() -> stringResource(R.string.flosi_no_results_for, searchQuery)
+        selectedPeriod != TimePeriod.ALL -> stringResource(R.string.flosi_nothing_for_period, localizedPeriodLabel(selectedPeriod))
+        else -> stringResource(R.string.flosi_no_transactions_yet)
     }
     val description = when {
-        searchQuery.isNotEmpty() -> "Try a different search term or clear your filters"
-        selectedPeriod != TimePeriod.ALL -> "Try selecting a different time period"
-        else -> "Add your first transaction manually, or scan SMS from the home screen"
+        searchQuery.isNotEmpty() -> stringResource(R.string.flosi_try_another_search)
+        selectedPeriod != TimePeriod.ALL -> stringResource(R.string.flosi_try_another_period)
+        else -> stringResource(R.string.flosi_add_first_transaction_hint)
     }
-    val actionLabel = if (searchQuery.isEmpty() && selectedPeriod == TimePeriod.ALL) "Add Transaction" else null
+    val actionLabel = if (searchQuery.isEmpty() && selectedPeriod == TimePeriod.ALL) stringResource(R.string.flosi_add_transaction) else null
     val onAction = if (actionLabel != null) onAddClick else null
 
     Box(
@@ -1532,6 +1536,7 @@ private val DATE_MARKER_WIDTH = Spacing.xs
 private val DATE_MARKER_HEIGHT = Spacing.md + Spacing.xxs
 
 /** "All categories", one name, "All except X, Y", or "N categories" (#786). */
+@Composable
 private fun categoryFilterLabel(
     single: String?,
     selected: List<String>?,
@@ -1542,7 +1547,34 @@ private fun categoryFilterLabel(
     val excluded = available - selected.toSet()
     return when {
         selected.size == 1 -> selected.first()
-        excluded.size in 1..2 && selected.size >= 2 -> "All except ${excluded.joinToString(", ")}"
-        else -> "${selected.size} categories"
+        excluded.size in 1..2 && selected.size >= 2 -> stringResource(R.string.flosi_all_except, excluded.joinToString(", "))
+        else -> pluralStringResource(R.plurals.flosi_category_count, selected.size, selected.size)
     }
 }
+
+@Composable
+private fun localizedPeriodLabel(period: TimePeriod): String = stringResource(when (period) {
+    TimePeriod.THIS_MONTH -> R.string.flosi_this_month_period
+    TimePeriod.LAST_MONTH -> R.string.flosi_last_month_period
+    TimePeriod.CURRENT_FY -> R.string.flosi_current_fy
+    TimePeriod.ALL -> R.string.flosi_all_time
+    TimePeriod.CUSTOM -> R.string.flosi_custom_range
+})
+
+@Composable
+private fun localizedDateGroupLabel(group: DateGroup): String = stringResource(when (group) {
+    DateGroup.TODAY -> R.string.flosi_today
+    DateGroup.YESTERDAY -> R.string.flosi_yesterday
+    DateGroup.THIS_WEEK -> R.string.flosi_this_week
+    DateGroup.EARLIER -> R.string.flosi_earlier
+})
+
+@Composable
+private fun localizedSortLabel(option: SortOption): String = stringResource(when (option) {
+    SortOption.DATE_NEWEST -> R.string.flosi_newest_first
+    SortOption.DATE_OLDEST -> R.string.flosi_oldest_first
+    SortOption.AMOUNT_HIGHEST -> R.string.flosi_highest_amount
+    SortOption.AMOUNT_LOWEST -> R.string.flosi_lowest_amount
+    SortOption.MERCHANT_AZ -> R.string.flosi_merchant_az
+    SortOption.MERCHANT_ZA -> R.string.flosi_merchant_za
+})

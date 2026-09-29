@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.presentation.budgetgroups
 
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
@@ -337,7 +338,7 @@ private fun BudgetGroupsContent(
         AlertDialog(
             onDismissRequest = { deleteGroupId = null },
             title = { Text(stringResource(R.string.flosi_delete_budget)) },
-            text = { Text("Are you sure you want to delete \"$deleteGroupName\"? This cannot be undone.") },
+            text = { Text(stringResource(R.string.flosi_confirm_delete_budget, deleteGroupName)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -615,9 +616,9 @@ private fun BudgetCard(
                 val remainingAbs = groupSpending.remaining.abs()
                 Text(
                     text = if (isOverBudget) {
-                        "${CurrencyFormatter.formatCurrency(remainingAbs, currency)} over budget"
+                        stringResource(R.string.flosi_over_budget_amount, CurrencyFormatter.formatCurrency(remainingAbs, currency))
                     } else {
-                        "${CurrencyFormatter.formatCurrency(groupSpending.remaining.coerceAtLeast(BigDecimal.ZERO), currency)} remaining"
+                        stringResource(R.string.flosi_remaining_amount, CurrencyFormatter.formatCurrency(groupSpending.remaining.coerceAtLeast(BigDecimal.ZERO), currency))
                     },
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
@@ -637,38 +638,34 @@ private fun BudgetCard(
                 // consistent across month views.
                 val dateFormatter = java.time.format.DateTimeFormatter.ofPattern("d MMM")
                 val subtitleText = when {
-                    groupSpending.daysRemaining == 0 && groupSpending.daysElapsed >= groupSpending.windowDays -> "Finished"
-                    isOverBudget -> "Over by ${CurrencyFormatter.formatCurrency(remainingAbs, currency)}"
+                    groupSpending.daysRemaining == 0 && groupSpending.daysElapsed >= groupSpending.windowDays -> stringResource(R.string.flosi_finished)
+                    isOverBudget -> stringResource(R.string.flosi_over_by_amount, CurrencyFormatter.formatCurrency(remainingAbs, currency))
                     groupSpending.periodType == BudgetPeriodType.WEEKLY -> {
                         val renewalIn = (groupSpending.daysRemaining - 1).coerceAtLeast(0)
                         val weekdayName = groupSpending.group.budget.weekStartDay
-                            ?.let { java.time.DayOfWeek.of(it.coerceIn(1, 7)).name.lowercase().replaceFirstChar { ch -> ch.titlecase() } }
-                            ?: "Monday"
-                        when {
-                            renewalIn == 0 -> "Resets today · $weekdayName renew"
-                            renewalIn == 1 -> "Resets in 1 day · $weekdayName renew"
-                            else -> "Resets in $renewalIn days · $weekdayName renew"
-                        }
+                            ?.let { java.time.DayOfWeek.of(it.coerceIn(1, 7)) }
+                            ?: java.time.DayOfWeek.MONDAY
+                        val renewal = if (renewalIn == 0) stringResource(R.string.flosi_resets_today)
+                            else pluralStringResource(R.plurals.flosi_resets_in_days, renewalIn, renewalIn)
+                        stringResource(R.string.flosi_renews_weekday, renewal, weekdayName.getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.getDefault()))
                     }
                     groupSpending.periodType == BudgetPeriodType.MONTHLY -> {
                         val startDay = groupSpending.group.budget.monthStartDay
                             ?: groupSpending.windowStart.dayOfMonth
                         val renewalIn = (groupSpending.daysRemaining - 1).coerceAtLeast(0)
-                        when {
-                            renewalIn == 0 -> "Resets today · day $startDay"
-                            renewalIn == 1 -> "Resets in 1 day · day $startDay"
-                            else -> "Resets in $renewalIn days · day $startDay"
-                        }
+                        val renewal = if (renewalIn == 0) stringResource(R.string.flosi_resets_today)
+                            else pluralStringResource(R.plurals.flosi_resets_in_days, renewalIn, renewalIn)
+                        stringResource(R.string.flosi_renews_monthday, renewal, startDay)
                     }
                     groupSpending.periodType == BudgetPeriodType.CUSTOM -> {
                         val range = "${groupSpending.windowStart.format(dateFormatter)} – ${groupSpending.windowEnd.format(dateFormatter)}"
                         when {
-                            groupSpending.daysRemaining > 1 -> "Runs $range · ${groupSpending.daysRemaining - 1} days remaining"
-                            groupSpending.daysRemaining == 1 -> "Runs $range · 1 day remaining"
-                            else -> "Runs $range · Finished"
+                            groupSpending.daysRemaining > 1 -> stringResource(R.string.flosi_runs_range, range, pluralStringResource(R.plurals.flosi_days_remaining, groupSpending.daysRemaining - 1, groupSpending.daysRemaining - 1))
+                            groupSpending.daysRemaining == 1 -> stringResource(R.string.flosi_runs_range, range, pluralStringResource(R.plurals.flosi_days_remaining, 1, 1))
+                            else -> stringResource(R.string.flosi_runs_range, range, stringResource(R.string.flosi_finished))
                         }
                     }
-                    else -> "${groupSpending.daysRemaining} days remaining"
+                    else -> pluralStringResource(R.plurals.flosi_days_remaining, groupSpending.daysRemaining, groupSpending.daysRemaining)
                 }
                 Text(
                     text = subtitleText,
@@ -680,14 +677,14 @@ private fun BudgetCard(
 
                 // Row 5: Spent X of Y
                 Text(
-                    text = "Spent ${CurrencyFormatter.formatCurrency(groupSpending.totalActual, currency)} of ${CurrencyFormatter.formatCurrency(groupSpending.totalBudget, currency)}",
+                    text = stringResource(R.string.flosi_spent_of_budget, CurrencyFormatter.formatCurrency(groupSpending.totalActual, currency), CurrencyFormatter.formatCurrency(groupSpending.totalBudget, currency)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else if (groupSpending.isTrackingAllExpenses) {
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "Spent ${CurrencyFormatter.formatCurrency(groupSpending.totalActual, currency)}",
+                    text = stringResource(R.string.flosi_spent_amount, CurrencyFormatter.formatCurrency(groupSpending.totalActual, currency)),
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
                     ),

@@ -350,7 +350,7 @@ private fun ProfileStep(
                 ) {
                     Image(
                         painter = painterResource(id = drawableRes),
-                        contentDescription = "Avatar ${index + 1}",
+                        contentDescription = stringResource(R.string.flosi_avatar_number, index + 1),
                         modifier = Modifier.size(Dimensions.Icon.avatar),
                         colorFilter = ColorFilter.tint(
                             if (isSelected) MaterialTheme.colorScheme.primary
@@ -531,7 +531,7 @@ private fun PermissionsStep(
         Spacer(modifier = Modifier.height(Spacing.md))
 
         Text(
-            text = "${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} can automatically detect and categorize your bank transactions from SMS messages.",
+            text = stringResource(R.string.flosi_sms_detection_description, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -554,10 +554,12 @@ private fun PermissionsStep(
                 )
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "• Only transaction messages are processed\n" +
-                            "• All data stays on your device\n" +
-                            "• No personal messages are read\n" +
-                            "• You can revoke access anytime in Settings",
+                    text = listOf(
+                        stringResource(R.string.flosi_privacy_transactions_only),
+                        stringResource(R.string.flosi_privacy_on_device),
+                        stringResource(R.string.flosi_privacy_no_personal_messages),
+                        stringResource(R.string.flosi_privacy_revoke_access)
+                    ).joinToString("\n") { "• $it" },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )

@@ -66,6 +66,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -326,7 +327,7 @@ fun HomeScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.AutoAwesome,
-                                    contentDescription = "Upgrade to PennyWise Pro",
+                                    contentDescription = stringResource(R.string.flosi_upgrade_to_pro),
                                     tint = com.pennywiseai.tracker.ui.theme.yellow_dark,
                                     modifier = Modifier.size(Dimensions.Icon.inline),
                                 )
@@ -773,7 +774,7 @@ fun HomeScreen(
                                         icon = Icons.Default.Sync,
                                         headline = stringResource(R.string.flosi_no_transactions_yet),
                                         description = stringResource(R.string.flosi_scan_your_sms_to_get_started_we_ll_find_your_transacti),
-                                        actionLabel = "Scan Now",
+                                        actionLabel = stringResource(R.string.flosi_scan_now),
                                         onAction = { viewModel.scanSmsMessages() },
                                         modifier = Modifier.padding(horizontal = Dimensions.Padding.content),
                                         ghostContent = {
@@ -1074,11 +1075,7 @@ fun HomeScreen(
                 },
                 text = {
                     Text(
-                        "This will reprocess all SMS messages from scratch. " +
-                        "Use this to fix issues caused by updated bank parsers.\n\n" +
-                        "Your loans, grouped transactions, and merchant mappings " +
-                        "are preserved.\n\n" +
-                        "This may take a few seconds depending on your message history."
+                        stringResource(R.string.flosi_full_resync_explanation)
                     )
                 },
                 confirmButton = {
@@ -1195,7 +1192,7 @@ fun HomeScreen(
 
                 // Join Discord (Middle)
                 MenuListItem(
-                    headline = "Join Discord for feedback",
+                    headline = stringResource(R.string.flosi_join_discord),
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_discord),
@@ -1213,7 +1210,7 @@ fun HomeScreen(
 
                 // Rate on Play Store (Bottom)
                 MenuListItem(
-                    headline = "Rate on Play Store",
+                    headline = stringResource(R.string.flosi_rate_play_store),
                     icon = { Icon(Icons.Default.Star, contentDescription = null) },
                     position = ListItemPosition.Bottom,
                     onClick = {
@@ -1289,7 +1286,7 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(Spacing.xs)
                     ) {
                         Text(
-                            text = section.label,
+                            text = localizedHomeSection(section),
                             style = MaterialTheme.typography.bodyLarge,
                             color = if (isVisible) MaterialTheme.colorScheme.onSurface
                             else MaterialTheme.colorScheme.onSurfaceVariant,
@@ -1298,11 +1295,11 @@ fun HomeScreen(
                         IconButton(
                             enabled = i > 0,
                             onClick = { viewModel.moveHomeSection(section, -1) }
-                        ) { Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Move ${section.label} up") }
+                        ) { Icon(Icons.Default.KeyboardArrowUp, contentDescription = stringResource(R.string.flosi_move_up, localizedHomeSection(section))) }
                         IconButton(
                             enabled = i < homeSectionLayout.lastIndex,
                             onClick = { viewModel.moveHomeSection(section, +1) }
-                        ) { Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Move ${section.label} down") }
+                        ) { Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.flosi_move_down, localizedHomeSection(section))) }
                         Switch(
                             checked = isVisible,
                             onCheckedChange = { on -> viewModel.setHomeSectionVisible(section, on) }
@@ -1386,8 +1383,7 @@ private fun BreakdownDialog(
                     contentPadding = Spacing.smd
                 ) {
                     Text(
-                        text = "Formula: Income - Expenses = Net Worth\n" +
-                               "Green (+) = Savings | Red (-) = Overspending",
+                        text = stringResource(R.string.flosi_net_worth_formula),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         textAlign = TextAlign.Center
@@ -1642,17 +1638,14 @@ private fun ActiveLoansSummaryCard(
             )
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(R.string.flosi_active_loans, loans.size),
+                    text = pluralStringResource(R.plurals.flosi_active_loans, loans.size, loans.size),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
-                val subtitle = when {
-                    totalLentRemaining > java.math.BigDecimal.ZERO && totalBorrowedRemaining > java.math.BigDecimal.ZERO ->
-                        "${CurrencyFormatter.formatCurrency(totalLentRemaining, currency)} owed to you"
-                    totalLentRemaining > java.math.BigDecimal.ZERO ->
-                        "${CurrencyFormatter.formatCurrency(totalLentRemaining, currency)} owed to you"
-                    else ->
-                        "You owe ${CurrencyFormatter.formatCurrency(totalBorrowedRemaining, currency)}"
+                val subtitle = if (totalLentRemaining > java.math.BigDecimal.ZERO) {
+                    stringResource(R.string.flosi_owed_to_you, CurrencyFormatter.formatCurrency(totalLentRemaining, currency))
+                } else {
+                    stringResource(R.string.flosi_you_owe_amount, CurrencyFormatter.formatCurrency(totalBorrowedRemaining, currency))
                 }
                 Text(
                     text = subtitle,
@@ -1669,6 +1662,17 @@ private fun ActiveLoansSummaryCard(
         }
     }
 }
+
+@Composable
+private fun localizedHomeSection(section: HomeSection): String = stringResource(when (section) {
+    HomeSection.BUDGETS -> R.string.flosi_budgets
+    HomeSection.LOANS -> R.string.flosi_loans
+    HomeSection.GROUPS -> R.string.flosi_groups
+    HomeSection.RECENT_TRANSACTIONS -> R.string.flosi_recent_transactions
+    HomeSection.ACCOUNTS -> R.string.flosi_bank_accounts
+    HomeSection.SUBSCRIPTIONS -> R.string.flosi_upcoming_subscriptions
+    HomeSection.ACTIVITY -> R.string.flosi_activity
+})
 
 /**
  * A row in the "More options" bottom sheet. Uses the shared grouped-list

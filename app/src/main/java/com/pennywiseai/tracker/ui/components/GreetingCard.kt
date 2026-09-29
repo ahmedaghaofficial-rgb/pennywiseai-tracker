@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -68,25 +69,24 @@ fun GreetingCard(
     cycleEnd: LocalDate? = null
 ) {
     val today = LocalDate.now()
-    val subtitle = remember(today, cycleEnd) {
+    val subtitle = run {
         val now = today
         // Prefer the cycle's end over the calendar month's end so the
         // "X days left" hint lines up with the budget / spending windows.
         val lastDay = cycleEnd ?: now.withDayOfMonth(now.lengthOfMonth())
         val daysLeft = ChronoUnit.DAYS.between(now, lastDay)
-        val rawMonth = now.month.name.lowercase()
-        val monthName = if (rawMonth.isEmpty()) rawMonth else rawMonth.substring(0, 1).uppercase() + rawMonth.substring(1)
+        val monthName = now.format(java.time.format.DateTimeFormatter.ofPattern("MMMM", java.util.Locale.getDefault()))
 
         when {
-            daysLeft == 0L -> "Last day of $monthName"
-            daysLeft <= 7 -> "$daysLeft days left in $monthName"
+            daysLeft == 0L -> stringResource(R.string.flosi_last_day_of_month, monthName)
+            daysLeft <= 7 -> pluralStringResource(R.plurals.flosi_days_left_in_month, daysLeft.toInt(), daysLeft.toInt(), monthName)
             else -> {
                 val hour = LocalTime.now().hour
                 when (hour) {
-                    in 5..11 -> "Good morning"
-                    in 12..16 -> "Good afternoon"
-                    in 17..21 -> "Good evening"
-                    else -> "Good night"
+                    in 5..11 -> stringResource(R.string.flosi_good_morning)
+                    in 12..16 -> stringResource(R.string.flosi_good_afternoon)
+                    in 17..21 -> stringResource(R.string.flosi_good_evening)
+                    else -> stringResource(R.string.flosi_good_night)
                 }
             }
         }
@@ -231,4 +231,3 @@ fun GreetingCard(
         }
     }
 }
-

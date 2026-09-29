@@ -74,9 +74,9 @@ fun UnifiedAccountsCard(
                     )
                     Text(
                         text = if (bankAccounts.isNotEmpty()) {
-                            "Bank Balance • ${bankAccounts.size}"
+                            stringResource(R.string.flosi_bank_balance_count, bankAccounts.size)
                         } else {
-                            "Bank Balance"
+                            stringResource(R.string.flosi_bank_balance)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -111,9 +111,9 @@ fun UnifiedAccountsCard(
                     )
                     Text(
                         text = if (creditCards.isNotEmpty()) {
-                            "Available Credit • ${creditCards.size}"
+                            stringResource(R.string.flosi_available_credit_count, creditCards.size)
                         } else {
-                            "Available Credit"
+                            stringResource(R.string.flosi_available_credit)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -169,8 +169,8 @@ fun UnifiedAccountsCard(
                                     val utilization = if (card.creditLimit != null && card.creditLimit > BigDecimal.ZERO) {
                                         ((card.balance.toDouble() / card.creditLimit.toDouble()) * 100).toInt()
                                     } else 0
-                                    "Used: ${CurrencyFormatter.formatCurrency(card.balance, selectedCurrency)} ($utilization%)"
-                                } else "Available Limit",
+                                    stringResource(R.string.flosi_used_credit, CurrencyFormatter.formatCurrency(card.balance, selectedCurrency), utilization)
+                                } else stringResource(R.string.flosi_available_limit),
                                 isCredit = true,
                                 onClick = { onAccountClick(card.bankName, card.accountLast4) },
                                 subtitleColor = if (card.balance > BigDecimal.ZERO) {
@@ -195,7 +195,7 @@ fun UnifiedAccountsCard(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = if (showAllAccounts) "Show Less" else "View All $totalAccounts Accounts",
+                            text = if (showAllAccounts) stringResource(R.string.flosi_show_less) else stringResource(R.string.flosi_view_all_accounts_count, totalAccounts),
                             style = MaterialTheme.typography.bodySmall
                         )
                     }

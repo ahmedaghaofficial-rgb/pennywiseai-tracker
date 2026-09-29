@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.ui.components
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
+import com.pennywiseai.tracker.R
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
@@ -53,9 +57,9 @@ fun CollapsibleFilterRow(
             
             Text(
                 text = if (activeFilterCount > 0) {
-                    "More Filters ($activeFilterCount active)"
+                    pluralStringResource(R.plurals.flosi_more_active_filters, activeFilterCount, activeFilterCount)
                 } else {
-                    "More Filters"
+                    stringResource(R.string.flosi_more_filters)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (activeFilterCount > 0) {
@@ -69,7 +73,7 @@ fun CollapsibleFilterRow(
             
             Icon(
                 imageVector = Icons.Default.ExpandMore,
-                contentDescription = if (isExpanded) "Collapse" else "Expand",
+                contentDescription = stringResource(if (isExpanded) R.string.flosi_collapse else R.string.flosi_expand),
                 modifier = Modifier
                     .size(Dimensions.Icon.medium)
                     .rotate(rotationAngle),

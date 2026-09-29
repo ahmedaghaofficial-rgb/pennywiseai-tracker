@@ -236,7 +236,7 @@ private fun ExpandableBalanceChart(
                 
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = stringResource(if (isExpanded) R.string.flosi_collapse else R.string.flosi_expand),
                     modifier = Modifier
                         .size(Dimensions.Icon.medium)
                         .rotate(if (isExpanded) 180f else 0f),
@@ -301,7 +301,7 @@ private fun CurrentBalanceCard(
                 if (balance > BigDecimal.ZERO) {
                     Spacer(modifier = Modifier.height(Spacing.xs))
                     Text(
-                        text = "Outstanding: ${CurrencyFormatter.formatCurrency(balance, primaryCurrency)}",
+                        text = stringResource(R.string.flosi_outstanding_amount, CurrencyFormatter.formatCurrency(balance, primaryCurrency)),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
                     )
@@ -616,4 +616,3 @@ private fun AccountTransactionItem(
         }
     }
 }
-

@@ -274,7 +274,7 @@ private fun CategoryItem(
             IconButton(onClick = onToggleHidden) {
                 Icon(
                     imageVector = if (category.isHidden) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                    contentDescription = if (category.isHidden) "Show category" else "Hide category",
+                    contentDescription = stringResource(if (category.isHidden) R.string.flosi_show_category else R.string.flosi_hide_category),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(Dimensions.Icon.medium)
                 )

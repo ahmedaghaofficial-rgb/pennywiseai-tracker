@@ -37,6 +37,7 @@ import android.widget.Toast
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.AnnotatedString
 import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.core.localization.localizedUiMessage
@@ -277,11 +278,11 @@ fun SettingsScreen(
                             icon = Icons.Default.AutoAwesome,
                             iconBgColor = yellow_light,
                             iconTint = yellow_dark,
-                            title = if (isProEntitled) "PennyWise Pro" else "Upgrade to PennyWise Pro",
+                            title = if (isProEntitled) "PennyWise Pro" else stringResource(R.string.flosi_upgrade_to_pro),
                             subtitle = if (isProEntitled) {
-                                "Active · all power features unlocked"
+                                stringResource(R.string.flosi_pro_active)
                             } else {
-                                "Unlimited rules, statements, exports, and more"
+                                stringResource(R.string.flosi_pro_features)
                             },
                             onClick = { showUpgradeSheet = true },
                             position = ListItemPosition.Single,
@@ -353,7 +354,7 @@ fun SettingsScreen(
                     iconBgColor = indigo_light,
                     iconTint = indigo_dark,
                     title = stringResource(R.string.flosi_count_card_spend_as_expense),
-                    subtitle = "Include credit-card spend in \"Spent this month\"",
+                    subtitle = stringResource(R.string.flosi_include_credit_spend),
                     checked = countCreditCardAsExpense,
                     onCheckedChange = { settingsViewModel.setCountCreditCardAsExpense(it) },
                     position = ListItemPosition.Middle
@@ -405,7 +406,7 @@ fun SettingsScreen(
                         currentValue = mainAccount?.let { acc ->
                             val name = acc.alias?.takeIf { it.isNotBlank() } ?: acc.bankName
                             AccountBalanceEntity.accountLabel(name, acc.accountLast4)
-                        } ?: "Not set",
+                        } ?: stringResource(R.string.flosi_not_set),
                         expanded = showMainAccountDropdown,
                         onExpandedChange = { showMainAccountDropdown = it },
                         position = ListItemPosition.Middle
@@ -458,10 +459,10 @@ fun SettingsScreen(
                     iconBgColor = teal_light,
                     iconTint = teal_dark,
                     title = stringResource(R.string.flosi_budget_cycle_start_day),
-                    subtitle = "Shifts the start of each monthly budget period; e.g. 25 means your cycle runs 25th → 24th",
+                    subtitle = stringResource(R.string.flosi_budget_cycle_hint),
                     onClick = { showBudgetCycleDialog = true },
                     position = ListItemPosition.Single,
-                    trailingText = ordinalSuffix(budgetCycleStartDay)
+                    trailingText = localizedOrdinalDay(budgetCycleStartDay)
                 )
             }
 
@@ -473,7 +474,7 @@ fun SettingsScreen(
                     iconBgColor = teal_light,
                     iconTint = teal_dark,
                     title = stringResource(R.string.flosi_replace_upi_vpas_with_contact_names),
-                    subtitle = "Show 'John Doe' instead of '9876543210@paytm'. Needs contacts permission.",
+                    subtitle = stringResource(R.string.flosi_contacts_name_hint),
                     checked = useContactsForVpa,
                     onCheckedChange = { wantsOn ->
                         if (wantsOn) {
@@ -504,7 +505,7 @@ fun SettingsScreen(
                     iconTint = red_dark,
                     title = stringResource(R.string.flosi_app_lock),
                     subtitle = if (appLockUiState.canUseBiometric) {
-                        "Protect your data with biometric authentication"
+                        stringResource(R.string.flosi_biometric_protection)
                     } else {
                         appLockUiState.biometricCapability.getErrorMessage()
                     },
@@ -520,9 +521,8 @@ fun SettingsScreen(
                         iconTint = pink_dark,
                         title = stringResource(R.string.flosi_lock_timeout),
                         subtitle = when (appLockUiState.timeoutMinutes) {
-                            0 -> "Lock immediately"
-                            1 -> "After 1 minute"
-                            else -> "After ${appLockUiState.timeoutMinutes} minutes"
+                            0 -> stringResource(R.string.flosi_lock_immediately)
+                            else -> pluralStringResource(R.plurals.flosi_after_minutes, appLockUiState.timeoutMinutes, appLockUiState.timeoutMinutes)
                         },
                         onClick = { showTimeoutDialog = true },
                         position = ListItemPosition.Bottom
@@ -697,22 +697,22 @@ fun SettingsScreen(
                     iconTint = teal_dark,
                     title = stringResource(R.string.flosi_sms_scan_period),
                     subtitle = when {
-                        smsScanAllTime -> "Scan all SMS messages"
+                        smsScanAllTime -> stringResource(R.string.flosi_scan_all_sms)
                         smsScanUseCustomDate -> {
                             val formattedDate = smsScanCustomDate?.let { formatSmsScanCustomDate(it) }
                             if (formattedDate != null) {
-                                "Scan from $formattedDate to today"
+                                stringResource(R.string.flosi_scan_from_date, formattedDate)
                             } else {
-                                "Scan from a custom start date to today"
+                                stringResource(R.string.flosi_scan_from_custom_date)
                             }
                         }
-                        else -> "Scan last $smsScanMonths months"
+                        else -> pluralStringResource(R.plurals.flosi_scan_last_months, smsScanMonths, smsScanMonths)
                     },
                     onClick = { showSmsScanDialog = true },
                     position = ListItemPosition.Middle,
                     trailingText = when {
-                        smsScanAllTime -> "All Time"
-                        smsScanUseCustomDate -> smsScanCustomDate?.let { formatSmsScanCustomDateShort(it) } ?: "Custom"
+                        smsScanAllTime -> stringResource(R.string.flosi_all_time)
+                        smsScanUseCustomDate -> smsScanCustomDate?.let { formatSmsScanCustomDateShort(it) } ?: stringResource(R.string.flosi_custom)
                         else -> "$smsScanMonths mo"
                     }
                 )
@@ -735,7 +735,7 @@ fun SettingsScreen(
                     iconBgColor = indigo_light,
                     iconTint = indigo_dark,
                     title = stringResource(R.string.flosi_bank_notification_access),
-                    subtitle = if (hasNotificationAccess) "Enabled" else "Tap to enable bank app notifications",
+                    subtitle = stringResource(if (hasNotificationAccess) R.string.flosi_enabled else R.string.flosi_enable_bank_notifications),
                     onClick = {
                         val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
                         notificationAccessLauncher.launch(intent)
@@ -975,7 +975,7 @@ fun SettingsScreen(
                     modifier = Modifier.verticalScroll(rememberScrollState())
                 ) {
                     Text(
-                        text = "Pick the day each monthly budget cycle starts. e.g. 25 means the cycle runs from the 25th through the 24th of the next month.",
+                        text = stringResource(R.string.flosi_budget_cycle_dialog_hint),
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.height(Spacing.md))
@@ -1003,7 +1003,7 @@ fun SettingsScreen(
                             )
                             Spacer(modifier = Modifier.width(Spacing.sm))
                             Text(
-                                text = ordinalSuffix(day),
+                                text = localizedOrdinalDay(day),
                                 style = MaterialTheme.typography.bodyLarge
                             )
                         }
@@ -1086,10 +1086,10 @@ fun SettingsScreen(
                             Spacer(modifier = Modifier.width(Spacing.md))
                             Text(
                                 text = when (months) {
-                                    -1 -> "All Time"
+                                    -1 -> stringResource(R.string.flosi_all_time)
                                     -2 -> {
                                         val formattedDate = smsScanCustomDate?.let { formatSmsScanCustomDate(it) }
-                                        if (formattedDate != null) "Custom date ($formattedDate)" else "Custom date"
+                                        if (formattedDate != null) stringResource(R.string.flosi_custom_date_value, formattedDate) else stringResource(R.string.flosi_custom_date)
                                     }
                                     1 -> "1 month"
                                     24 -> "2 years"
@@ -1182,15 +1182,10 @@ fun SettingsScreen(
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
                     Text(
-                        if (count == 1) {
-                            "This permanently deletes your 1 transaction, along with its splits and tags. It cannot be undone."
-                        } else {
-                            "This permanently deletes all $count transactions, along with their splits and tags. It cannot be undone."
-                        }
+                        pluralStringResource(R.plurals.flosi_delete_transactions_warning, count, count)
                     )
                     Text(
-                        "Your accounts, budgets, loans, categories and rules are kept. " +
-                            "Export Data first if you might want this history back.",
+                        stringResource(R.string.flosi_delete_transactions_keeps_data),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -1212,7 +1207,7 @@ fun SettingsScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text(if (isDeletingAllTransactions) "Deleting…" else "Delete All")
+                    Text(stringResource(if (isDeletingAllTransactions) R.string.flosi_deleting else R.string.flosi_delete_all))
                 }
             },
             dismissButton = {
@@ -1337,14 +1332,9 @@ fun SettingsScreen(
                     )
                     Spacer(modifier = Modifier.height(Spacing.md))
 
-                    val timeoutOptions = listOf(
-                        0 to "Immediately",
-                        1 to "1 minute",
-                        5 to "5 minutes",
-                        15 to "15 minutes"
-                    )
+                    val timeoutOptions = listOf(0, 1, 5, 15)
 
-                    timeoutOptions.forEach { (minutes, label) ->
+                    timeoutOptions.forEach { minutes ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -1364,7 +1354,7 @@ fun SettingsScreen(
                             )
                             Spacer(modifier = Modifier.width(Spacing.sm))
                             Text(
-                                text = label,
+                                text = if (minutes == 0) stringResource(R.string.flosi_immediately) else pluralStringResource(R.plurals.flosi_minutes, minutes, minutes),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
@@ -1706,17 +1696,22 @@ private fun SettingsNavigationContent(onNavigateBack: () -> Unit) {
     }
 }
 
-private fun numberFormatStyleLabel(style: NumberFormatStyle): String = when (style) {
-    NumberFormatStyle.AUTO -> "Auto"
-    NumberFormatStyle.INDIAN -> "Indian"
-    NumberFormatStyle.INTERNATIONAL -> "International"
-}
+@Composable
+private fun numberFormatStyleLabel(style: NumberFormatStyle): String = stringResource(when (style) {
+    NumberFormatStyle.AUTO -> R.string.flosi_auto_format
+    NumberFormatStyle.INDIAN -> R.string.flosi_indian_format
+    NumberFormatStyle.INTERNATIONAL -> R.string.flosi_international_format
+})
 
-private fun numberFormatStyleExample(style: NumberFormatStyle): String = when (style) {
-    NumberFormatStyle.AUTO -> "Matches each currency (₹1,50,000 · $150,000)"
-    NumberFormatStyle.INDIAN -> "1,50,000 (lakh / crore)"
-    NumberFormatStyle.INTERNATIONAL -> "150,000 (thousand / million)"
-}
+@Composable
+private fun numberFormatStyleExample(style: NumberFormatStyle): String = stringResource(when (style) {
+    NumberFormatStyle.AUTO -> R.string.flosi_auto_format_example
+    NumberFormatStyle.INDIAN -> R.string.flosi_indian_format_example
+    NumberFormatStyle.INTERNATIONAL -> R.string.flosi_international_format_example
+})
+
+@Composable
+private fun localizedOrdinalDay(day: Int): String = if (com.pennywiseai.tracker.core.localization.AppLocaleController.getLanguage(androidx.compose.ui.platform.LocalContext.current) == AppLanguage.ARABIC) day.toString() else ordinalSuffix(day)
 
 /**
  * English ordinal suffix for the budget cycle start day — "1st", "2nd", "3rd",

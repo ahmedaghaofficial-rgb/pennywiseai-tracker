@@ -366,7 +366,7 @@ fun ManageAccountsScreen(
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
-                                        text = "Hidden Accounts (${hiddenRegularAccounts.size + hiddenCreditCards.size})",
+                                        text = stringResource(R.string.flosi_hidden_accounts_count, hiddenRegularAccounts.size + hiddenCreditCards.size),
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.SemiBold,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -374,7 +374,7 @@ fun ManageAccountsScreen(
                                 }
                                 Icon(
                                     if (showHiddenAccounts) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                    contentDescription = if (showHiddenAccounts) "Collapse" else "Expand",
+                                    contentDescription = stringResource(if (showHiddenAccounts) R.string.flosi_collapse else R.string.flosi_expand),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
@@ -783,7 +783,7 @@ private fun CreditCardItem(
                         modifier = Modifier.size(Dimensions.Icon.small)
                     )
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text(if (isManualAccount) "Edit" else "Update")
+                    Text(stringResource(if (isManualAccount) R.string.flosi_edit else R.string.flosi_update))
                 }
 
                 // Overflow menu
@@ -827,8 +827,8 @@ private fun CreditCardItem(
                         DropdownMenuItem(
                             text = {
                                 Text(
-                                    if (card.statementDay != null) "Statement date: ${card.statementDay}"
-                                    else "Set statement date"
+                                    if (card.statementDay != null) stringResource(R.string.flosi_statement_date, card.statementDay)
+                                    else stringResource(R.string.flosi_set_statement_date)
                                 )
                             },
                             onClick = {
@@ -1075,7 +1075,7 @@ private fun AccountItem(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = if (isLowBalance) "Low balance" else "Balance",
+                        text = stringResource(if (isLowBalance) R.string.flosi_low_balance else R.string.flosi_balance),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = if (isLowBalance) FontWeight.Medium else null,
                         color = if (isLowBalance) {
@@ -1143,7 +1143,7 @@ private fun AccountItem(
                                         // Show last transaction date if available
                                         if (card.lastBalanceDate != null) {
                                             Text(
-                                                text = "Updated: ${card.lastBalanceDate.format(java.time.format.DateTimeFormatter.ofPattern("MMM dd"))}",
+                                                text = stringResource(R.string.flosi_updated_date, card.lastBalanceDate.format(java.time.format.DateTimeFormatter.ofPattern("MMM dd", java.util.Locale.getDefault()))),
                                                 style = MaterialTheme.typography.bodySmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
@@ -1185,7 +1185,7 @@ private fun AccountItem(
                         modifier = Modifier.size(Dimensions.Icon.small)
                     )
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text(if (isManualAccount) "Edit" else "Update Balance")
+                    Text(stringResource(if (isManualAccount) R.string.flosi_edit else R.string.flosi_update_balance))
                 }
 
                 // Overflow menu
@@ -1227,7 +1227,7 @@ private fun AccountItem(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text(if (account.profileId == ProfileEntity.BUSINESS_ID) "Mark as Personal" else "Mark as Business") },
+                            text = { Text(stringResource(if (account.profileId == ProfileEntity.BUSINESS_ID) R.string.flosi_mark_personal else R.string.flosi_mark_business)) },
                             onClick = {
                                 showMenu = false
                                 val newProfileId = if (account.profileId == ProfileEntity.BUSINESS_ID)
@@ -1242,7 +1242,7 @@ private fun AccountItem(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text(if (account.alias.isNullOrBlank()) "Set alias" else "Rename") },
+                            text = { Text(stringResource(if (account.alias.isNullOrBlank()) R.string.flosi_set_alias else R.string.flosi_rename)) },
                             onClick = {
                                 showMenu = false
                                 showAliasDialog = true
@@ -1259,7 +1259,7 @@ private fun AccountItem(
                         // don't apply (matches the isLowBalance exclusion above).
                         if (!account.isCreditCard) {
                             DropdownMenuItem(
-                                text = { Text(if (account.lowBalanceThreshold == null) "Low-balance alert" else "Edit low-balance alert") },
+                                text = { Text(stringResource(if (account.lowBalanceThreshold == null) R.string.flosi_low_balance_alert else R.string.flosi_edit_low_balance_alert)) },
                                 onClick = {
                                     showMenu = false
                                     showThresholdDialog = true
@@ -1348,15 +1348,14 @@ private fun LowBalanceThresholdDialog(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "Flag this account when its balance is at or below this amount. " +
-                        "Current balance: ${CurrencyFormatter.formatCurrency(currentBalance, currency)}",
+                    text = stringResource(R.string.flosi_low_balance_explanation, CurrencyFormatter.formatCurrency(currentBalance, currency)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 OutlinedTextField(
                     value = text,
                     onValueChange = { text = it },
-                    label = { Text("Threshold ($currency)") },
+                    label = { Text(stringResource(R.string.flosi_threshold_currency, currency)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
@@ -1705,14 +1704,14 @@ private fun OrphanedCardItem(
                         fontWeight = FontWeight.Medium
                     )
                     Text(
-                        text = "${if (card.cardType == com.pennywiseai.tracker.data.database.entity.CardType.CREDIT) "Credit" else "Debit"} Card (Unlinked)",
+                        text = stringResource(R.string.flosi_unlinked_card, stringResource(if (card.cardType == com.pennywiseai.tracker.data.database.entity.CardType.CREDIT) R.string.flosi_credit else R.string.flosi_debit)),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     // Show last known balance if available
                     if (card.lastBalance != null) {
                         Text(
-                            text = "Last Balance: ${CurrencyFormatter.formatCurrency(card.lastBalance, card.currency)}",
+                            text = stringResource(R.string.flosi_last_balance_amount, CurrencyFormatter.formatCurrency(card.lastBalance, card.currency)),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.primary
                         )
@@ -1851,15 +1850,15 @@ private fun EditCardDialog(
                     )
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                         val options = listOf(
-                            com.pennywiseai.tracker.data.database.entity.CardType.DEBIT to "Debit",
-                            com.pennywiseai.tracker.data.database.entity.CardType.CREDIT to "Credit"
+                            com.pennywiseai.tracker.data.database.entity.CardType.DEBIT to R.string.flosi_debit,
+                            com.pennywiseai.tracker.data.database.entity.CardType.CREDIT to R.string.flosi_credit
                         )
-                        options.forEachIndexed { index, (type, label) ->
+                        options.forEachIndexed { index, (type, labelRes) ->
                             SegmentedButton(
                                 selected = cardType == type,
                                 onClick = { cardType = type },
                                 shape = SegmentedButtonDefaults.itemShape(index, options.size)
-                            ) { Text(label) }
+                            ) { Text(stringResource(labelRes)) }
                         }
                     }
                 }
@@ -1914,7 +1913,7 @@ private fun LinkCardDialog(
             ) {
                 if (accounts.isEmpty()) {
                     Text(
-                        text = "No ${card.bankName} accounts found. Add an account first.",
+                        text = stringResource(R.string.flosi_no_bank_accounts_found, card.bankName),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -2044,7 +2043,7 @@ private fun DeleteAccountConfirmDialog(
                                 fontWeight = FontWeight.Medium
                             )
                             Text(
-                                text = "Account ending in $accountLast4",
+                                text = stringResource(R.string.flosi_account_ending_in, accountLast4),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -2052,7 +2051,7 @@ private fun DeleteAccountConfirmDialog(
                     }
                 }
                 Text(
-                    text = "This will permanently delete all balance history for this account. Any linked cards will be unlinked. This action cannot be undone.",
+                    text = stringResource(R.string.flosi_delete_account_history_warning),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error
                 )
@@ -2115,7 +2114,7 @@ private fun EditAccountDialog(
             Column {
                 Text(stringResource(R.string.flosi_edit_account))
                 Text(
-                    text = if (account.isCreditCard) "Credit Card" else "Bank Account",
+                    text = stringResource(if (account.isCreditCard) R.string.flosi_credit_card else R.string.flosi_bank_account),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

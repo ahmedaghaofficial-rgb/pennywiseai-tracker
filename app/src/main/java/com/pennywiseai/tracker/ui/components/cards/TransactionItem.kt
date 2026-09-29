@@ -91,9 +91,10 @@ fun TransactionItem(
     val businessLabel = stringResource(R.string.flosi_business)
     val excludedLabel = stringResource(R.string.flosi_excluded)
     val balanceLabel = stringResource(R.string.flosi_balance_prefix, "")
+    val transferTitle = transferTitleOverride(transaction)
     val subtitle = remember(transaction, dateTimeText, isEffectivelyBusiness, categoryLabel,
         creditLabel, transferLabel, investmentLabel, recurringLabel, businessLabel,
-        excludedLabel, balanceLabel) {
+        excludedLabel, balanceLabel, transferTitle) {
         buildList {
             if (description != null) add(description)
             add(dateTimeText)
@@ -107,7 +108,7 @@ fun TransactionItem(
                 when (transaction.transactionType) {
                     TransactionType.CREDIT -> add(creditLabel)
                     TransactionType.TRANSFER -> {
-                        if (transferTitleOverride(transaction) == null) {
+                        if (transferTitle == null) {
                             add(transferLabel)
                         }
                     }
@@ -148,8 +149,6 @@ fun TransactionItem(
     // "Transfer from 1234") is more informative than the merchant name (often
     // the user's own contact name), and stops the two legs from looking like
     // duplicate rows in the list. Falls back to merchant otherwise.
-    val transferTitle = transferTitleOverride(transaction)
-
     ListItemCardV2(
         title = transferTitle ?: merchantDisplay(transaction.merchantName) ?: transaction.merchantName,
         subtitle = subtitle,
@@ -223,16 +222,17 @@ fun TransactionItem(
  * account's last-4) rather than the merchant. Returns null for any other
  * row, in which case the default merchant-as-title rendering wins.
  */
+@Composable
 private fun transferTitleOverride(transaction: TransactionEntity): String? {
     if (transaction.transactionType != TransactionType.TRANSFER) return null
     val mine = transaction.accountNumber
     val from = transaction.fromAccount
     val to = transaction.toAccount
     return when {
-        from != null && to != null && mine == from -> "Transfer → ${to.takeLast(4)}"
-        from != null && to != null && mine == to -> "Transfer from ${from.takeLast(4)}"
-        to != null && mine != to -> "Transfer → ${to.takeLast(4)}"
-        from != null && mine != from -> "Transfer from ${from.takeLast(4)}"
+        from != null && to != null && mine == from -> stringResource(R.string.flosi_transfer_to_account, to.takeLast(4))
+        from != null && to != null && mine == to -> stringResource(R.string.flosi_transfer_from_account, from.takeLast(4))
+        to != null && mine != to -> stringResource(R.string.flosi_transfer_to_account, to.takeLast(4))
+        from != null && mine != from -> stringResource(R.string.flosi_transfer_from_account, from.takeLast(4))
         else -> null
     }
 }

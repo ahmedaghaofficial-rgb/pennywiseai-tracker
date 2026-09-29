@@ -97,7 +97,7 @@ fun BudgetGroupEditScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = if (isEditing) "Edit Budget" else "New Budget",
+                title = if (isEditing) stringResource(R.string.flosi_edit_budget) else stringResource(R.string.flosi_new_budget),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
@@ -159,7 +159,7 @@ fun BudgetGroupEditScreen(
                                 modifier = Modifier.size(Dimensions.Icon.small)
                             )
                             Spacer(modifier = Modifier.width(Spacing.xs))
-                            Text(if (isEditing) "Save Changes" else "Create Budget")
+                            Text(stringResource(if (isEditing) R.string.flosi_save_changes else R.string.flosi_create_budget))
                         }
                     }
                 }
@@ -251,14 +251,14 @@ fun BudgetGroupEditScreen(
                             verticalArrangement = Arrangement.spacedBy(Spacing.xs)
                         ) {
                             listOf(
-                                BudgetPeriodType.WEEKLY to "Weekly (recurring)",
-                                BudgetPeriodType.MONTHLY to "Monthly (recurring)",
-                                BudgetPeriodType.CUSTOM to "One-time"
-                            ).forEach { (period, label) ->
+                                BudgetPeriodType.WEEKLY to R.string.flosi_weekly_recurring,
+                                BudgetPeriodType.MONTHLY to R.string.flosi_monthly_recurring,
+                                BudgetPeriodType.CUSTOM to R.string.flosi_one_time
+                            ).forEach { (period, labelRes) ->
                                 FilterChip(
                                     selected = uiState.periodType == period,
                                     onClick = { viewModel.updatePeriodType(period) },
-                                    label = { Text(label) }
+                                    label = { Text(stringResource(labelRes)) }
                                 )
                             }
                         }
@@ -310,11 +310,11 @@ fun BudgetGroupEditScreen(
                         // card and widget use at read time.
                         val anchorCaption = when (uiState.periodType) {
                             BudgetPeriodType.WEEKLY ->
-                                "Resets every ${dayOfWeekName(uiState.weekStartDay)}"
+                                stringResource(R.string.flosi_resets_every, dayOfWeekName(uiState.weekStartDay))
                             BudgetPeriodType.MONTHLY ->
-                                "Resets on day ${uiState.monthStartDay} of every month"
+                                stringResource(R.string.flosi_resets_on_day, uiState.monthStartDay)
                             BudgetPeriodType.CUSTOM ->
-                                "Runs once, no rollover"
+                                stringResource(R.string.flosi_runs_once)
                         }
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -392,14 +392,14 @@ fun BudgetGroupEditScreen(
                             when {
                                 diff > BigDecimal.ZERO -> {
                                     Text(
-                                        text = "Unallocated: ${CurrencyFormatter.formatCurrency(diff, uiState.currency)}",
+                                        text = stringResource(R.string.flosi_unallocated_amount, CurrencyFormatter.formatCurrency(diff, uiState.currency)),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                                 diff < BigDecimal.ZERO -> {
                                     Text(
-                                        text = "Category limits exceed budget by ${CurrencyFormatter.formatCurrency(diff.abs(), uiState.currency)}",
+                                        text = stringResource(R.string.flosi_limits_exceed_budget, CurrencyFormatter.formatCurrency(diff.abs(), uiState.currency)),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.error
                                     )
@@ -476,7 +476,7 @@ fun BudgetGroupEditScreen(
                                                 ) {
                                                     CategoryIcon(category = option.displayName, size = 18.dp)
                                                 }
-                                                Text("${option.displayName} (all)")
+                                                Text(stringResource(R.string.flosi_category_all, option.displayName))
                                             }
                                         },
                                         onClick = {
@@ -546,7 +546,7 @@ fun BudgetGroupEditScreen(
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = false },
                 title = { Text(stringResource(R.string.flosi_delete_budget)) },
-                text = { Text("Are you sure you want to delete \"${uiState.name}\"? This cannot be undone.") },
+                text = { Text(stringResource(R.string.flosi_confirm_delete_budget, uiState.name)) },
                 confirmButton = {
                     Button(
                         onClick = {
@@ -643,7 +643,7 @@ private fun BudgetHeaderCard(
                             .padding(vertical = Spacing.xs)
                     ) {
                         Text(
-                            text = name.ifEmpty { "Budget name" },
+                            text = name.ifEmpty { stringResource(R.string.flosi_budget_name) },
                             style = MaterialTheme.typography.titleMedium,
                             color = if (name.isEmpty()) MaterialTheme.colorScheme.onSurfaceVariant
                             else MaterialTheme.colorScheme.onSurface,
@@ -771,7 +771,7 @@ private fun CategoryBudgetRow(
             )
             if (currentSpending > BigDecimal.ZERO) {
                 Text(
-                    text = "Spent: ${CurrencyFormatter.formatCurrency(currentSpending, currency)}",
+                    text = stringResource(R.string.flosi_spent_amount, CurrencyFormatter.formatCurrency(currentSpending, currency)),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -822,14 +822,16 @@ private fun CategoryBudgetRow(
  * (1=Mon..7=Sun per `java.time.DayOfWeek.value`). Falls back to "Monday"
  * for out-of-range inputs.
  */
-private fun dayOfWeekName(value: Int): String = when (value.coerceIn(1, 7)) {
-    1 -> "Monday"
-    2 -> "Tuesday"
-    3 -> "Wednesday"
-    4 -> "Thursday"
-    5 -> "Friday"
-    6 -> "Saturday"
-    else -> "Sunday"
+@Composable
+private fun dayOfWeekName(value: Int): String = stringResource(when (value.coerceIn(1, 7)) {
+    1 -> R.string.flosi_monday
+    2 -> R.string.flosi_tuesday
+    3 -> R.string.flosi_wednesday
+    4 -> R.string.flosi_thursday
+    5 -> R.string.flosi_friday
+    6 -> R.string.flosi_saturday
+    else -> R.string.flosi_sunday
+})
 }
 
 /**

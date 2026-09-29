@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.R
+
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -141,9 +145,9 @@ fun BudgetCard(
         val remainingAbs = groupSpending.remaining.abs()
         Text(
             text = if (isOverBudget) {
-                "${CurrencyFormatter.formatCurrency(remainingAbs, currency)} over budget"
+                stringResource(R.string.flosi_over_budget_amount, CurrencyFormatter.formatCurrency(remainingAbs, currency))
             } else {
-                "${CurrencyFormatter.formatCurrency(groupSpending.remaining.coerceAtLeast(BigDecimal.ZERO), currency)} remaining"
+                stringResource(R.string.flosi_remaining_amount, CurrencyFormatter.formatCurrency(groupSpending.remaining.coerceAtLeast(BigDecimal.ZERO), currency))
             },
             style = MaterialTheme.typography.titleLarge.copy(
                 fontWeight = FontWeight.Bold
@@ -164,9 +168,9 @@ fun BudgetCard(
         val dateFormatter = remember { DateTimeFormatter.ofPattern("d MMM") }
         val subtitleText = when {
             groupSpending.daysRemaining == 0 && groupSpending.daysElapsed >= groupSpending.windowDays ->
-                "Finished"
+                stringResource(R.string.flosi_finished)
             groupSpending.isTrackingAllExpenses ->
-                "Tracking all expenses"
+                stringResource(R.string.flosi_tracking_all_expenses)
             groupSpending.periodType == BudgetPeriodType.WEEKLY -> {
                 val weekday = groupSpending.group.budget.weekStartDay?.let { DayOfWeek.of(it.coerceIn(1, 7)) }
                     ?: DayOfWeek.MONDAY
@@ -176,33 +180,28 @@ fun BudgetCard(
                 // days left after today. For a Wed-on-a-Mon-start week:
                 // today=Wed, days remaining=5 (Thu..Mon), renewal in 4d.
                 val renewalIn = (groupSpending.daysRemaining - 1).coerceAtLeast(0)
-                val weekdayName = weekday.name.lowercase().replaceFirstChar { it.titlecase() }
-                when {
-                    renewalIn == 0 -> "Resets today · ${weekdayName} renew"
-                    renewalIn == 1 -> "Resets in 1 day · ${weekdayName} renew"
-                    else -> "Resets in $renewalIn days · ${weekdayName} renew"
-                }
+                val renewal = if (renewalIn == 0) stringResource(R.string.flosi_resets_today)
+                    else pluralStringResource(R.plurals.flosi_resets_in_days, renewalIn, renewalIn)
+                stringResource(R.string.flosi_renews_weekday, renewal, weekday.getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.getDefault()))
             }
             groupSpending.periodType == BudgetPeriodType.MONTHLY -> {
                 val startDay = groupSpending.group.budget.monthStartDay
                     ?: groupSpending.windowStart.dayOfMonth
                 val renewalIn = (groupSpending.daysRemaining - 1).coerceAtLeast(0)
-                when {
-                    renewalIn == 0 -> "Resets today · day $startDay"
-                    renewalIn == 1 -> "Resets in 1 day · day $startDay"
-                    else -> "Resets in $renewalIn days · day $startDay"
-                }
+                val renewal = if (renewalIn == 0) stringResource(R.string.flosi_resets_today)
+                    else pluralStringResource(R.plurals.flosi_resets_in_days, renewalIn, renewalIn)
+                stringResource(R.string.flosi_renews_monthday, renewal, startDay)
             }
             groupSpending.periodType == BudgetPeriodType.CUSTOM -> {
                 val range = "${groupSpending.windowStart.format(dateFormatter)} – ${groupSpending.windowEnd.format(dateFormatter)}"
                 when {
-                    isOverBudget -> "Over by ${CurrencyFormatter.formatCurrency(remainingAbs, currency)}"
-                    groupSpending.daysRemaining > 1 -> "Runs $range · ${groupSpending.daysRemaining - 1} days remaining"
-                    groupSpending.daysRemaining == 1 -> "Runs $range · 1 day remaining"
-                    else -> "Finished"
+                    isOverBudget -> stringResource(R.string.flosi_over_by_amount, CurrencyFormatter.formatCurrency(remainingAbs, currency))
+                    groupSpending.daysRemaining > 1 -> stringResource(R.string.flosi_runs_range, range, pluralStringResource(R.plurals.flosi_days_remaining, groupSpending.daysRemaining - 1, groupSpending.daysRemaining - 1))
+                    groupSpending.daysRemaining == 1 -> stringResource(R.string.flosi_runs_range, range, pluralStringResource(R.plurals.flosi_days_remaining, 1, 1))
+                    else -> stringResource(R.string.flosi_finished)
                 }
             }
-            else -> "${groupSpending.daysRemaining} days remaining"
+            else -> pluralStringResource(R.plurals.flosi_days_remaining, groupSpending.daysRemaining, groupSpending.daysRemaining)
         }
         Text(
             text = subtitleText,
@@ -214,7 +213,7 @@ fun BudgetCard(
 
         // Row 5: Spent X of Y
         Text(
-            text = "Spent ${CurrencyFormatter.formatCurrency(groupSpending.totalActual, currency)} of ${CurrencyFormatter.formatCurrency(groupSpending.totalBudget, currency)}",
+            text = stringResource(R.string.flosi_spent_of_budget, CurrencyFormatter.formatCurrency(groupSpending.totalActual, currency), CurrencyFormatter.formatCurrency(groupSpending.totalBudget, currency)),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
@@ -230,17 +229,17 @@ fun BudgetCard(
 fun CadencePill(periodType: BudgetPeriodType) {
     val (label, bg, fg) = when (periodType) {
         BudgetPeriodType.WEEKLY -> Triple(
-            "Weekly",
+            stringResource(R.string.flosi_cycle_weekly),
             MaterialTheme.colorScheme.tertiaryContainer,
             MaterialTheme.colorScheme.onTertiaryContainer
         )
         BudgetPeriodType.MONTHLY -> Triple(
-            "Monthly",
+            stringResource(R.string.flosi_cycle_monthly),
             MaterialTheme.colorScheme.primaryContainer,
             MaterialTheme.colorScheme.onPrimaryContainer
         )
         BudgetPeriodType.CUSTOM -> Triple(
-            "One-time",
+            stringResource(R.string.flosi_one_time),
             MaterialTheme.colorScheme.secondaryContainer,
             MaterialTheme.colorScheme.onSecondaryContainer
         )

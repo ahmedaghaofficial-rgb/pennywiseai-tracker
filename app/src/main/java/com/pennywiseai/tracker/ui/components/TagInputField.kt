@@ -47,7 +47,7 @@ fun TagInputField(
     onAddTag: (String) -> Unit,
     onRemoveTag: (String) -> Unit,
     modifier: Modifier = Modifier,
-    label: String = "Tags (Optional)"
+    label: String? = null
 ) {
     var input by remember { mutableStateOf("") }
 
@@ -95,7 +95,7 @@ fun TagInputField(
                         trailingIcon = {
                             Icon(
                                 Icons.Default.Close,
-                                contentDescription = "Remove $tag",
+                                contentDescription = stringResource(R.string.flosi_remove_tag_name, tag),
                                 modifier = Modifier.size(Dimensions.Icon.small)
                             )
                         }
@@ -107,7 +107,7 @@ fun TagInputField(
         TextField(
             value = input,
             onValueChange = { input = it },
-            label = { Text(label) },
+            label = { Text(label ?: stringResource(R.string.flosi_tags_optional)) },
             singleLine = true,
             leadingIcon = {
                 Icon(
@@ -158,7 +158,7 @@ fun TagInputField(
                         },
                         label = {
                             Text(
-                                "Create \"$trimmed\"",
+                                stringResource(R.string.flosi_create_tag_name, trimmed),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )

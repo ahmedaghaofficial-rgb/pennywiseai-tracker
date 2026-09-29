@@ -55,6 +55,7 @@ fun CategoryEditDialog(
     var selectedColor by remember { mutableStateOf(category?.color ?: "#4CAF50") }
     var emoji by remember { mutableStateOf(category?.icon ?: "") }
     var showDeleteConfirm by remember { mutableStateOf(false) }
+    val requiredNameError = stringResource(R.string.validation_category_name_required)
 
     Dialog(onDismissRequest = onDismiss) {
         PennyWiseCardV2(
@@ -73,7 +74,7 @@ fun CategoryEditDialog(
             ) {
                 // Title
                 Text(
-                    text = if (category == null) "Add Category" else "Edit Category",
+                    text = stringResource(if (category == null) R.string.flosi_add_category_12 else R.string.flosi_edit_category),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
@@ -83,7 +84,7 @@ fun CategoryEditDialog(
                     value = name,
                     onValueChange = {
                         name = it
-                        nameError = if (it.isBlank()) "Category name is required" else null
+                        nameError = if (it.isBlank()) requiredNameError else null
                     },
                     label = { Text(stringResource(R.string.flosi_category_name), fontWeight = FontWeight.SemiBold) },
                     isError = nameError != null,
@@ -239,7 +240,7 @@ fun CategoryEditDialog(
                             if (emoji.isNotEmpty()) EmojiGlyph(emoji, Dimensions.Icon.small)
                         }
                         Text(
-                            text = name.ifBlank { "Category Name" },
+                            text = name.ifBlank { stringResource(R.string.flosi_category_name) },
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -261,13 +262,13 @@ fun CategoryEditDialog(
                             if (name.isNotBlank()) {
                                 onSave(name.trim(), selectedColor, isIncome, emoji.ifBlank { null }, parentId)
                             } else {
-                                nameError = "Category name is required"
+                                nameError = requiredNameError
                             }
                         },
                         modifier = Modifier.weight(1f),
                         enabled = name.isNotBlank()
                     ) {
-                        Text(if (category == null) "Add" else "Save")
+                        Text(stringResource(if (category == null) R.string.flosi_add_new else R.string.flosi_save))
                     }
                 }
 

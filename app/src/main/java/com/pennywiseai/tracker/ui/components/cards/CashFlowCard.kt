@@ -103,7 +103,11 @@ fun CashFlowCard(
                     else -> MaterialTheme.colorScheme.onSurfaceVariant
                 }
                 ChannelChip(
-                    label = ch.label,
+                    label = stringResource(when (ch.label) {
+                        "Credit" -> R.string.flosi_credit
+                        "Invested" -> R.string.flosi_invested
+                        else -> R.string.flosi_transferred
+                    }),
                     amount = ch.amount,
                     currency = currency,
                     dotColor = dotColor,

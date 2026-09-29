@@ -594,7 +594,7 @@ fun TransactionTabContent(
                             },
                             trailingIcon = {
                                 if (selectedForTarget?.id == account.id) {
-                                    Icon(Icons.Default.Check, "Selected", tint = MaterialTheme.colorScheme.primary)
+                                    Icon(Icons.Default.Check, stringResource(R.string.flosi_selected), tint = MaterialTheme.colorScheme.primary)
                                 }
                             }
                         )
@@ -860,7 +860,7 @@ private fun AddBudgetImpactSection(
                 onExpandedChange = { expanded = it }
             ) {
                 OutlinedTextField(
-                    value = budgetCategory ?: "Select category",
+                    value = budgetCategory ?: stringResource(R.string.flosi_select_category),
                     onValueChange = {},
                     readOnly = true,
                     label = { Text(stringResource(R.string.flosi_budget_category)) },
