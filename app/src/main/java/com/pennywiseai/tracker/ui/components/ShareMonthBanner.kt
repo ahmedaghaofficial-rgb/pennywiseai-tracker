@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.theme.Dimensions
@@ -27,7 +28,6 @@ import com.pennywiseai.tracker.ui.theme.Spacing
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 /**
  * The once-a-month invitation to share a finished month.
@@ -43,9 +43,10 @@ fun ShareMonthBanner(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val month = remember {
+    val locale = LocalContext.current.resources.configuration.locales[0]
+    val month = remember(locale) {
         YearMonth.from(LocalDate.now()).minusMonths(1)
-            .format(DateTimeFormatter.ofPattern("MMMM", Locale.getDefault()))
+            .format(DateTimeFormatter.ofPattern("MMMM", locale))
     }
 
     Card(
@@ -75,7 +76,7 @@ fun ShareMonthBanner(
                     .padding(horizontal = Spacing.md),
             ) {
                 Text(
-                    text = "$month, summed up",
+                    text = stringResource(R.string.flosi_month_summed_up, month),
                     style = MaterialTheme.typography.titleSmall,
                 )
                 Text(

@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.ui.components.cards
 
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -77,7 +78,7 @@ fun HomeGroupCard(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = "${summary.transactionCount} item${if (summary.transactionCount != 1) "s" else ""}",
+                        text = pluralStringResource(R.plurals.flosi_group_items, summary.transactionCount, summary.transactionCount),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

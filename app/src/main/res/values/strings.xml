@@ -436,6 +436,59 @@
     <string name="flosi_owed_to_you">%1$s owed to you</string>
     <string name="flosi_you_owe_amount">You owe %1$s</string>
     <string name="flosi_sms_detection_description">%1$s can automatically detect and categorize your bank transactions from SMS messages.</string>
+    <plurals name="flosi_onboarding_transactions_found">
+        <item quantity="one">%1$d transaction found</item>
+        <item quantity="other">%1$d transactions found</item>
+    </plurals>
+    <plurals name="flosi_onboarding_seconds_remaining">
+        <item quantity="one">~%1$d second remaining</item>
+        <item quantity="other">~%1$d seconds remaining</item>
+    </plurals>
+    <plurals name="flosi_onboarding_scan_saved">
+        <item quantity="one">%1$d transaction saved from %2$d messages</item>
+        <item quantity="other">%1$d transactions saved from %2$d messages</item>
+    </plurals>
+    <plurals name="flosi_move_profile_transactions_warning">
+        <item quantity="one">%1$d transaction from this account has a different profile. Move it to the new profile too?</item>
+        <item quantity="other">%1$d transactions from this account have a different profile. Move them to the new profile too?</item>
+    </plurals>
+    <string name="flosi_percent_used_parenthesized">(%1$d%% used)</string>
+    <string name="flosi_sms_source_content">SMS: %1$s</string>
+    <string name="flosi_sms_source_expand_hint">SMS: %1$s… (tap to expand)</string>
+    <string name="flosi_delete_category_warning">&quot;%1$s&quot; will be removed. Existing transactions keep their current label. This can\'t be undone.</string>
+    <string name="flosi_spent_of_budget">%1$s of %2$s</string>
+    <string name="flosi_of_budget_percent">of %1$s · %2$d%%</string>
+    <string name="flosi_percent_used">%1$d%% used</string>
+    <string name="flosi_estimated_amount">est. %1$s</string>
+    <string name="flosi_sms_char_count">(%1$d chars)</string>
+    <string name="flosi_share_card_privacy">Read from my bank SMS. Nothing left my phone.</string>
+    <string name="flosi_month_summed_up">%1$s, summed up</string>
+    <plurals name="flosi_group_items">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
+    <plurals name="flosi_group_transactions">
+        <item quantity="one">%1$d transaction</item>
+        <item quantity="other">%1$d transactions</item>
+    </plurals>
+    <plurals name="flosi_share_subscriptions_caption">
+        <item quantity="one">subscription I forgot</item>
+        <item quantity="other">subscriptions I forgot</item>
+    </plurals>
+    <plurals name="flosi_month_count">
+        <item quantity="one">%1$d month</item>
+        <item quantity="other">%1$d months</item>
+    </plurals>
+    <plurals name="flosi_year_count">
+        <item quantity="one">%1$d year</item>
+        <item quantity="other">%1$d years</item>
+    </plurals>
+    <string name="flosi_more_vs_last_month">%1$d%% more vs last month</string>
+    <string name="flosi_less_vs_last_month">%1$d%% less vs last month</string>
+    <string name="flosi_share_bank_texts_caption">bank texts tracked. 0 typed.</string>
+    <string name="flosi_category_exists_as_type">A category named &quot;%1$s&quot; already exists as %2$s</string>
+    <string name="flosi_on">On</string>
+    <string name="flosi_off">Off</string>
     <string name="flosi_privacy_transactions_only">Only transaction messages are processed</string>
     <string name="flosi_privacy_on_device">All data stays on your device</string>
     <string name="flosi_privacy_no_personal_messages">No personal messages are read</string>

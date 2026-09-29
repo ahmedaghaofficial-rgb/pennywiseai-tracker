@@ -1829,7 +1829,7 @@ private fun DateTimeField(
             ) {
                 val hour = if (dateTime.hour % 12 == 0) 12 else dateTime.hour % 12
                 val minute = dateTime.minute
-                val amPm = if (dateTime.hour < 12) "AM" else "PM"
+                val amPm = dateTime.format(DateTimeFormatter.ofPattern("a"))
 
                 Box(
                     modifier = Modifier

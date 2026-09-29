@@ -610,9 +610,8 @@ class TransactionDetailViewModel @Inject constructor(
                     // A category with this name already exists but for the other
                     // type; selecting it would filter it out of the picker and
                     // blank the chip. Surface it instead of silently misbehaving.
-                    val existingType = if (existing.isIncome) "income" else "expense"
-                    _errorMessage.value =
-                        "A category named \"$trimmed\" already exists as $existingType"
+                    val existingType = uiText(if (existing.isIncome) R.string.flosi_income else R.string.flosi_expense)
+                    _errorMessage.value = uiText(R.string.flosi_category_exists_as_type, trimmed, existingType)
                     onResult(false)
                     return@launch
                 }

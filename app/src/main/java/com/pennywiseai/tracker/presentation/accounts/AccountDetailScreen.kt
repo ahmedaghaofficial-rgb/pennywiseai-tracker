@@ -446,6 +446,7 @@ private fun SummaryStatistics(
 /**
  * Formats currency with estimated display for multi-currency accounts
  */
+@Composable
 private fun formatWithEstimatedDisplay(
     amount: BigDecimal,
     currency: String,
@@ -453,7 +454,7 @@ private fun formatWithEstimatedDisplay(
 ): String {
     val formattedAmount = CurrencyFormatter.formatCurrency(amount, currency)
     return if (hasMultipleCurrencies) {
-        "est. $formattedAmount"
+        stringResource(R.string.flosi_estimated_amount, formattedAmount)
     } else {
         formattedAmount
     }
@@ -581,7 +582,7 @@ private fun AccountTransactionItem(
                         // Show balance after if available
                         transaction.balanceAfter?.let { balance ->
                             Text(
-                                text = "• Bal: ${CurrencyFormatter.formatCurrency(balance, primaryCurrency)}",
+                                text = stringResource(R.string.flosi_balance_prefix, CurrencyFormatter.formatCurrency(balance, primaryCurrency)),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )

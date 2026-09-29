@@ -371,7 +371,7 @@ private fun BreakdownSheet(
                             )
                             if (cat.budgetAmount > BigDecimal.ZERO) {
                                 Text(
-                                    text = "of ${CurrencyFormatter.formatCurrency(cat.budgetAmount, currency)} · ${cat.percentageUsed.toInt()}%",
+                                    text = stringResource(R.string.flosi_of_budget_percent, CurrencyFormatter.formatCurrency(cat.budgetAmount, currency), cat.percentageUsed.toInt()),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -394,7 +394,7 @@ private fun BreakdownSheet(
             )
             if (totalBudget > BigDecimal.ZERO) {
                 Text(
-                    text = "${pctUsed.toInt()}% used",
+                    text = stringResource(R.string.flosi_percent_used, pctUsed.toInt()),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

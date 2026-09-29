@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import com.pennywiseai.tracker.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -78,9 +80,9 @@ fun ShareCard(
         // someone who has never heard of PennyWise, and the only line explaining what was
         // tracked is the smallest text on the image. The zero stays: the effort that
         // wasn't spent is the surprising half, and it still reads at thumbnail size.
-        ShareHero.TRANSACTIONS -> "bank texts tracked. 0 typed."
+        ShareHero.TRANSACTIONS -> stringResource(R.string.flosi_share_bank_texts_caption)
         ShareHero.SUBSCRIPTIONS ->
-            if (value == 1) "subscription I forgot" else "subscriptions I forgot"
+            pluralStringResource(R.plurals.flosi_share_subscriptions_caption, value)
     }
 
     Column(
@@ -169,7 +171,7 @@ fun ShareCard(
         Spacer(Modifier.height(18.dp))
 
         Text(
-            text = "Read from my bank SMS. Nothing left my phone.",
+            text = stringResource(R.string.flosi_share_card_privacy),
             style = TextStyle(
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,

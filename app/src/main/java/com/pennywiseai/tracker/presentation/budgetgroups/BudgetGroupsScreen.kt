@@ -807,7 +807,7 @@ private fun BudgetCard(
                                     }
                                     Spacer(modifier = Modifier.height(Spacing.xs))
                                     Text(
-                                        text = "${CurrencyFormatter.formatCurrency(catSpending.actualAmount, currency)} of ${CurrencyFormatter.formatCurrency(catSpending.budgetAmount, currency)}",
+                                        text = stringResource(R.string.flosi_spent_of_budget, CurrencyFormatter.formatCurrency(catSpending.actualAmount, currency), CurrencyFormatter.formatCurrency(catSpending.budgetAmount, currency)),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )

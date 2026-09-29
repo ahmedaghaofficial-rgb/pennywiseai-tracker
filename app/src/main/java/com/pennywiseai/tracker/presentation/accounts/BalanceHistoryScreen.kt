@@ -466,7 +466,7 @@ private fun BalanceHistoryItem(
                                     )
                                     if (!isExpanded) {
                                         Text(
-                                            text = "(${smsSource.length} chars)",
+                                            text = stringResource(R.string.flosi_sms_char_count, smsSource.length),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )

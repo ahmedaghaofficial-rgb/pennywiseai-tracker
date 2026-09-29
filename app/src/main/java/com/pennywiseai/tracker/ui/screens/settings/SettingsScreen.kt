@@ -713,7 +713,7 @@ fun SettingsScreen(
                     trailingText = when {
                         smsScanAllTime -> stringResource(R.string.flosi_all_time)
                         smsScanUseCustomDate -> smsScanCustomDate?.let { formatSmsScanCustomDateShort(it) } ?: stringResource(R.string.flosi_custom)
-                        else -> "$smsScanMonths mo"
+                        else -> pluralStringResource(R.plurals.flosi_month_count, smsScanMonths, smsScanMonths)
                     }
                 )
                 SettingsNavItem(
@@ -741,7 +741,7 @@ fun SettingsScreen(
                         notificationAccessLauncher.launch(intent)
                     },
                     position = ListItemPosition.Single,
-                    trailingText = if (hasNotificationAccess) "On" else "Off"
+                    trailingText = stringResource(if (hasNotificationAccess) R.string.flosi_on else R.string.flosi_off)
                 )
             }
 
@@ -1091,9 +1091,8 @@ fun SettingsScreen(
                                         val formattedDate = smsScanCustomDate?.let { formatSmsScanCustomDate(it) }
                                         if (formattedDate != null) stringResource(R.string.flosi_custom_date_value, formattedDate) else stringResource(R.string.flosi_custom_date)
                                     }
-                                    1 -> "1 month"
-                                    24 -> "2 years"
-                                    else -> "$months months"
+                                    24 -> pluralStringResource(R.plurals.flosi_year_count, 2, 2)
+                                    else -> pluralStringResource(R.plurals.flosi_month_count, months, months)
                                 },
                                 style = MaterialTheme.typography.bodyLarge
                             )
@@ -1236,7 +1235,7 @@ fun SettingsScreen(
 
     // Show import/export message
     importExportMessage?.let { message ->
-        if (exportedBackupFile != null && message.contains("successfully! Choose")) {
+        if (exportedBackupFile != null && message == stringResource(R.string.flosi_backup_created_choose_location)) {
             showExportOptionsDialog = true
         } else {
             LaunchedEffect(message) {

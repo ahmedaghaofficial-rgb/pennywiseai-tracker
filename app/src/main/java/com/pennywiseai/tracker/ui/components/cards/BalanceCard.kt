@@ -121,7 +121,7 @@ fun BalanceCard(
     val containerColor = MaterialTheme.colorScheme.surfaceContainerLow
 
     val absPercent = kotlin.math.abs(monthlyChangePercent)
-    val changeText = if (isPositive) "$absPercent% more vs last month" else "$absPercent% less vs last month"
+    val changeText = stringResource(if (isPositive) R.string.flosi_more_vs_last_month else R.string.flosi_less_vs_last_month, absPercent)
 
     Box(modifier = modifier.fillMaxWidth()) {
         PennyWiseCardV2(

@@ -382,7 +382,7 @@ fun TransactionTabContent(
                     ) {
                         val hour = if (uiState.date.hour % 12 == 0) 12 else uiState.date.hour % 12
                         val minute = uiState.date.minute
-                        val amPm = if (uiState.date.hour < 12) "AM" else "PM"
+                        val amPm = uiState.date.format(DateTimeFormatter.ofPattern("a"))
 
                         Box(
                             modifier = Modifier

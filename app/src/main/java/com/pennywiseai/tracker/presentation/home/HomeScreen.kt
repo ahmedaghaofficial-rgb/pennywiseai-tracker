@@ -1332,9 +1332,10 @@ private fun BreakdownDialog(
     onDismiss: () -> Unit
 ) {
     val now = LocalDate.now()
-    val currentPeriod = "${now.month.name.lowercase().let { s -> if (s.isEmpty()) s else s.substring(0, 1).uppercase() + s.substring(1) }} 1-${now.dayOfMonth}"
+    val monthFormatter = java.time.format.DateTimeFormatter.ofPattern("MMMM", LocalContext.current.resources.configuration.locales[0])
+    val currentPeriod = "${now.format(monthFormatter)} 1-${now.dayOfMonth}"
     val lastMonth = now.minusMonths(1)
-    val lastPeriod = "${lastMonth.month.name.lowercase().let { s -> if (s.isEmpty()) s else s.substring(0, 1).uppercase() + s.substring(1) }} 1-${now.dayOfMonth}"
+    val lastPeriod = "${lastMonth.format(monthFormatter)} 1-${now.dayOfMonth}"
     
     Dialog(onDismissRequest = onDismiss) {
         PennyWiseCardV2(

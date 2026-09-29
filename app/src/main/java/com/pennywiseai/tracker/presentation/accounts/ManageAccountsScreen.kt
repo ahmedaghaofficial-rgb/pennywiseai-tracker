@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.presentation.accounts
 
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -581,8 +582,7 @@ fun ManageAccountsScreen(
             title = { Text(stringResource(R.string.flosi_move_existing_transactions)) },
             text = {
                 Text(
-                    "${pending.transactionCount} transaction(s) from this account are set to a " +
-                        "different profile. Move them to the new profile too?"
+                    pluralStringResource(R.plurals.flosi_move_profile_transactions_warning, pending.transactionCount, pending.transactionCount)
                 )
             },
             confirmButton = {
@@ -756,7 +756,7 @@ private fun CreditCardItem(
                             fontWeight = FontWeight.Medium
                         )
                         Text(
-                            text = "($utilization% used)",
+                            text = stringResource(R.string.flosi_percent_used_parenthesized, utilization),
                             style = MaterialTheme.typography.bodySmall,
                             color = utilizationColor,
                             fontWeight = FontWeight.Medium
@@ -1720,9 +1720,9 @@ private fun OrphanedCardItem(
                     if (card.lastBalanceSource != null) {
                         Text(
                             text = if (expandedSource) {
-                                "SMS: ${card.lastBalanceSource}"
+                                stringResource(R.string.flosi_sms_source_content, card.lastBalanceSource)
                             } else {
-                                "SMS: ${card.lastBalanceSource.take(80)}... (tap to expand)"
+                                stringResource(R.string.flosi_sms_source_expand_hint, card.lastBalanceSource.take(80))
                             },
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,

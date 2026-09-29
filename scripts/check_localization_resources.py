@@ -52,4 +52,22 @@ assert loan_en["one"] == "%1$d active loan"
 assert loan_en["other"] == "%1$d active loans"
 assert loan_ar["one"] != loan_ar["few"] and loan_ar["two"] != loan_ar["many"]
 
+for name in (
+    "flosi_onboarding_transactions_found",
+    "flosi_onboarding_seconds_remaining",
+    "flosi_onboarding_scan_saved",
+    "flosi_move_profile_transactions_warning",
+    "flosi_group_items",
+    "flosi_group_transactions",
+    "flosi_share_subscriptions_caption",
+    "flosi_month_count",
+    "flosi_year_count",
+):
+    en = {item.attrib["quantity"]: item.text for item in english[name]}
+    ar = {item.attrib["quantity"]: item.text for item in arabic[name]}
+    assert en["one"] != en["other"], f"English singular not distinct: {name}"
+    assert ar["one"] != ar["few"] and ar["two"] != ar["many"], (
+        f"Arabic quantity forms not distinct: {name}"
+    )
+
 print(f"Localization resources OK: {len(english)} paired strings/plurals")

@@ -178,9 +178,9 @@ fun SplitEditor(
                     if (!isBalanced) {
                         Text(
                             text = if (remaining > BigDecimal.ZERO) {
-                                "${CurrencyFormatter.formatCurrency(remaining, currency)} remaining"
+                                stringResource(R.string.flosi_remaining_amount, CurrencyFormatter.formatCurrency(remaining, currency))
                             } else {
-                                "${CurrencyFormatter.formatCurrency(remaining.abs(), currency)} over"
+                                stringResource(R.string.flosi_over_by_amount, CurrencyFormatter.formatCurrency(remaining.abs(), currency))
                             },
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.error

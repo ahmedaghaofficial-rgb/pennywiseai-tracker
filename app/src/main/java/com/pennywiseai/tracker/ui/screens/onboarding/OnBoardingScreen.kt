@@ -67,6 +67,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -647,13 +648,13 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
                 )
                 Spacer(modifier = Modifier.height(Spacing.sm))
                 Text(
-                    text = "${uiState.scanProcessed} / ${uiState.scanTotal} messages processed",
+                    text = stringResource(R.string.flosi_messages_processed_count, uiState.scanProcessed, uiState.scanTotal),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 if (uiState.scanParsed > 0) {
                     Text(
-                        text = "${uiState.scanParsed} transactions found",
+                        text = pluralStringResource(R.plurals.flosi_onboarding_transactions_found, uiState.scanParsed, uiState.scanParsed),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -661,7 +662,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
                 if (uiState.scanEstimatedRemaining > 0) {
                     val seconds = uiState.scanEstimatedRemaining / 1000
                     Text(
-                        text = "~${seconds}s remaining",
+                        text = pluralStringResource(R.plurals.flosi_onboarding_seconds_remaining, seconds.toInt(), seconds),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -696,7 +697,7 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
 
             if (uiState.scanSaved > 0) {
                 Text(
-                    text = "${uiState.scanSaved} transactions saved from ${uiState.scanTotal} messages",
+                    text = pluralStringResource(R.plurals.flosi_onboarding_scan_saved, uiState.scanSaved, uiState.scanSaved, uiState.scanTotal),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant

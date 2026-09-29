@@ -301,8 +301,7 @@ fun CategoryEditDialog(
             title = { Text(stringResource(R.string.flosi_delete_category_16)) },
             text = {
                 Text(
-                    "\"${category.name}\" will be removed. Existing transactions keep " +
-                        "their current label. This can't be undone."
+                    stringResource(R.string.flosi_delete_category_warning, category.name)
                 )
             },
             confirmButton = {

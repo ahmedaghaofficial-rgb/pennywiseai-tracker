@@ -410,6 +410,95 @@
     <string name="flosi_owed_to_you">مستحق لك: %1$s</string>
     <string name="flosi_you_owe_amount">مستحق عليك: %1$s</string>
     <string name="flosi_sms_detection_description">يستطيع %1$s اكتشاف معاملاتك البنكية من رسائل SMS وتصنيفها تلقائيًا.</string>
+    <plurals name="flosi_onboarding_transactions_found">
+        <item quantity="zero">لم يُعثر على معاملات</item>
+        <item quantity="one">عُثر على معاملة واحدة</item>
+        <item quantity="two">عُثر على معاملتين</item>
+        <item quantity="few">عُثر على %1$d معاملات</item>
+        <item quantity="many">عُثر على %1$d معاملة</item>
+        <item quantity="other">عُثر على %1$d معاملة</item>
+    </plurals>
+    <plurals name="flosi_onboarding_seconds_remaining">
+        <item quantity="zero">أقل من ثانية متبقية تقريبًا</item>
+        <item quantity="one">ثانية واحدة متبقية تقريبًا</item>
+        <item quantity="two">ثانيتان متبقيتان تقريبًا</item>
+        <item quantity="few">نحو %1$d ثوانٍ متبقية</item>
+        <item quantity="many">نحو %1$d ثانية متبقية</item>
+        <item quantity="other">نحو %1$d ثانية متبقية</item>
+    </plurals>
+    <plurals name="flosi_onboarding_scan_saved">
+        <item quantity="zero">لم تُحفظ معاملات من أصل %2$d رسالة</item>
+        <item quantity="one">حُفظت معاملة واحدة من أصل %2$d رسالة</item>
+        <item quantity="two">حُفظت معاملتان من أصل %2$d رسالة</item>
+        <item quantity="few">حُفظت %1$d معاملات من أصل %2$d رسالة</item>
+        <item quantity="many">حُفظت %1$d معاملة من أصل %2$d رسالة</item>
+        <item quantity="other">حُفظت %1$d معاملة من أصل %2$d رسالة</item>
+    </plurals>
+    <plurals name="flosi_move_profile_transactions_warning">
+        <item quantity="zero">لا توجد معاملات لنقلها إلى الملف الجديد</item>
+        <item quantity="one">هناك معاملة واحدة لهذا الحساب في ملف مختلف. هل تنقلها إلى الملف الجديد أيضًا؟</item>
+        <item quantity="two">هناك معاملتان لهذا الحساب في ملف مختلف. هل تنقلهما إلى الملف الجديد أيضًا؟</item>
+        <item quantity="few">هناك %1$d معاملات لهذا الحساب في ملف مختلف. هل تنقلها إلى الملف الجديد أيضًا؟</item>
+        <item quantity="many">هناك %1$d معاملة لهذا الحساب في ملف مختلف. هل تنقلها إلى الملف الجديد أيضًا؟</item>
+        <item quantity="other">هناك %1$d معاملة لهذا الحساب في ملف مختلف. هل تنقلها إلى الملف الجديد أيضًا؟</item>
+    </plurals>
+    <string name="flosi_percent_used_parenthesized">(%1$d%% مستخدم)</string>
+    <string name="flosi_sms_source_content">رسالة SMS: %1$s</string>
+    <string name="flosi_sms_source_expand_hint">رسالة SMS: %1$s… (اضغط للعرض)</string>
+    <string name="flosi_delete_category_warning">سيُحذف &quot;%1$s&quot;. ستحتفظ المعاملات السابقة بتصنيفها الحالي. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="flosi_spent_of_budget">%1$s من %2$s</string>
+    <string name="flosi_of_budget_percent">من %1$s · %2$d%%</string>
+    <string name="flosi_percent_used">المستخدم: %1$d%%</string>
+    <string name="flosi_estimated_amount">تقريبًا %1$s</string>
+    <string name="flosi_sms_char_count">(%1$d حرف)</string>
+    <string name="flosi_share_card_privacy">قُرئت من رسائل البنك، وبياناتي محفوظة على جهازي.</string>
+    <string name="flosi_month_summed_up">ملخص %1$s</string>
+    <plurals name="flosi_group_items">
+        <item quantity="zero">لا عناصر</item>
+        <item quantity="one">عنصر واحد</item>
+        <item quantity="two">عنصران</item>
+        <item quantity="few">%1$d عناصر</item>
+        <item quantity="many">%1$d عنصرًا</item>
+        <item quantity="other">%1$d عنصر</item>
+    </plurals>
+    <plurals name="flosi_group_transactions">
+        <item quantity="zero">لا معاملات</item>
+        <item quantity="one">معاملة واحدة</item>
+        <item quantity="two">معاملتان</item>
+        <item quantity="few">%1$d معاملات</item>
+        <item quantity="many">%1$d معاملة</item>
+        <item quantity="other">%1$d معاملة</item>
+    </plurals>
+    <plurals name="flosi_share_subscriptions_caption">
+        <item quantity="zero">اشتراكات كنت ناسيها</item>
+        <item quantity="one">اشتراك كنت ناسيه</item>
+        <item quantity="two">اشتراكين كنت ناسيهم</item>
+        <item quantity="few">اشتراكات كنت ناسيها</item>
+        <item quantity="many">اشتراك كنت ناسيه</item>
+        <item quantity="other">اشتراك كنت ناسيه</item>
+    </plurals>
+    <plurals name="flosi_month_count">
+        <item quantity="zero">لا شهور</item>
+        <item quantity="one">شهر واحد</item>
+        <item quantity="two">شهران</item>
+        <item quantity="few">%1$d شهور</item>
+        <item quantity="many">%1$d شهرًا</item>
+        <item quantity="other">%1$d شهر</item>
+    </plurals>
+    <plurals name="flosi_year_count">
+        <item quantity="zero">لا سنوات</item>
+        <item quantity="one">سنة واحدة</item>
+        <item quantity="two">سنتان</item>
+        <item quantity="few">%1$d سنوات</item>
+        <item quantity="many">%1$d سنة</item>
+        <item quantity="other">%1$d سنة</item>
+    </plurals>
+    <string name="flosi_more_vs_last_month">زيادة %1$d%% عن الشهر الماضي</string>
+    <string name="flosi_less_vs_last_month">انخفاض %1$d%% عن الشهر الماضي</string>
+    <string name="flosi_share_bank_texts_caption">رسائل بنكية اتسجلت تلقائيًا، من غير إدخال يدوي.</string>
+    <string name="flosi_category_exists_as_type">التصنيف &quot;%1$s&quot; موجود بالفعل كتصنيف %2$s</string>
+    <string name="flosi_on">مفعّل</string>
+    <string name="flosi_off">متوقف</string>
     <string name="flosi_privacy_transactions_only">تُعالج رسائل المعاملات فقط</string>
     <string name="flosi_privacy_on_device">تبقى جميع بياناتك على جهازك</string>
     <string name="flosi_privacy_no_personal_messages">لا تُقرأ رسائلك الشخصية</string>
