@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.R
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -75,7 +78,7 @@ fun ExpandableCard(
                 )
                 Icon(
                     imageVector = Icons.Rounded.ExpandMore,
-                    contentDescription = if (expanded) "Collapse" else "Expand",
+                    contentDescription = stringResource(if (expanded) R.string.flosi_collapse else R.string.flosi_expand),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.rotate(chevronRotation)
                 )

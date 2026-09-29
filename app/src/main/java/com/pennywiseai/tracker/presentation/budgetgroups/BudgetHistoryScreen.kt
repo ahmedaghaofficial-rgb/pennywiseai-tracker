@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.presentation.budgetgroups
 
 import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -357,7 +358,7 @@ private fun BreakdownSheet(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = cat.categoryName,
+                            text = localizedCategoryName(cat.categoryName),
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.weight(1f)
                         )

@@ -988,4 +988,11 @@
         <item quantity="many">%1$d قرضًا مُسدّدًا</item>
         <item quantity="other">%1$d قرض مُسدّد</item>
     </plurals>
+    <string name="flosi_tag">وسم</string>
+    <string name="flosi_tags">وسوم</string>
+    <string name="flosi_show">إظهار</string>
+    <string name="flosi_hide">إخفاء</string>
+    <string name="flosi_loan">قرض</string>
+    <string name="flosi_more">المزيد</string>
+    <string name="flosi_monthly_budget">ميزانية شهرية</string>
 </resources>

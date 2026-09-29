@@ -69,19 +69,19 @@ fun LoanDetailScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = loan?.personName ?: "Loan",
+                title = loan?.personName ?: stringResource(R.string.flosi_loan),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 actionContent = {
                     if (loan != null) {
                         var showMenu by remember { mutableStateOf(false) }
                         IconButton(onClick = { showMenu = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More")
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.flosi_more))
                         }
                         DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
                             if (loan.status == LoanStatus.ACTIVE) {
@@ -331,7 +331,7 @@ fun LoanDetailScreen(
                     },
                     enabled = editAmount.toBigDecimalOrNull()?.let { it > java.math.BigDecimal.ZERO } == true
                 ) {
-                    Text("Save")
+                    Text(stringResource(R.string.flosi_save))
                 }
             },
             dismissButton = {
@@ -561,7 +561,7 @@ private fun RecordPaymentBottomSheet(
                     shape = RoundedCornerShape(Dimensions.CornerRadius.medium),
                     colors = ButtonDefaults.buttonColors(containerColor = loanColor)
                 ) {
-                    Text("Add")
+                    Text(stringResource(R.string.flosi_add_new))
                 }
             }
         }

@@ -812,7 +812,7 @@ private fun CreditCardItem(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text(if (isHidden) "Show" else "Hide") },
+                            text = { Text(stringResource(if (isHidden) R.string.flosi_show else R.string.flosi_hide)) },
                             onClick = {
                                 showMenu = false
                                 onToggleVisibility()
@@ -1214,7 +1214,7 @@ private fun AccountItem(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text(if (isHidden) "Show" else "Hide") },
+                            text = { Text(stringResource(if (isHidden) R.string.flosi_show else R.string.flosi_hide)) },
                             onClick = {
                                 showMenu = false
                                 onToggleVisibility()

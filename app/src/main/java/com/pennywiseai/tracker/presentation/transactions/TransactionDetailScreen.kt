@@ -856,7 +856,7 @@ private fun TransactionReceipt(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 DetailInfoRow(
                     icon = Icons.Default.Sell,
-                    label = if (detailTags.size == 1) "Tag" else "Tags",
+                    label = stringResource(if (detailTags.size == 1) R.string.flosi_tag else R.string.flosi_tags),
                     value = detailTags.joinToString(", ")
                 )
             }

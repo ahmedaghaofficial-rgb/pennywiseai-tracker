@@ -47,6 +47,7 @@ import com.pennywiseai.tracker.ui.components.cards.PennyWiseCardV2
 import com.pennywiseai.tracker.ui.components.cards.SectionHeaderV2
 import com.pennywiseai.tracker.ui.components.ColorSwatchRow
 import com.pennywiseai.tracker.ui.icons.CategoryMapping
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import com.pennywiseai.tracker.ui.theme.*
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
@@ -447,7 +448,7 @@ fun BudgetGroupEditScreen(
                                                 ) {
                                                     CategoryIcon(category = categoryName, size = 18.dp)
                                                 }
-                                                Text(categoryName)
+                                                Text(localizedCategoryName(categoryName))
                                             }
                                         },
                                         onClick = {
@@ -476,7 +477,7 @@ fun BudgetGroupEditScreen(
                                                 ) {
                                                     CategoryIcon(category = option.displayName, size = 18.dp)
                                                 }
-                                                Text(stringResource(R.string.flosi_category_all, option.displayName))
+                                                Text(stringResource(R.string.flosi_category_all, localizedCategoryName(option.displayName)))
                                             }
                                         },
                                         onClick = {
@@ -766,7 +767,7 @@ private fun CategoryBudgetRow(
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = categoryName,
+                text = localizedCategoryName(categoryName),
                 style = MaterialTheme.typography.bodyMedium
             )
             if (currentSpending > BigDecimal.ZERO) {

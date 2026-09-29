@@ -934,4 +934,11 @@
         <item quantity="one">Settled (%1$d)</item>
         <item quantity="other">Settled (%1$d)</item>
     </plurals>
+    <string name="flosi_tag">Tag</string>
+    <string name="flosi_tags">Tags</string>
+    <string name="flosi_show">Show</string>
+    <string name="flosi_hide">Hide</string>
+    <string name="flosi_loan">Loan</string>
+    <string name="flosi_more">More</string>
+    <string name="flosi_monthly_budget">Monthly Budget</string>
 </resources>
