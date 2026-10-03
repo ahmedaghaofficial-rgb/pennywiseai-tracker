@@ -3,10 +3,7 @@ package com.pennywiseai.tracker.presentation.subscriptions
 import com.pennywiseai.tracker.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.platform.LocalContext
 import com.pennywiseai.tracker.BuildConfig
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -72,6 +69,7 @@ fun SubscriptionsScreen(
     onNavigateBack: () -> Unit = {},
     onAddSubscriptionClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val accounts by viewModel.accounts.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }

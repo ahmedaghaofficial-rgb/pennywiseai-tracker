@@ -1402,4 +1402,28 @@
         <item quantity="one"> %1$d repeated name in the file was collapsed.</item>
         <item quantity="other"> %1$d repeated names in the file were collapsed.</item>
     </plurals>
+    <string name="flosi_permission_desc">%1$s can automatically detect and categorize your bank transactions from SMS messages, saving you time and effort.</string>
+    <string name="flosi_permission_privacy">• Only transaction messages are processed\n• All data stays on your device\n• No personal messages are read\n• You can revoke access anytime in Settings</string>
+    <string name="flosi_permission_notification_desc">Allow %1$s to read transaction notifications from supported banking apps. This helps capture purchases when SMS is delayed or unavailable.</string>
+    <string name="flosi_permission_rationale">Without SMS access, you\'ll need to manually add all your transactions. We only read bank transaction messages, not personal conversations.</string>
+    <string name="flosi_group_empty">No groups yet</string>
+    <string name="flosi_group_empty_desc">Create a group to organise related transactions</string>
+    <string name="flosi_share_sub_empty">No subscriptions detected yet — PennyWise finds these from recurring payments in your SMS.</string>
+    <string name="flosi_share_done">Done</string>
+    <string name="flosi_share_customise">Customise</string>
+    <string name="flosi_widget_used">%1$d%% used</string>
+    <string name="flosi_widget_of">of %1$s</string>
+    <string name="flosi_widget_left">%1$s left</string>
+    <string name="flosi_widget_over">%1$s over</string>
+    <string name="flosi_widget_per_day">%1$s/day</string>
+    <string name="flosi_widget_saved">Saved %1$s</string>
+    <string name="flosi_widget_overspent">Over %1$s</string>
+    <string name="flosi_lock_title">%1$s is Locked</string>
+    <string name="flosi_lock_protected">Your data is protected with %1$s</string>
+    <string name="flosi_lock_immediate">immediate locking</string>
+    <string name="flosi_lock_one_minute">1 minute timeout</string>
+    <string name="flosi_lock_minutes">%1$d minute timeout</string>
+    <string name="flosi_widget_preview_spend">Total spend this month</string>
+    <string name="flosi_widget_fallback_transaction">Transaction</string>
+    <string name="flosi_widget_other">Other</string>
 </resources>

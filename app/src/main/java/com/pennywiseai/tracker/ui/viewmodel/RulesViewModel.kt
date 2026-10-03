@@ -46,6 +46,8 @@ class RulesViewModel @Inject constructor(
 
     private fun localizedContext() = AppLocaleController.wrap(context)
 
+    private fun localizedContext() = AppLocaleController.wrap(context)
+
     private val sharedPrefs = context.getSharedPreferences("account_prefs", Context.MODE_PRIVATE)
 
     private val _isLoading = MutableStateFlow(false)

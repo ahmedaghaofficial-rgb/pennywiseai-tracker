@@ -3,10 +3,6 @@ package com.pennywiseai.tracker.presentation.subscriptions
 import com.pennywiseai.tracker.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -401,10 +397,6 @@ private fun OrDivider() {
     }
 }
 
-@Composable
-@Composable
-@Composable
-@Composable
 @Composable
 private fun relativeDate(date: LocalDate): String {
     val today = LocalDate.now()

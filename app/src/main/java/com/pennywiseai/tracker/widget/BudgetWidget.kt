@@ -135,7 +135,7 @@ class BudgetWidget : GlanceAppWidget() {
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
             Text(
-                text = "${data.percentageUsed.toInt()}% used",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_widget_used, data.percentageUsed.toInt()),
                 style = TextStyle(
                     color = statusColor,
                     fontSize = 13.sp,
@@ -190,7 +190,7 @@ class BudgetWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "of ${CurrencyFormatter.formatCurrency(data.totalLimit, data.currency)}",
+                    text = androidx.glance.LocalContext.current.getString(R.string.flosi_widget_of, CurrencyFormatter.formatCurrency(data.totalLimit, data.currency)),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurfaceVariant,
                         fontSize = 12.sp
@@ -198,9 +198,9 @@ class BudgetWidget : GlanceAppWidget() {
                 )
                 Spacer(modifier = GlanceModifier.defaultWeight())
                 val remainingText = if (data.remaining >= BigDecimal.ZERO) {
-                    "${CurrencyFormatter.formatCurrency(data.remaining, data.currency)} left"
+                    androidx.glance.LocalContext.current.getString(R.string.flosi_widget_left, CurrencyFormatter.formatCurrency(data.remaining, data.currency))
                 } else {
-                    "${CurrencyFormatter.formatCurrency(data.remaining.abs(), data.currency)} over"
+                    androidx.glance.LocalContext.current.getString(R.string.flosi_widget_over, CurrencyFormatter.formatCurrency(data.remaining.abs(), data.currency))
                 }
                 Text(
                     text = remainingText,
@@ -221,7 +221,7 @@ class BudgetWidget : GlanceAppWidget() {
             ) {
                 if (data.dailyAllowance > BigDecimal.ZERO) {
                     Text(
-                        text = "${CurrencyFormatter.formatCurrency(data.dailyAllowance, data.currency)}/day",
+                        text = androidx.glance.LocalContext.current.getString(R.string.flosi_widget_per_day, CurrencyFormatter.formatCurrency(data.dailyAllowance, data.currency)),
                         style = TextStyle(
                             color = GlanceTheme.colors.onSurfaceVariant,
                             fontSize = 12.sp
@@ -234,15 +234,10 @@ class BudgetWidget : GlanceAppWidget() {
 
                     val savingsColor = PennyWiseWidgetTheme.savingsColor(data.netSavings >= BigDecimal.ZERO)
 
-                    val savingsText = buildString {
-                        append(if (data.netSavings >= BigDecimal.ZERO) "Saved " else "Over ")
-                        append(CurrencyFormatter.formatCurrency(data.netSavings.abs(), data.currency))
-                        data.savingsDelta?.let { delta ->
-                            if (delta.compareTo(BigDecimal.ZERO) != 0) {
-                                append(if (delta >= BigDecimal.ZERO) " \u2191" else " \u2193")
-                            }
-                        }
-                    }
+                    val savingsText = androidx.glance.LocalContext.current.getString(
+                        if (data.netSavings >= BigDecimal.ZERO) R.string.flosi_widget_saved else R.string.flosi_widget_overspent,
+                        CurrencyFormatter.formatCurrency(data.netSavings.abs(), data.currency)
+                    ) + (data.savingsDelta?.takeIf { it.compareTo(BigDecimal.ZERO) != 0 }?.let { if (it >= BigDecimal.ZERO) " ↑" else " ↓" } ?: "")
 
                     Text(
                         text = savingsText,

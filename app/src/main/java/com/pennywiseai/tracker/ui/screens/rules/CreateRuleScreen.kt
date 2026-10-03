@@ -79,13 +79,11 @@ private fun TransactionField.defaultConditionOperator(): ConditionOperator = whe
  * operator reads differently per field ("<" for an amount, "before" for a time).
  */
 @Composable
-@Composable
 private fun conditionOperatorsForField(
     field: TransactionField
 ): List<Pair<ConditionOperator, String>> =
     supportedOperators(field).map { operator -> operator to operator.labelFor(field) }
 
-@Composable
 @Composable
 private fun ConditionOperator.labelFor(field: TransactionField): String = when (field) {
     TransactionField.AMOUNT -> when (this) {
@@ -1104,7 +1102,6 @@ private fun LogicalOperatorToggle(
     }
 }
 
-@Composable
 @Composable
 private fun actionTypeLabel(type: ActionType): String = when (type) {
     ActionType.BLOCK -> stringResource(R.string.flosi_rule_action_block)

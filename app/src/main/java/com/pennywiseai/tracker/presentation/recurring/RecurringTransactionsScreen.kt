@@ -140,10 +140,6 @@ fun RecurringTransactionsScreen(
 }
 
 @Composable
-@Composable
-@Composable
-@Composable
-@Composable
 private fun RecurringFrequency.label(): String = when (this) {
     RecurringFrequency.DAILY -> stringResource(R.string.flosi_daily)
     RecurringFrequency.WEEKLY -> stringResource(R.string.flosi_weekly)
@@ -263,7 +259,7 @@ private fun RecurringEditorDialog(
     var categoryExpanded by remember { mutableStateOf(false) }
     var dowExpanded by remember { mutableStateOf(false) }
 
-    val dayOfWeekNames = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun") // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below
+    val dayOfWeekNames = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun") // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below
 
     AlertDialog(
         onDismissRequest = onDismiss,

@@ -111,7 +111,7 @@ fun PermissionScreen(
             Spacer(modifier = Modifier.height(Spacing.md))
 
             Text(
-                text = "${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} can automatically detect and categorize your bank transactions from SMS messages, saving you time and effort.",
+                text = stringResource(R.string.flosi_permission_desc, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -135,10 +135,7 @@ fun PermissionScreen(
                     )
                     Spacer(modifier = Modifier.height(Spacing.sm))
                     Text(
-                        text = "• Only transaction messages are processed\n" +
-                            "• All data stays on your device\n" +
-                            "• No personal messages are read\n" +
-                            "• You can revoke access anytime in Settings",
+                        text = stringResource(R.string.flosi_permission_privacy),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -160,7 +157,7 @@ fun PermissionScreen(
                     )
                     Spacer(modifier = Modifier.height(Spacing.xs))
                     Text(
-                        text = "Allow ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} to read transaction notifications from supported banking apps. This helps capture purchases when SMS is delayed or unavailable.",
+                        text = stringResource(R.string.flosi_permission_notification_desc, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -195,8 +192,7 @@ fun PermissionScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Without SMS access, you'll need to manually add all your transactions. " +
-                            "We only read bank transaction messages, not personal conversations.",
+                        text = stringResource(R.string.flosi_permission_rationale),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.padding(Spacing.md)

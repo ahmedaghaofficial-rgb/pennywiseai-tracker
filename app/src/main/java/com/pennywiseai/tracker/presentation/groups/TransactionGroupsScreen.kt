@@ -95,8 +95,8 @@ fun TransactionGroupsScreen(
             ) {
                 PennyWiseEmptyState(
                     icon = Icons.Default.Folder,
-                    headline = "No groups yet",
-                    description = "Create a group to organise related transactions"
+                    headline = stringResource(R.string.flosi_group_empty),
+                    description = stringResource(R.string.flosi_group_empty_desc)
                 )
             }
             return@Scaffold

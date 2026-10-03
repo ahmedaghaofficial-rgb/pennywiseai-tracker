@@ -1578,4 +1578,28 @@
         <item quantity="many"> تم تجاهل %1$d اسمًا مكررًا في الملف.</item>
         <item quantity="other"> تم تجاهل %1$d اسم مكرر في الملف.</item>
     </plurals>
+    <string name="flosi_permission_desc">يمكن لـ%1$s اكتشاف معاملاتك البنكية من الرسائل وتصنيفها تلقائيًا لتوفير الوقت.</string>
+    <string name="flosi_permission_privacy">• تُعالج رسائل المعاملات فقط\n• تظل بياناتك على جهازك\n• لا تُقرأ الرسائل الشخصية\n• يمكنك إلغاء الإذن في أي وقت من الإعدادات</string>
+    <string name="flosi_permission_notification_desc">اسمح لـ%1$s بقراءة إشعارات المعاملات من تطبيقات البنوك المدعومة، لاكتشاف المشتريات عند تأخر الرسائل أو تعذر وصولها.</string>
+    <string name="flosi_permission_rationale">بدون إذن الرسائل، ستحتاج إلى إضافة المعاملات يدويًا. نقرأ رسائل المعاملات البنكية فقط، وليس محادثاتك الشخصية.</string>
+    <string name="flosi_group_empty">لا توجد مجموعات بعد</string>
+    <string name="flosi_group_empty_desc">أنشئ مجموعة لتنظيم المعاملات المرتبطة</string>
+    <string name="flosi_share_sub_empty">لم تُكتشف اشتراكات بعد. يتعرف PennyWise عليها من المدفوعات المتكررة في رسائلك.</string>
+    <string name="flosi_share_done">تم</string>
+    <string name="flosi_share_customise">تخصيص</string>
+    <string name="flosi_widget_used">مُستخدم %1$d%%</string>
+    <string name="flosi_widget_of">من %1$s</string>
+    <string name="flosi_widget_left">المتبقي %1$s</string>
+    <string name="flosi_widget_over">تجاوزت %1$s</string>
+    <string name="flosi_widget_per_day">%1$s في اليوم</string>
+    <string name="flosi_widget_saved">وفّرت %1$s</string>
+    <string name="flosi_widget_overspent">تجاوزت %1$s</string>
+    <string name="flosi_lock_title">%1$s مقفل</string>
+    <string name="flosi_lock_protected">بياناتك محمية بقفل %1$s</string>
+    <string name="flosi_lock_immediate">فوري</string>
+    <string name="flosi_lock_one_minute">بعد دقيقة</string>
+    <string name="flosi_lock_minutes">بعد %1$d دقيقة</string>
+    <string name="flosi_widget_preview_spend">إجمالي المصاريف هذا الشهر</string>
+    <string name="flosi_widget_fallback_transaction">معاملة</string>
+    <string name="flosi_widget_other">أخرى</string>
 </resources>

@@ -130,7 +130,7 @@ fun ShareCardSheet(
             }
 
             TextButton(onClick = { showCustomise = !showCustomise }) {
-                Text(if (showCustomise) "Done" else "Customise")
+                Text(if (showCustomise) stringResource(R.string.flosi_share_done) else stringResource(R.string.flosi_share_customise))
             }
 
             AnimatedVisibility(visible = showCustomise) {
@@ -172,8 +172,7 @@ fun ShareCardSheet(
                     }
                     if (!hasSubscriptions) {
                         Text(
-                            text = "No subscriptions detected yet — PennyWise finds these " +
-                                "from recurring payments in your SMS.",
+                            text = stringResource(R.string.flosi_share_sub_empty),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = Spacing.xs),

@@ -82,7 +82,7 @@ fun AppLockScreen(
 
                 // Title
                 Text(
-                    text = "${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} is Locked",
+                    text = stringResource(R.string.flosi_lock_title, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
                     style = MaterialTheme.typography.headlineMedium,
                     textAlign = TextAlign.Center
                 )
@@ -171,13 +171,11 @@ fun AppLockScreen(
 
                 // Privacy note
                 Text(
-                    text = "Your data is protected with ${
-                        when (uiState.timeoutMinutes) {
-                            0 -> "immediate locking"
-                            1 -> "1 minute timeout"
-                            else -> "${uiState.timeoutMinutes} minute timeout"
-                        }
-                    }",
+                    text = stringResource(R.string.flosi_lock_protected, when (uiState.timeoutMinutes) {
+                        0 -> stringResource(R.string.flosi_lock_immediate)
+                        1 -> stringResource(R.string.flosi_lock_one_minute)
+                        else -> stringResource(R.string.flosi_lock_minutes, uiState.timeoutMinutes)
+                    }),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant

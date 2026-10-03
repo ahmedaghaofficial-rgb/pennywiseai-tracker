@@ -30,6 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SubscriptionsViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val subscriptionRepository: SubscriptionRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val currencyConversionService: CurrencyConversionService,
@@ -37,6 +38,8 @@ class SubscriptionsViewModel @Inject constructor(
     private val transactionRepository: com.pennywiseai.tracker.data.repository.TransactionRepository,
     accountBalanceRepository: AccountBalanceRepository,
 ) : ViewModel() {
+
+    private fun localizedContext() = AppLocaleController.wrap(context)
 
     private fun localizedContext() = AppLocaleController.wrap(context)
 
