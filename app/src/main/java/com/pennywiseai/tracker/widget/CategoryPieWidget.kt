@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.widget
 
+import com.pennywiseai.tracker.R
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -82,7 +83,7 @@ class CategoryPieWidget : GlanceAppWidget() {
         ) {
             Row(modifier = GlanceModifier.fillMaxWidth()) {
                 Text(
-                    text = "Spending",
+                    text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_spending),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurface,
                         fontSize = 13.sp,
@@ -111,7 +112,7 @@ class CategoryPieWidget : GlanceAppWidget() {
                     Box(contentAlignment = Alignment.Center) {
                         Image(
                             provider = ImageProvider(renderDonut(data.slices)),
-                            contentDescription = "Spending by category",
+                            contentDescription = androidx.glance.LocalContext.current.getString(R.string.flosi_full_spending_by_category),
                             modifier = GlanceModifier.size(110.dp)
                         )
                         Text(
@@ -181,7 +182,7 @@ class CategoryPieWidget : GlanceAppWidget() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "No spending yet this month",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_no_spending_yet_this_month),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 12.sp

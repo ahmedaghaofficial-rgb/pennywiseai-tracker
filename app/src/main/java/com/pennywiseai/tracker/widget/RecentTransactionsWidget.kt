@@ -115,7 +115,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
             Text(
-                text = "Recent Transactions",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_recent_transactions),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 14.sp,
@@ -137,7 +137,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
                 ) {
                     Image(
                         provider = ImageProvider(R.drawable.ic_widget_add),
-                        contentDescription = "Add Transaction",
+                        contentDescription = androidx.glance.LocalContext.current.getString(R.string.flosi_add_transaction),
                         modifier = GlanceModifier.size(20.dp)
                     )
                 }
@@ -151,7 +151,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
             modifier = GlanceModifier.fillMaxWidth()
         ) {
             Text(
-                text = "Total spend this month",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_total_spend_this_month),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 13.sp
@@ -242,7 +242,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "No transactions yet",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_no_transactions_yet),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 13.sp
@@ -250,7 +250,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
             )
             Spacer(modifier = GlanceModifier.height(2.dp))
             Text(
-                text = "Tap + to add manually",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_tap_to_add_manually),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 12.sp

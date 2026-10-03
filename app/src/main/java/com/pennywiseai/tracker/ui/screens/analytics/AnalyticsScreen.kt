@@ -146,7 +146,7 @@ fun AnalyticsScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Analytics",
+                title = stringResource(R.string.flosi_analytics),
                 hazeState = hazeState
             )
         }
@@ -271,7 +271,7 @@ fun AnalyticsScreen(
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     SectionHeaderV2(
-                        title = "Trends",
+                        title = stringResource(R.string.flosi_full_trends),
                         action = {
                             Button(
                                 onClick = { showChartTypeSelector = !showChartTypeSelector },
@@ -397,7 +397,7 @@ fun AnalyticsScreen(
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     SectionHeaderV2(
-                        title = "Top Categories",
+                        title = stringResource(R.string.flosi_full_top_categories),
                         action = {
                             IconButton(onClick = {
                                 categoryViewType = if (categoryViewType == CategoryViewType.CHART) {
@@ -410,7 +410,7 @@ fun AnalyticsScreen(
                                     imageVector = if (categoryViewType == CategoryViewType.CHART)
                                         Icons.AutoMirrored.Filled.List
                                     else Icons.Default.PieChart,
-                                    contentDescription = "Toggle View",
+                                    contentDescription = stringResource(R.string.flosi_full_toggle_view),
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                             }
@@ -470,7 +470,7 @@ fun AnalyticsScreen(
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     SectionHeaderV2(
-                        title = "Top Tags",
+                        title = stringResource(R.string.flosi_full_top_tags),
                         action = {
                             // View-toggle only makes sense once the breakdown is
                             // unlocked; free users get no toggle over the locked card.
@@ -486,7 +486,7 @@ fun AnalyticsScreen(
                                         imageVector = if (tagViewType == CategoryViewType.CHART)
                                             Icons.AutoMirrored.Filled.List
                                         else Icons.Default.PieChart,
-                                        contentDescription = "Toggle View",
+                                        contentDescription = stringResource(R.string.flosi_full_toggle_view),
                                         tint = MaterialTheme.colorScheme.primary
                                     )
                                 }
@@ -542,7 +542,7 @@ fun AnalyticsScreen(
         if (uiState.topMerchants.isNotEmpty()) {
             item {
                 SectionHeaderV2(
-                    title = "Top Merchants"
+                    title = stringResource(R.string.flosi_full_top_merchants)
                 )
             }
 
@@ -569,7 +569,7 @@ fun AnalyticsScreen(
         if (uiState.accountBreakdown.isNotEmpty()) {
             item {
                 SectionHeaderV2(
-                    title = "By Account"
+                    title = stringResource(R.string.flosi_full_by_account)
                 )
             }
 
@@ -633,12 +633,12 @@ private fun TagBreakdownLockedCard(onClick: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(Spacing.xs)
             ) {
                 Text(
-                    text = "See your Top Tags with Pro",
+                    text = stringResource(R.string.flosi_full_see_your_top_tags_with_pro),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Unlock a spending breakdown across all your tags. Tagging and filtering stay free.",
+                    text = stringResource(R.string.flosi_full_unlock_a_spending_breakdown_across_all_your_tags_tagging_and_filt),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

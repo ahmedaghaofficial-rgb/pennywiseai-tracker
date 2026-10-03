@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.screens.analytics
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -63,7 +65,7 @@ fun AnalyticsSummaryCard(
                 // Total Amount - bolder typography
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "TOTAL",
+                        text = stringResource(R.string.flosi_full_total),
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -131,7 +133,7 @@ fun AnalyticsSummaryCard(
                 // Average Amount with /day suffix
                 Column {
                     Text(
-                        text = "AVERAGE",
+                        text = stringResource(R.string.flosi_full_average),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -149,7 +151,7 @@ fun AnalyticsSummaryCard(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = " /day",
+                            text = stringResource(R.string.flosi_full_day),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 2.dp)

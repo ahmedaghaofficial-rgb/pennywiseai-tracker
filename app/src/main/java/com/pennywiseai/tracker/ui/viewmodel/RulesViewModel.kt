@@ -1,6 +1,8 @@
 package com.pennywiseai.tracker.ui.viewmodel
 
 import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.lifecycle.ViewModel
@@ -42,6 +44,8 @@ class RulesViewModel @Inject constructor(
      */
     val isProEntitled: StateFlow<Boolean> = entitlementGate.isProEntitled
 
+    private fun localizedContext() = AppLocaleController.wrap(context)
+
     private val sharedPrefs = context.getSharedPreferences("account_prefs", Context.MODE_PRIVATE)
 
     private val _isLoading = MutableStateFlow(false)
@@ -69,7 +73,7 @@ class RulesViewModel @Inject constructor(
      * never opens just to leave an empty file behind.
      */
     fun reportNothingToExport() {
-        _sharingMessage.value = "You don't have any custom rules to export yet."
+        _sharingMessage.value = localizedContext().getString(R.string.flosi_rules_none)
     }
 
     val rules: StateFlow<List<TransactionRule>> = ruleRepository.getAllRules()
@@ -196,13 +200,13 @@ class RulesViewModel @Inject constructor(
                 val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
                 if (cursor.moveToFirst() && sizeIndex >= 0 && !cursor.isNull(sizeIndex)) {
                     require(cursor.getLong(sizeIndex) <= limit) {
-                        "That file is too large to be a rules file."
+                        localizedContext().getString(R.string.flosi_rules_file_large)
                     }
                 }
             }
 
         val input = context.contentResolver.openInputStream(uri)
-            ?: throw IllegalStateException("Couldn't open the file.")
+            ?: throw IllegalStateException(localizedContext().getString(R.string.flosi_rules_open_error))
         return input.use { stream ->
             // One byte past the limit so an over-long stream is detected rather
             // than silently truncated into an unparseable fragment.
@@ -213,7 +217,7 @@ class RulesViewModel @Inject constructor(
                 if (n < 0) break
                 read += n
             }
-            require(read <= limit) { "That file is too large to be a rules file." }
+            require(read <= limit) { localizedContext().getString(R.string.flosi_rules_file_large) }
             String(bytes, 0, read, Charsets.UTF_8)
         }
     }
@@ -228,22 +232,18 @@ class RulesViewModel @Inject constructor(
                 val all = ruleRepository.getAllRules().first()
                 val exportable = RuleSharingCodec.exportable(all)
                 if (exportable.isEmpty()) {
-                    _sharingMessage.value = "You don't have any custom rules to export yet."
+                    _sharingMessage.value = localizedContext().getString(R.string.flosi_rules_none)
                     return@launch
                 }
                 val text = RuleSharingCodec.encode(all)
                 withContext(Dispatchers.IO) {
                     context.contentResolver.openOutputStream(uri)?.use { out ->
                         out.write(text.toByteArray())
-                    } ?: throw IllegalStateException("Couldn't open the file for writing.")
+                    } ?: throw IllegalStateException(localizedContext().getString(R.string.flosi_rules_write_error))
                 }
-                _sharingMessage.value = if (exportable.size == 1) {
-                    "Exported 1 rule."
-                } else {
-                    "Exported ${exportable.size} rules."
-                }
+                _sharingMessage.value = localizedContext().resources.getQuantityString(R.plurals.flosi_rules_exported, exportable.size, exportable.size)
             } catch (e: Exception) {
-                _sharingMessage.value = "Export failed: ${e.message}"
+                _sharingMessage.value = localizedContext().getString(R.string.flosi_rules_export_error, e.localizedMessage ?: localizedContext().getString(R.string.flosi_rules_import_error))
             }
         }
     }
@@ -281,22 +281,20 @@ class RulesViewModel @Inject constructor(
                 val skipped = decoded.duplicatedInFile
                 _sharingMessage.value = buildString {
                     append(
-                        if (toImport.size == 1) "Imported 1 rule."
-                        else "Imported ${toImport.size} rules."
+                        localizedContext().resources.getQuantityString(R.plurals.flosi_rules_imported, toImport.size, toImport.size)
                     )
-                    if (duplicates > 0) append(" $duplicates already existed.")
+                    if (duplicates > 0) append(localizedContext().resources.getQuantityString(R.plurals.flosi_rules_duplicates, duplicates, duplicates))
                     if (skipped > 0) {
                         append(
-                            if (skipped == 1) " 1 repeated name in the file was collapsed."
-                            else " $skipped repeated names in the file were collapsed."
+                            localizedContext().resources.getQuantityString(R.plurals.flosi_rules_repeated, skipped, skipped)
                         )
                     }
                     if (blocked > 0) {
-                        append(" $blocked more need Pro — you're at the free limit of ${FreeTierLimits.MAX_RULES}.")
+                        append(localizedContext().getString(R.string.flosi_rules_skipped_limit, blocked, FreeTierLimits.MAX_RULES))
                     }
                 }
             } catch (e: Exception) {
-                _sharingMessage.value = e.message ?: "Import failed."
+                _sharingMessage.value = localizedContext().getString(R.string.flosi_rules_import_error)
             } finally {
                 _isLoading.value = false
             }
@@ -352,7 +350,7 @@ class RulesViewModel @Inject constructor(
                 _batchApplyResult.value = BatchApplyResult(
                     totalProcessed = 0,
                     totalUpdated = 0,
-                    errors = listOf("Error: ${e.message}")
+                    errors = listOf(localizedContext().getString(R.string.flosi_rules_error, e.localizedMessage ?: localizedContext().getString(R.string.flosi_rules_import_error)))
                 )
             } finally {
                 _isLoading.value = false
@@ -379,7 +377,7 @@ class RulesViewModel @Inject constructor(
                 _batchApplyResult.value = BatchApplyResult(
                     totalProcessed = 0,
                     totalUpdated = 0,
-                    errors = listOf("Error: ${e.message}")
+                    errors = listOf(localizedContext().getString(R.string.flosi_rules_error, e.localizedMessage ?: localizedContext().getString(R.string.flosi_rules_import_error)))
                 )
             } finally {
                 _isLoading.value = false

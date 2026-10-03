@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check parity and count formatting for the Personal Arabic UI resources."""
+"""Check parity, formatting and plural quantities for the Android UI resources."""
 
 from pathlib import Path
 from collections import Counter
@@ -21,7 +21,7 @@ def read(locale):
         element.attrib["name"]: element
         for element in elements
         if element.tag in {"string", "plurals"}
-        and element.attrib.get("name", "").startswith(("flosi_", "validation_"))
+        and element.attrib.get("translatable") != "false"
     }
 
 
@@ -42,8 +42,13 @@ for name, source in english.items():
     else:
         en_forms = {item.attrib["quantity"]: item for item in source}
         ar_forms = {item.attrib["quantity"]: item for item in translated}
+        assert len(en_forms) == len(source), f"Duplicate English plural quantity: {name}"
+        assert len(ar_forms) == len(translated), f"Duplicate Arabic plural quantity: {name}"
         assert {"one", "other"} <= en_forms.keys(), f"English quantity forms missing: {name}"
         assert ARABIC_QUANTITIES <= ar_forms.keys(), f"Arabic quantity forms missing: {name}"
+        assert set(en_forms) <= ARABIC_QUANTITIES and set(ar_forms) == ARABIC_QUANTITIES, (
+            f"Unexpected plural quantities: {name}"
+        )
         source_args = set().union(*(set(PLACEHOLDER.findall(item.text or "")) for item in source))
         for quantity, item in ar_forms.items():
             assert set(PLACEHOLDER.findall(item.text or "")) <= source_args, (

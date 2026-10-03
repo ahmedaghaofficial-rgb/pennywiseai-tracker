@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.screens
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import android.Manifest
 import android.content.Intent
 import android.os.Build
@@ -101,7 +103,7 @@ fun PermissionScreen(
             Spacer(modifier = Modifier.height(Spacing.xl))
 
             Text(
-                text = "Enable Automatic Transaction Detection",
+                text = stringResource(R.string.flosi_full_enable_automatic_transaction_detection),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center
             )
@@ -127,7 +129,7 @@ fun PermissionScreen(
                     modifier = Modifier.padding(Spacing.md)
                 ) {
                     Text(
-                        text = "Your Privacy Matters",
+                        text = stringResource(R.string.flosi_your_privacy_matters),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -153,7 +155,7 @@ fun PermissionScreen(
             ) {
                 Column(modifier = Modifier.padding(Spacing.md)) {
                     Text(
-                        text = "Enable Bank Notification Access",
+                        text = stringResource(R.string.flosi_full_enable_bank_notification_access),
                         style = MaterialTheme.typography.titleSmall
                     )
                     Spacer(modifier = Modifier.height(Spacing.xs))
@@ -167,7 +169,7 @@ fun PermissionScreen(
                         AssistChip(
                             onClick = {},
                             enabled = false,
-                            label = { Text("Notification access enabled") }
+                            label = { Text(stringResource(R.string.flosi_full_notification_access_enabled)) }
                         )
                     } else {
                         Button(
@@ -177,7 +179,7 @@ fun PermissionScreen(
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Open Notification Access Settings")
+                            Text(stringResource(R.string.flosi_full_open_notification_access_settings))
                         }
                     }
                 }
@@ -218,7 +220,7 @@ fun PermissionScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Enable Automatic Detection")
+                Text(stringResource(R.string.flosi_enable_automatic_detection))
             }
         }
     }

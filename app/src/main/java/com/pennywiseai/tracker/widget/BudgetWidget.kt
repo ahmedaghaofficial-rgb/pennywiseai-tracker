@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.widget
 
+import com.pennywiseai.tracker.R
 import android.content.Context
 import android.os.Build
 import androidx.compose.runtime.Composable
@@ -95,7 +96,7 @@ class BudgetWidget : GlanceAppWidget() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Monthly Budget",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_monthly_budget),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 14.sp,
@@ -104,7 +105,7 @@ class BudgetWidget : GlanceAppWidget() {
             )
             Spacer(modifier = GlanceModifier.height(6.dp))
             Text(
-                text = "Tap to set up",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_tap_to_set_up),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 12.sp
@@ -125,7 +126,7 @@ class BudgetWidget : GlanceAppWidget() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Monthly Budget",
+                text = androidx.glance.LocalContext.current.getString(R.string.flosi_monthly_budget),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 14.sp,

@@ -85,14 +85,14 @@ class AddTransactionWidget : GlanceAppWidget() {
                     ) {
                         Image(
                             provider = ImageProvider(R.drawable.ic_widget_add),
-                            contentDescription = "Add transaction",
+                            contentDescription = androidx.glance.LocalContext.current.getString(R.string.flosi_full_add_transaction),
                             modifier = GlanceModifier.size(20.dp)
                         )
                     }
                     Spacer(modifier = GlanceModifier.width(10.dp))
                     Column {
                         Text(
-                            text = "Add",
+                            text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_add),
                             style = TextStyle(
                                 color = GlanceTheme.colors.onPrimaryContainer,
                                 fontSize = 14.sp,
@@ -101,7 +101,7 @@ class AddTransactionWidget : GlanceAppWidget() {
                         )
                         Spacer(modifier = GlanceModifier.height(1.dp))
                         Text(
-                            text = "Transaction",
+                            text = androidx.glance.LocalContext.current.getString(R.string.flosi_transaction_tab),
                             style = TextStyle(
                                 color = GlanceTheme.colors.onPrimaryContainer,
                                 fontSize = 11.sp

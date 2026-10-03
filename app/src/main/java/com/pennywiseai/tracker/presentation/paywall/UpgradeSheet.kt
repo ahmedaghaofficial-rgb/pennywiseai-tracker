@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.paywall
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -319,7 +321,7 @@ private fun SupportNote() {
             modifier = Modifier.size(Dimensions.Icon.medium),
         )
         Text(
-            text = "Built by a solo dev — your upgrade funds what's next. Thank you.",
+            text = stringResource(R.string.flosi_full_built_by_a_solo_dev_your_upgrade_funds_what_s_next_thank_you),
             style = MaterialTheme.typography.bodySmall,
             color = Color(0xFF3A2B00),
         )
@@ -607,7 +609,7 @@ private fun IncludesBlock() {
             .padding(horizontal = Dimensions.Padding.content),
     ) {
         Text(
-            text = "Includes",
+            text = stringResource(R.string.flosi_full_includes),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.primary,
@@ -654,13 +656,13 @@ private fun TrustRow(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Cancel anytime",
+                text = stringResource(R.string.flosi_full_cancel_anytime),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Dot()
             Text(
-                text = "On-device data",
+                text = stringResource(R.string.flosi_full_on_device_data),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -670,7 +672,7 @@ private fun TrustRow(
                 contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
             ) {
                 Text(
-                    text = "Restore",
+                    text = stringResource(R.string.flosi_full_restore),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Medium,
@@ -684,7 +686,7 @@ private fun TrustRow(
             contentPadding = PaddingValues(horizontal = Spacing.xs, vertical = Spacing.none),
         ) {
             Text(
-                text = "Have a license key?",
+                text = stringResource(R.string.flosi_full_have_a_license_key),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium,
@@ -693,7 +695,7 @@ private fun TrustRow(
         if (liveCatalogEmpty) {
             Spacer(Modifier.height(Spacing.xs))
             Text(
-                text = "Prices shown are indicative · Play Store confirms at checkout",
+                text = stringResource(R.string.flosi_full_prices_shown_are_indicative_play_store_confirms_at_checkout),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -778,10 +780,10 @@ private fun CelebrationContent(onContinue: () -> Unit) {
             modifier = Modifier.graphicsLayer { alpha = contentAlpha },
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            EyebrowChip(text = "WELCOME", isAccent = true)
+            EyebrowChip(text = stringResource(R.string.flosi_full_welcome), isAccent = true)
             Spacer(Modifier.height(Spacing.md))
             Text(
-                text = "You're a Pro member",
+                text = stringResource(R.string.flosi_full_you_re_a_pro_member),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -789,7 +791,7 @@ private fun CelebrationContent(onContinue: () -> Unit) {
             )
             Spacer(Modifier.height(Spacing.xs))
             Text(
-                text = "Thank you for backing PennyWise — every feature on the list is now yours.",
+                text = stringResource(R.string.flosi_full_thank_you_for_backing_pennywise_every_feature_on_the_list_is_now),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -834,7 +836,7 @@ private fun CelebrationContent(onContinue: () -> Unit) {
                 ),
             ) {
                 Text(
-                    text = "Continue",
+                    text = stringResource(R.string.flosi_continue),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -863,10 +865,10 @@ private fun MemberCard(licenseProductName: String?) {
             ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            EyebrowChip(text = "ACTIVE", isAccent = true)
+            EyebrowChip(text = stringResource(R.string.flosi_full_active), isAccent = true)
             Spacer(Modifier.height(Spacing.md))
             Text(
-                text = "All Pro features unlocked",
+                text = stringResource(R.string.flosi_full_all_pro_features_unlocked),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -905,7 +907,7 @@ private fun ManageRow(
             // another phone. Play subscribers get the Play manage link instead.
             TextButton(onClick = onRemoveLicense) {
                 Text(
-                    text = "Remove license key",
+                    text = stringResource(R.string.flosi_full_remove_license_key),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Medium,
@@ -926,7 +928,7 @@ private fun ManageRow(
             },
         ) {
             Text(
-                text = "Manage subscription",
+                text = stringResource(R.string.flosi_full_manage_subscription),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium,
@@ -934,7 +936,7 @@ private fun ManageRow(
         }
         TextButton(onClick = onRestore) {
             Text(
-                text = "Restore",
+                text = stringResource(R.string.flosi_full_restore),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium,

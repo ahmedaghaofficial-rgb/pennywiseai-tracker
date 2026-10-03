@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.recurring
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -54,10 +56,10 @@ fun RecurringTransactionsScreen(
     val paused = templates.filterNot { it.isActive }
 
     PennyWiseScaffold(
-        title = "Recurring",
+        title = stringResource(R.string.flosi_recurring),
         navigationIcon = {
             IconButton(onClick = onNavigateBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
             }
         },
         floatingActionButton = {
@@ -69,7 +71,7 @@ fun RecurringTransactionsScreen(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add recurring transaction")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.flosi_full_add_recurring_transaction))
             }
         }
     ) { padding ->
@@ -77,8 +79,8 @@ fun RecurringTransactionsScreen(
             Box(modifier = Modifier.fillMaxSize().padding(padding)) {
                 PennyWiseEmptyState(
                     icon = Icons.Default.EventRepeat,
-                    headline = "No recurring transactions",
-                    description = "Schedule cash or manual spend to be added automatically — rent, an allowance, a weekly cleaner."
+                    headline = stringResource(R.string.flosi_recurring_empty),
+                    description = stringResource(R.string.flosi_recurring_empty_desc)
                 )
             }
             return@PennyWiseScaffold
@@ -97,7 +99,7 @@ fun RecurringTransactionsScreen(
             verticalArrangement = Arrangement.spacedBy(Spacing.md)
         ) {
             if (active.isNotEmpty()) {
-                item { SectionHeaderV2(title = "Active") }
+                item { SectionHeaderV2(title = stringResource(R.string.flosi_active)) }
                 items(active, key = { it.id }) { template ->
                     RecurringItem(
                         template = template,
@@ -108,7 +110,7 @@ fun RecurringTransactionsScreen(
                 }
             }
             if (paused.isNotEmpty()) {
-                item { SectionHeaderV2(title = "Paused") }
+                item { SectionHeaderV2(title = stringResource(R.string.flosi_full_paused)) }
                 items(paused, key = { it.id }) { template ->
                     RecurringItem(
                         template = template,
@@ -137,10 +139,15 @@ fun RecurringTransactionsScreen(
     }
 }
 
+@Composable
+@Composable
+@Composable
+@Composable
+@Composable
 private fun RecurringFrequency.label(): String = when (this) {
-    RecurringFrequency.DAILY -> "Daily"
-    RecurringFrequency.WEEKLY -> "Weekly"
-    RecurringFrequency.MONTHLY -> "Monthly"
+    RecurringFrequency.DAILY -> stringResource(R.string.flosi_daily)
+    RecurringFrequency.WEEKLY -> stringResource(R.string.flosi_weekly)
+    RecurringFrequency.MONTHLY -> stringResource(R.string.flosi_monthly)
 }
 
 @Composable
@@ -163,16 +170,12 @@ private fun RecurringItem(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = template.merchantName.ifBlank { "Untitled" },
+                    text = template.merchantName.ifBlank { stringResource(R.string.flosi_recurring_untitled) },
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = buildString {
-                        append(template.frequency.label())
-                        append(" · Next ")
-                        append(template.nextDueDate.format(DateTimeFormatter.ofPattern("MMM d")))
-                    },
+                    text = stringResource(R.string.flosi_recurring_next, template.frequency.label(), template.nextDueDate.format(DateTimeFormatter.ofPattern("MMM d"))),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -194,25 +197,25 @@ private fun RecurringItem(
 
             Box {
                 IconButton(onClick = { showMenu = true }) {
-                    Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                    Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.flosi_more_options))
                 }
                 DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
                     DropdownMenuItem(
-                        text = { Text(if (template.isActive) "Pause" else "Resume") },
+                        text = { Text(if (template.isActive) stringResource(R.string.flosi_recurring_pause) else stringResource(R.string.flosi_recurring_resume)) },
                         onClick = {
                             showMenu = false
                             onToggleActive(!template.isActive)
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Edit") },
+                        text = { Text(stringResource(R.string.flosi_edit)) },
                         onClick = {
                             showMenu = false
                             onEdit()
                         }
                     )
                     DropdownMenuItem(
-                        text = { Text("Delete", color = MaterialTheme.colorScheme.error) },
+                        text = { Text(stringResource(R.string.flosi_delete), color = MaterialTheme.colorScheme.error) },
                         leadingIcon = {
                             Icon(
                                 Icons.Default.Delete,
@@ -233,15 +236,15 @@ private fun RecurringItem(
     if (showDeleteConfirm) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("Delete recurring transaction?") },
-            text = { Text("\"${template.merchantName}\" will stop being added automatically. This cannot be undone.") },
+            title = { Text(stringResource(R.string.flosi_full_delete_recurring_transaction)) },
+            text = { Text(stringResource(R.string.flosi_recurring_delete_warning, template.merchantName)) },
             confirmButton = {
                 TextButton(onClick = { showDeleteConfirm = false; onDelete() }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.flosi_delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { showDeleteConfirm = false }) { Text(stringResource(R.string.flosi_cancel)) }
             }
         )
     }
@@ -260,11 +263,11 @@ private fun RecurringEditorDialog(
     var categoryExpanded by remember { mutableStateOf(false) }
     var dowExpanded by remember { mutableStateOf(false) }
 
-    val dayOfWeekNames = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+    val dayOfWeekNames = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun") // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(if (form.id == 0L) "New recurring" else "Edit recurring") },
+        title = { Text(if (form.id == 0L) stringResource(R.string.flosi_recurring_new) else stringResource(R.string.flosi_recurring_edit)) },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -273,7 +276,7 @@ private fun RecurringEditorDialog(
                 OutlinedTextField(
                     value = state.merchantName,
                     onValueChange = { state = state.copy(merchantName = it) },
-                    label = { Text("Name") },
+                    label = { Text(stringResource(R.string.flosi_full_name)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -285,7 +288,7 @@ private fun RecurringEditorDialog(
                             val filtered = input.filter { it.isDigit() || it == '.' }
                             if (filtered.count { it == '.' } <= 1) state = state.copy(amount = filtered)
                         },
-                        label = { Text("Amount") },
+                        label = { Text(stringResource(R.string.flosi_amount_6)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                         modifier = Modifier.weight(1f)
@@ -293,7 +296,7 @@ private fun RecurringEditorDialog(
                     OutlinedTextField(
                         value = state.currency,
                         onValueChange = { state = state.copy(currency = it.uppercase().take(3)) },
-                        label = { Text("Currency") },
+                        label = { Text(stringResource(R.string.flosi_currency)) },
                         singleLine = true,
                         modifier = Modifier.width(110.dp)
                     )
@@ -307,12 +310,12 @@ private fun RecurringEditorDialog(
                     FilterChip(
                         selected = state.transactionType == TransactionType.EXPENSE,
                         onClick = { state = state.copy(transactionType = TransactionType.EXPENSE) },
-                        label = { Text("Expense") }
+                        label = { Text(stringResource(R.string.flosi_expense)) }
                     )
                     FilterChip(
                         selected = state.transactionType == TransactionType.INCOME,
                         onClick = { state = state.copy(transactionType = TransactionType.INCOME) },
-                        label = { Text("Income") }
+                        label = { Text(stringResource(R.string.flosi_income)) }
                     )
                 }
 
@@ -325,7 +328,7 @@ private fun RecurringEditorDialog(
                         value = state.category,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Category") },
+                        label = { Text(stringResource(R.string.flosi_category)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(categoryExpanded) },
                         modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth()
                     )
@@ -354,7 +357,7 @@ private fun RecurringEditorDialog(
                         value = state.frequency.label(),
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Frequency") },
+                        label = { Text(stringResource(R.string.flosi_full_frequency)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(freqExpanded) },
                         modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth()
                     )
@@ -383,7 +386,7 @@ private fun RecurringEditorDialog(
                                 val n = input.filter { it.isDigit() }.toIntOrNull()
                                 state = state.copy(dayOfMonth = n?.coerceIn(1, 31))
                             },
-                            label = { Text("Day of month (1-31)") },
+                            label = { Text(stringResource(R.string.flosi_full_day_of_month_1_31)) },
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             modifier = Modifier.fillMaxWidth()
@@ -395,10 +398,10 @@ private fun RecurringEditorDialog(
                             onExpandedChange = { dowExpanded = it }
                         ) {
                             OutlinedTextField(
-                                value = state.dayOfWeek?.let { dayOfWeekNames[it - 1] } ?: "Any",
+                                value = state.dayOfWeek?.let { java.time.DayOfWeek.of(it).getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.getDefault()) } ?: "Any",
                                 onValueChange = {},
                                 readOnly = true,
-                                label = { Text("Day of week") },
+                                label = { Text(stringResource(R.string.flosi_full_day_of_week)) },
                                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(dowExpanded) },
                                 modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth()
                             )
@@ -424,7 +427,7 @@ private fun RecurringEditorDialog(
                 OutlinedTextField(
                     value = state.note,
                     onValueChange = { state = state.copy(note = it) },
-                    label = { Text("Note (optional)") },
+                    label = { Text(stringResource(R.string.flosi_note_optional)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -434,7 +437,7 @@ private fun RecurringEditorDialog(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Active", style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.flosi_active), style = MaterialTheme.typography.bodyLarge)
                     Switch(
                         checked = state.isActive,
                         onCheckedChange = { state = state.copy(isActive = it) }
@@ -443,10 +446,10 @@ private fun RecurringEditorDialog(
             }
         },
         confirmButton = {
-            TextButton(enabled = state.isValid, onClick = { onSave(state) }) { Text("Save") }
+            TextButton(enabled = state.isValid, onClick = { onSave(state) }) { Text(stringResource(R.string.flosi_save)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.flosi_cancel)) }
         }
     )
 }

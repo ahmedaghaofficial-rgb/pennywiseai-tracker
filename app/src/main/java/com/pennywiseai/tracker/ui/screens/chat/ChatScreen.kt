@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.screens.chat
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -154,7 +156,7 @@ fun ChatScreen(
                                             modifier = Modifier.size(Dimensions.Icon.small)
                                         )
                                         Spacer(modifier = Modifier.width(Spacing.xs))
-                                        Text("Cancel")
+                                        Text(stringResource(R.string.flosi_cancel))
                                     }
                                 } else {
                                     Button(onClick = { viewModel.startModelDownload() }) {
@@ -168,7 +170,7 @@ fun ChatScreen(
                                     }
                                 }
                                 TextButton(onClick = onNavigateToSettings) {
-                                    Text("Settings")
+                                    Text(stringResource(R.string.flosi_settings))
                                 }
                             }
                         }
@@ -215,7 +217,7 @@ fun ChatScreen(
                                 ) {
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(
-                                            text = "Downloading Model...",
+                                            text = stringResource(R.string.flosi_full_downloading_model),
                                             style = MaterialTheme.typography.titleSmall,
                                             fontWeight = FontWeight.Bold
                                         )
@@ -228,7 +230,7 @@ fun ChatScreen(
                                         onClick = { viewModel.cancelDownload() },
                                         modifier = Modifier.padding(start = Spacing.sm)
                                     ) {
-                                        Text("Cancel")
+                                        Text(stringResource(R.string.flosi_cancel))
                                     }
                                 }
                                 LinearProgressIndicator(
@@ -250,14 +252,14 @@ fun ChatScreen(
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "Model Required",
+                                        text = stringResource(R.string.flosi_full_model_required),
                                         style = MaterialTheme.typography.titleSmall,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
                                         // 1.6 GB via the system Download Manager; some phones (Samsung
                                         // with Data saver) won't start it on mobile data.
-                                        text = "1.6 GB · use Wi-Fi",
+                                        text = stringResource(R.string.flosi_full_1_6_gb_use_wi_fi),
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
@@ -271,7 +273,7 @@ fun ChatScreen(
                                         modifier = Modifier.size(Dimensions.Icon.small)
                                     )
                                     Spacer(modifier = Modifier.width(Spacing.xs))
-                                    Text("Download")
+                                    Text(stringResource(R.string.flosi_download))
                                 }
                             }
                         }
@@ -293,11 +295,11 @@ fun ChatScreen(
                         ) {
                             CircularProgressIndicator()
                             Text(
-                                text = "Initializing AI Model...",
+                                text = stringResource(R.string.flosi_full_initializing_ai_model),
                                 style = MaterialTheme.typography.bodyLarge
                             )
                             Text(
-                                text = "This may take a few seconds",
+                                text = stringResource(R.string.flosi_full_this_may_take_a_few_seconds),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -360,7 +362,7 @@ fun ChatScreen(
                                             modifier = Modifier.size(Dimensions.Icon.small)
                                         )
                                         Spacer(modifier = Modifier.width(Spacing.xs))
-                                        Text("Clear Chat")
+                                        Text(stringResource(R.string.flosi_full_clear_chat))
                                     }
                                 }
                             }
@@ -463,7 +465,7 @@ fun ChatScreen(
                                     IconButton(onClick = { viewModel.clearError() }) {
                                         Icon(
                                             Icons.Default.Close,
-                                            contentDescription = "Dismiss",
+                                            contentDescription = stringResource(R.string.flosi_dismiss),
                                             tint = MaterialTheme.colorScheme.onErrorContainer
                                         )
                                     }
@@ -489,7 +491,7 @@ fun ChatScreen(
                                     modifier = Modifier
                                         .weight(1f)
                                         .focusRequester(focusRequester),
-                                    placeholder = { Text("Ask, or tell me what you spent…") },
+                                    placeholder = { Text(stringResource(R.string.flosi_full_ask_or_tell_me_what_you_spent)) },
                                     enabled = !uiState.isLoading,
                                     maxLines = 3,
                                     shape = MaterialTheme.shapes.extraLarge
@@ -515,7 +517,7 @@ fun ChatScreen(
                                     } else {
                                         Icon(
                                             Icons.AutoMirrored.Filled.Send,
-                                            contentDescription = "Send"
+                                            contentDescription = stringResource(R.string.flosi_full_send)
                                         )
                                     }
                                 }
@@ -596,7 +598,7 @@ fun TokenLimitWarning(
                         contentColor = contentColor
                     )
                 ) {
-                    Text("Clear", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.flosi_clear), fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -692,7 +694,7 @@ fun DeveloperInfoCard(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "Context Usage",
+                            text = stringResource(R.string.flosi_full_context_usage),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -889,13 +891,13 @@ private fun ChatEmptyState(
         )
 
         Text(
-            text = "Add a spend or ask about it",
+            text = stringResource(R.string.flosi_full_add_a_spend_or_ask_about_it),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
 
         Text(
-            text = "Try one of these prompts",
+            text = stringResource(R.string.flosi_full_try_one_of_these_prompts),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -965,7 +967,7 @@ private fun PendingActionCard(
             Text(text = headline, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = fg)
             Text(text = detail, style = MaterialTheme.typography.bodySmall, color = fg)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                OutlinedButton(onClick = onDismiss, enabled = enabled, modifier = Modifier.weight(1f)) { Text("Cancel") }
+                OutlinedButton(onClick = onDismiss, enabled = enabled, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.flosi_cancel)) }
                 Button(
                     onClick = onConfirm,
                     enabled = enabled,

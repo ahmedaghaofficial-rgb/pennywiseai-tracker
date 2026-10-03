@@ -58,20 +58,16 @@ fun FAQScreen(
                 icon = { Icon(Icons.Default.SwapHoriz, contentDescription = null) },
                 items = listOf(
                     FAQItem(
-                        question = "Why are wallet transactions marked as Credit?",
-                        answer = "Wallet transactions (Amazon Pay, Paytm, etc.) are marked as Credit because they're charged to your bank account or credit card first, not direct bank debits. This helps track the actual payment method used."
+                        question = stringResource(R.string.flosi_faq_q_1),
+                        answer = stringResource(R.string.flosi_faq_a_1)
                     ),
                     FAQItem(
-                        question = "What's the difference between the 5 transaction types?",
-                        answer = """• Expense: Money going out of your account (debits, purchases, bill payments)
-• Income: Money coming into your account (salary, refunds, cashback)
-• Investment: Mutual funds, stocks, SIPs, trading accounts
-• Credit: Credit card transactions and wallet payments (money you'll pay later)
-• Transfer: Money moved between your own accounts (self-transfers)"""
+                        question = stringResource(R.string.flosi_faq_q_2),
+                        answer = stringResource(R.string.flosi_faq_a_2)
                     ),
                     FAQItem(
-                        question = "When should I use Transfer vs Expense?",
-                        answer = "Use Transfer when moving money between your own accounts (e.g., savings to checking). These don't affect your net worth. Use Expense for actual spending."
+                        question = stringResource(R.string.flosi_faq_q_3),
+                        answer = stringResource(R.string.flosi_faq_a_3)
                     )
                 )
             ),
@@ -80,16 +76,16 @@ fun FAQScreen(
                 icon = { Icon(Icons.AutoMirrored.Filled.Message, contentDescription = null) },
                 items = listOf(
                     FAQItem(
-                        question = "Why aren't my bank SMS being detected?",
-                        answer = "Check if your bank is supported in our list. If not, report it via GitHub. Ensure SMS permissions are granted and the sender format matches standard bank SMS patterns."
+                        question = stringResource(R.string.flosi_faq_q_4),
+                        answer = stringResource(R.string.flosi_faq_a_4)
                     ),
                     FAQItem(
-                        question = "What happens to unrecognized SMS?",
-                        answer = "They're saved in 'Unrecognized Messages' where you can manually review them or report them to help us improve parsing."
+                        question = stringResource(R.string.flosi_faq_q_5),
+                        answer = stringResource(R.string.flosi_faq_a_5)
                     ),
                     FAQItem(
-                        question = "Why are some transactions duplicated?",
-                        answer = "Some banks send multiple SMS for the same transaction. The app tries to detect duplicates, but you can manually delete any that slip through."
+                        question = stringResource(R.string.flosi_faq_q_6),
+                        answer = stringResource(R.string.flosi_faq_a_6)
                     )
                 )
             ),
@@ -98,16 +94,16 @@ fun FAQScreen(
                 icon = { Icon(Icons.Default.Security, contentDescription = null) },
                 items = listOf(
                     FAQItem(
-                        question = "Is my financial data secure?",
-                        answer = "Yes! All data stays on your device. We don't have servers or cloud storage. The AI model runs locally for complete privacy."
+                        question = stringResource(R.string.flosi_faq_q_7),
+                        answer = stringResource(R.string.flosi_faq_a_7)
                     ),
                     FAQItem(
-                        question = "Can I backup my data?",
-                        answer = "Currently, data is stored locally only. Export/backup features are planned for future updates."
+                        question = stringResource(R.string.flosi_faq_q_8),
+                        answer = stringResource(R.string.flosi_faq_a_8)
                     ),
                     FAQItem(
-                        question = "What data does the app access?",
-                        answer = "Only SMS messages from known bank senders. We don't read personal messages or access other app data."
+                        question = stringResource(R.string.flosi_faq_q_9),
+                        answer = stringResource(R.string.flosi_faq_a_9)
                     )
                 )
             ),
@@ -116,12 +112,12 @@ fun FAQScreen(
                 icon = { Icon(Icons.Default.Psychology, contentDescription = null) },
                 items = listOf(
                     FAQItem(
-                        question = "Why do I need to download the AI model?",
-                        answer = "The 750MB model enables on-device chat about your expenses without sending data to any server, ensuring complete privacy."
+                        question = stringResource(R.string.flosi_faq_q_10),
+                        answer = stringResource(R.string.flosi_faq_a_10)
                     ),
                     FAQItem(
-                        question = "What can I ask the AI assistant?",
-                        answer = "You can ask about spending patterns, budget advice, transaction summaries, and general financial questions based on your data."
+                        question = stringResource(R.string.flosi_faq_q_11),
+                        answer = stringResource(R.string.flosi_faq_a_11)
                     )
                 )
             ),
@@ -130,12 +126,12 @@ fun FAQScreen(
                 icon = { Icon(Icons.Default.AccountBalance, contentDescription = null) },
                 items = listOf(
                     FAQItem(
-                        question = "What are manual accounts?",
-                        answer = "Manual accounts let you track cash, investments, or accounts from unsupported banks. You update balances manually."
+                        question = stringResource(R.string.flosi_faq_q_12),
+                        answer = stringResource(R.string.flosi_faq_a_12)
                     ),
                     FAQItem(
-                        question = "How do I track multiple accounts from the same bank?",
-                        answer = "The app automatically detects different accounts based on the last 4 digits shown in SMS."
+                        question = stringResource(R.string.flosi_faq_q_13),
+                        answer = stringResource(R.string.flosi_faq_a_13)
                     )
                 )
             )
@@ -230,7 +226,7 @@ fun FAQScreen(
                                     
                                     Icon(
                                         imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                        contentDescription = if (isExpanded) "Collapse" else "Expand",
+                                        contentDescription = if (isExpanded) stringResource(R.string.flosi_collapse) else stringResource(R.string.flosi_expand),
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }

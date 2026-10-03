@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.screens
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -71,7 +73,7 @@ fun AppLockScreen(
                 // Lock icon
                 Icon(
                     imageVector = Icons.Filled.Lock,
-                    contentDescription = "App Locked",
+                    contentDescription = stringResource(R.string.flosi_full_app_locked),
                     modifier = Modifier.size(120.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
@@ -89,7 +91,7 @@ fun AppLockScreen(
 
                 // Description
                 Text(
-                    text = "Authenticate to access your expense data",
+                    text = stringResource(R.string.flosi_full_authenticate_to_access_your_expense_data),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -129,7 +131,7 @@ fun AppLockScreen(
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Unlock")
+                            Text(stringResource(R.string.flosi_full_unlock))
                         }
                     }
                     else -> {
@@ -144,7 +146,7 @@ fun AppLockScreen(
                                 modifier = Modifier.padding(Spacing.md)
                             ) {
                                 Text(
-                                    text = "Biometric authentication unavailable",
+                                    text = stringResource(R.string.flosi_full_biometric_authentication_unavailable),
                                     style = MaterialTheme.typography.titleSmall,
                                     color = MaterialTheme.colorScheme.onErrorContainer
                                 )
@@ -156,7 +158,7 @@ fun AppLockScreen(
                                 )
                                 Spacer(modifier = Modifier.height(Spacing.sm))
                                 Text(
-                                    text = "Please disable app lock in device settings or set up biometric authentication.",
+                                    text = stringResource(R.string.flosi_full_please_disable_app_lock_in_device_settings_or_set_up_biometric_au),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onErrorContainer
                                 )

@@ -1658,7 +1658,7 @@ private fun AiChatSettingsItem(
         ) {
             HorizontalDivider()
             Text(
-                text = "Chat with AI about your expenses and get financial insights. " +
+                text = stringResource(R.string.flosi_full_chat_with_ai_about_your_expenses_and_get_financial_insights) +
                         "All conversations stay private on your device.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant

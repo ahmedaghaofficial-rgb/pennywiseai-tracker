@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.screens.rules
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -46,6 +48,16 @@ internal fun ruleTransactionTypeLabel(value: String): String =
     RULE_TRANSACTION_TYPE_OPTIONS.firstOrNull { it.first.equals(value, ignoreCase = true) }?.second
         ?: value
 
+@Composable
+private fun localizedRuleTransactionTypeLabel(value: String): String = when (value.uppercase()) {
+    "INCOME" -> stringResource(R.string.flosi_rule_type_income)
+    "EXPENSE" -> stringResource(R.string.flosi_rule_type_expense)
+    "CREDIT" -> stringResource(R.string.flosi_rule_type_credit)
+    "TRANSFER" -> stringResource(R.string.flosi_rule_type_transfer)
+    "INVESTMENT" -> stringResource(R.string.flosi_rule_type_investment)
+    else -> value
+}
+
 /** The operator a field should reset to when it becomes the condition's field. */
 private fun TransactionField.defaultConditionOperator(): ConditionOperator = when (this) {
     TransactionField.AMOUNT -> ConditionOperator.LESS_THAN
@@ -66,11 +78,15 @@ private fun TransactionField.defaultConditionOperator(): ConditionOperator = whe
  * rule importer can't drift apart; only the wording lives here, since the same
  * operator reads differently per field ("<" for an amount, "before" for a time).
  */
+@Composable
+@Composable
 private fun conditionOperatorsForField(
     field: TransactionField
 ): List<Pair<ConditionOperator, String>> =
     supportedOperators(field).map { operator -> operator to operator.labelFor(field) }
 
+@Composable
+@Composable
 private fun ConditionOperator.labelFor(field: TransactionField): String = when (field) {
     TransactionField.AMOUNT -> when (this) {
         ConditionOperator.LESS_THAN -> "<"
@@ -78,31 +94,31 @@ private fun ConditionOperator.labelFor(field: TransactionField): String = when (
         else -> "="
     }
     TransactionField.TRANSACTION_TIME -> when (this) {
-        ConditionOperator.LESS_THAN -> "before"
-        ConditionOperator.GREATER_THAN -> "after"
-        ConditionOperator.GREATER_THAN_OR_EQUAL -> "at or after"
-        ConditionOperator.LESS_THAN_OR_EQUAL -> "at or before"
-        else -> "exactly at"
+        ConditionOperator.LESS_THAN -> stringResource(R.string.flosi_rule_before)
+        ConditionOperator.GREATER_THAN -> stringResource(R.string.flosi_rule_after)
+        ConditionOperator.GREATER_THAN_OR_EQUAL -> stringResource(R.string.flosi_rule_at_or_after)
+        ConditionOperator.LESS_THAN_OR_EQUAL -> stringResource(R.string.flosi_rule_at_or_before)
+        else -> stringResource(R.string.flosi_rule_exactly_at)
     }
     TransactionField.TRANSACTION_HOUR,
     TransactionField.TRANSACTION_DAY_OF_MONTH,
     TransactionField.TRANSACTION_DATE -> when (this) {
-        ConditionOperator.LESS_THAN -> "before"
-        ConditionOperator.GREATER_THAN -> "after"
-        ConditionOperator.IN -> "is any of"
-        else -> "is"
+        ConditionOperator.LESS_THAN -> stringResource(R.string.flosi_rule_before)
+        ConditionOperator.GREATER_THAN -> stringResource(R.string.flosi_rule_after)
+        ConditionOperator.IN -> stringResource(R.string.flosi_rule_any_of)
+        else -> stringResource(R.string.flosi_rule_is)
     }
     TransactionField.TYPE,
     TransactionField.TRANSACTION_DAY_OF_WEEK,
     TransactionField.ACCOUNT -> when (this) {
-        ConditionOperator.NOT_EQUALS -> "is not"
-        ConditionOperator.IN -> "is any of"
-        else -> "is"
+        ConditionOperator.NOT_EQUALS -> stringResource(R.string.flosi_rule_is_not)
+        ConditionOperator.IN -> stringResource(R.string.flosi_rule_any_of)
+        else -> stringResource(R.string.flosi_rule_is)
     }
     else -> when (this) {
-        ConditionOperator.EQUALS -> "equals"
-        ConditionOperator.STARTS_WITH -> "starts with"
-        else -> "contains"
+        ConditionOperator.EQUALS -> stringResource(R.string.flosi_rule_equals)
+        ConditionOperator.STARTS_WITH -> stringResource(R.string.flosi_rule_starts_with)
+        else -> stringResource(R.string.flosi_rule_contains)
     }
 }
 
@@ -277,7 +293,7 @@ fun CreateRuleScreen(
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.Close, contentDescription = "Close")
+                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.flosi_close))
                     }
                 },
                 actionContent = {
@@ -311,7 +327,7 @@ fun CreateRuleScreen(
                                  actions.isNotEmpty() &&
                                  actions.all { it.validate() }
                     ) {
-                        Text("Save")
+                        Text(stringResource(R.string.flosi_save))
                     }
                 },
                 hazeState = hazeState
@@ -341,7 +357,7 @@ fun CreateRuleScreen(
                     verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                 ) {
                     Text(
-                        text = "Quick Templates",
+                        text = stringResource(R.string.flosi_full_quick_templates),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Medium
                     )
@@ -364,8 +380,8 @@ fun CreateRuleScreen(
             TextField(
                 value = ruleName,
                 onValueChange = { ruleName = it },
-                label = { Text("Rule Name") },
-                placeholder = { Text("e.g., Food expenses under 200") },
+                label = { Text(stringResource(R.string.flosi_full_rule_name)) },
+                placeholder = { Text(stringResource(R.string.flosi_full_e_g_food_expenses_under_200)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -373,8 +389,8 @@ fun CreateRuleScreen(
             TextField(
                 value = description,
                 onValueChange = { description = it },
-                label = { Text("Description (Optional)") },
-                placeholder = { Text("What does this rule do?") },
+                label = { Text(stringResource(R.string.flosi_description_optional)) },
+                placeholder = { Text(stringResource(R.string.flosi_full_what_does_this_rule_do)) },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 2,
                 maxLines = 3
@@ -401,7 +417,7 @@ fun CreateRuleScreen(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = "When",
+                                text = stringResource(R.string.flosi_full_when_769bb1),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Medium
                             )
@@ -417,7 +433,7 @@ fun CreateRuleScreen(
                         ) {
                             Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small))
                             Spacer(modifier = Modifier.width(Spacing.xs))
-                            Text("Add Condition")
+                            Text(stringResource(R.string.flosi_full_add_condition))
                         }
                     }
 
@@ -441,7 +457,7 @@ fun CreateRuleScreen(
                                 ) {
                                     if (index == 0) {
                                         Text(
-                                            text = "Condition",
+                                            text = stringResource(R.string.flosi_full_condition),
                                             style = MaterialTheme.typography.bodySmall,
                                             fontWeight = FontWeight.Medium
                                         )
@@ -464,7 +480,7 @@ fun CreateRuleScreen(
                                         ) {
                                             Icon(
                                                 Icons.Default.Delete,
-                                                contentDescription = "Remove condition",
+                                                contentDescription = stringResource(R.string.flosi_full_remove_condition),
                                                 modifier = Modifier.size(Dimensions.Icon.small),
                                                 tint = MaterialTheme.colorScheme.error
                                             )
@@ -509,7 +525,7 @@ fun CreateRuleScreen(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                text = "Then",
+                                text = stringResource(R.string.flosi_full_then),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Medium
                             )
@@ -528,7 +544,7 @@ fun CreateRuleScreen(
                             ) {
                                 Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small))
                                 Spacer(modifier = Modifier.width(Spacing.xs))
-                                Text("Add Action")
+                                Text(stringResource(R.string.flosi_full_add_action))
                             }
                         }
                     }
@@ -552,7 +568,7 @@ fun CreateRuleScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = if (actions.size > 1) "Action ${index + 1}" else "Action",
+                                        text = if (actions.size > 1) stringResource(R.string.flosi_rule_action_index, index + 1) else stringResource(R.string.flosi_full_action),
                                         style = MaterialTheme.typography.bodySmall,
                                         fontWeight = FontWeight.Medium
                                     )
@@ -565,7 +581,7 @@ fun CreateRuleScreen(
                                         ) {
                                             Icon(
                                                 Icons.Default.Delete,
-                                                contentDescription = "Remove action",
+                                                contentDescription = stringResource(R.string.flosi_full_remove_action),
                                                 modifier = Modifier.size(Dimensions.Icon.small),
                                                 tint = MaterialTheme.colorScheme.error
                                             )
@@ -611,43 +627,43 @@ fun CreateRuleScreen(
                         verticalArrangement = Arrangement.spacedBy(Spacing.xs)
                     ) {
                         Text(
-                            text = "Rule Preview",
+                            text = stringResource(R.string.flosi_full_rule_preview),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Medium
                         )
                         Text(
                             text = buildString {
-                                append("When ")
+                                append(stringResource(R.string.flosi_rule_when))
                                 conditions.forEachIndexed { index, condition ->
-                                    if (index > 0) append(" AND ")
+                                    if (index > 0) append(stringResource(R.string.flosi_rule_and))
                                     append(when(condition.field) {
-                                        TransactionField.AMOUNT -> "amount"
-                                        TransactionField.TYPE -> "type"
-                                        TransactionField.CATEGORY -> "category"
-                                        TransactionField.MERCHANT -> "merchant"
-                                        TransactionField.NARRATION -> "description"
-                                        TransactionField.SMS_TEXT -> "SMS text"
-                                        TransactionField.BANK_NAME -> "bank"
-                                        TransactionField.TRANSACTION_TIME -> "time"
-                                        TransactionField.TRANSACTION_HOUR -> "hour"
-                                        TransactionField.TRANSACTION_DAY_OF_WEEK -> "day of week"
-                                        TransactionField.TRANSACTION_DAY_OF_MONTH -> "day of month"
-                                        TransactionField.TRANSACTION_DATE -> "date"
-                                        TransactionField.ACCOUNT -> "account"
-                                        TransactionField.TAGS -> "tags"
+                                        TransactionField.AMOUNT -> stringResource(R.string.flosi_rule_field_amount)
+                                        TransactionField.TYPE -> stringResource(R.string.flosi_rule_field_type)
+                                        TransactionField.CATEGORY -> stringResource(R.string.flosi_rule_field_category)
+                                        TransactionField.MERCHANT -> stringResource(R.string.flosi_rule_field_merchant)
+                                        TransactionField.NARRATION -> stringResource(R.string.flosi_rule_field_description)
+                                        TransactionField.SMS_TEXT -> stringResource(R.string.flosi_rule_field_sms)
+                                        TransactionField.BANK_NAME -> stringResource(R.string.flosi_rule_field_bank)
+                                        TransactionField.TRANSACTION_TIME -> stringResource(R.string.flosi_rule_field_time)
+                                        TransactionField.TRANSACTION_HOUR -> stringResource(R.string.flosi_rule_field_hour)
+                                        TransactionField.TRANSACTION_DAY_OF_WEEK -> stringResource(R.string.flosi_rule_field_day_week)
+                                        TransactionField.TRANSACTION_DAY_OF_MONTH -> stringResource(R.string.flosi_rule_field_day_month)
+                                        TransactionField.TRANSACTION_DATE -> stringResource(R.string.flosi_rule_field_date)
+                                        TransactionField.ACCOUNT -> stringResource(R.string.flosi_rule_field_account)
+                                        TransactionField.TAGS -> stringResource(R.string.flosi_rule_field_tags)
                                     })
                                     append(" ")
                                     append(when(condition.operator) {
-                                        ConditionOperator.LESS_THAN -> "is before"
-                                        ConditionOperator.GREATER_THAN -> "is after"
-                                        ConditionOperator.LESS_THAN_OR_EQUAL -> "is at or before"
-                                        ConditionOperator.GREATER_THAN_OR_EQUAL -> "is at or after"
-                                        ConditionOperator.EQUALS -> "is"
-                                        ConditionOperator.CONTAINS -> "contains"
-                                        ConditionOperator.STARTS_WITH -> "starts with"
-                                        ConditionOperator.IN -> "is any of"
-                                        ConditionOperator.NOT_EQUALS -> "is not"
-                                        else -> "matches"
+                                        ConditionOperator.LESS_THAN -> stringResource(R.string.flosi_rule_before)
+                                        ConditionOperator.GREATER_THAN -> stringResource(R.string.flosi_rule_after)
+                                        ConditionOperator.LESS_THAN_OR_EQUAL -> stringResource(R.string.flosi_rule_at_or_before)
+                                        ConditionOperator.GREATER_THAN_OR_EQUAL -> stringResource(R.string.flosi_rule_at_or_after)
+                                        ConditionOperator.EQUALS -> stringResource(R.string.flosi_rule_is)
+                                        ConditionOperator.CONTAINS -> stringResource(R.string.flosi_rule_contains)
+                                        ConditionOperator.STARTS_WITH -> stringResource(R.string.flosi_rule_starts_with)
+                                        ConditionOperator.IN -> stringResource(R.string.flosi_rule_any_of)
+                                        ConditionOperator.NOT_EQUALS -> stringResource(R.string.flosi_rule_is_not)
+                                        else -> stringResource(R.string.flosi_rule_matches)
                                     })
                                     append(" ")
                                     val dayNames = mapOf(
@@ -656,7 +672,7 @@ fun CreateRuleScreen(
                                     )
                                     when {
                                         condition.field == TransactionField.TYPE -> {
-                                            append(ruleTransactionTypeLabel(condition.value))
+                                            append(localizedRuleTransactionTypeLabel(condition.value))
                                         }
                                         condition.field == TransactionField.TRANSACTION_DAY_OF_WEEK -> {
                                             append(condition.value.split(",").joinToString(", ") { dayNames[it.trim()] ?: it })
@@ -674,32 +690,32 @@ fun CreateRuleScreen(
                                 }
                                 append(", ")
                                 actions.forEachIndexed { actionIndex, action ->
-                                    if (actionIndex > 0) append(", and ")
+                                    if (actionIndex > 0) append(stringResource(R.string.flosi_rule_action_join))
                                     if (action.actionType == ActionType.BLOCK) {
-                                        append("block transaction")
+                                        append(stringResource(R.string.flosi_rule_block_action))
                                     } else if (action.field == TransactionField.TAGS) {
-                                        append(if (action.actionType == ActionType.ADD_TAG) "add tag " else "remove tag ")
+                                        append(if (action.actionType == ActionType.ADD_TAG) stringResource(R.string.flosi_rule_add_tag) else stringResource(R.string.flosi_rule_remove_tag))
                                         append(action.value)
                                     } else {
                                         val fieldName = when (action.field) {
-                                            TransactionField.CATEGORY -> "category"
-                                            TransactionField.MERCHANT -> "merchant"
-                                            TransactionField.TYPE -> "type"
-                                            TransactionField.NARRATION -> "description"
-                                            TransactionField.BANK_NAME -> "account"
-                                            else -> "field"
+                                            TransactionField.CATEGORY -> stringResource(R.string.flosi_rule_field_category)
+                                            TransactionField.MERCHANT -> stringResource(R.string.flosi_rule_field_merchant)
+                                            TransactionField.TYPE -> stringResource(R.string.flosi_rule_field_type)
+                                            TransactionField.NARRATION -> stringResource(R.string.flosi_rule_field_description)
+                                            TransactionField.BANK_NAME -> stringResource(R.string.flosi_rule_field_account)
+                                            else -> stringResource(R.string.flosi_rule_field_field)
                                         }
                                         // Show user-friendly labels for transaction types in actions too
                                         val displayValue = if (action.field == TransactionField.TYPE) {
-                                            ruleTransactionTypeLabel(action.value)
+                                            localizedRuleTransactionTypeLabel(action.value)
                                         } else {
                                             action.value
                                         }
                                         when (action.actionType) {
-                                            ActionType.APPEND -> append("append $displayValue to $fieldName")
-                                            ActionType.PREPEND -> append("prepend $displayValue to $fieldName")
-                                            ActionType.CLEAR -> append("clear $fieldName")
-                                            else -> append("set $fieldName to $displayValue")
+                                            ActionType.APPEND -> append(stringResource(R.string.flosi_rule_append, displayValue, fieldName))
+                                            ActionType.PREPEND -> append(stringResource(R.string.flosi_rule_prepend, displayValue, fieldName))
+                                            ActionType.CLEAR -> append(stringResource(R.string.flosi_rule_clear, fieldName))
+                                            else -> append(stringResource(R.string.flosi_rule_set, fieldName, displayValue))
                                         }
                                     }
                                 }
@@ -717,22 +733,20 @@ fun CreateRuleScreen(
     if (pendingBlockAction != null) {
         AlertDialog(
             onDismissRequest = { pendingBlockAction = null },
-            title = { Text("Block transaction?") },
+            title = { Text(stringResource(R.string.flosi_full_block_transaction)) },
             text = {
                 Text(
-                    "Blocking stops a matching transaction from being saved, so this " +
-                        "rule's other actions won't run. Remove the other actions and keep " +
-                        "only Block?"
+                    stringResource(R.string.flosi_rule_block_warning)
                 )
             },
             confirmButton = {
                 TextButton(onClick = {
                     actions = listOf(pendingBlockAction!!)
                     pendingBlockAction = null
-                }) { Text("Block & remove") }
+                }) { Text(stringResource(R.string.flosi_full_block_remove)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingBlockAction = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingBlockAction = null }) { Text(stringResource(R.string.flosi_cancel)) }
             }
         )
     }
@@ -753,24 +767,24 @@ private fun ConditionFieldSelector(
         onExpandedChange = { fieldDropdownExpanded = !fieldDropdownExpanded }
     ) {
         val fieldOptions = listOf(
-            TransactionField.AMOUNT to "Amount",
-            TransactionField.TYPE to "Transaction Type",
-            TransactionField.CATEGORY to "Category",
-            TransactionField.MERCHANT to "Merchant",
-            TransactionField.SMS_TEXT to "SMS Text",
-            TransactionField.BANK_NAME to "Bank Name",
-            TransactionField.TRANSACTION_TIME to "Time of Day",
-            TransactionField.TRANSACTION_HOUR to "Hour",
-            TransactionField.TRANSACTION_DAY_OF_WEEK to "Day of Week",
-            TransactionField.TRANSACTION_DAY_OF_MONTH to "Day of Month",
-            TransactionField.TRANSACTION_DATE to "Date",
-            TransactionField.ACCOUNT to "Account"
+            TransactionField.AMOUNT to stringResource(R.string.flosi_rule_field_amount),
+            TransactionField.TYPE to stringResource(R.string.flosi_rule_field_type),
+            TransactionField.CATEGORY to stringResource(R.string.flosi_rule_field_category),
+            TransactionField.MERCHANT to stringResource(R.string.flosi_rule_field_merchant),
+            TransactionField.SMS_TEXT to stringResource(R.string.flosi_rule_field_sms),
+            TransactionField.BANK_NAME to stringResource(R.string.flosi_rule_field_bank),
+            TransactionField.TRANSACTION_TIME to stringResource(R.string.flosi_rule_field_time),
+            TransactionField.TRANSACTION_HOUR to stringResource(R.string.flosi_rule_field_hour),
+            TransactionField.TRANSACTION_DAY_OF_WEEK to stringResource(R.string.flosi_rule_field_day_week),
+            TransactionField.TRANSACTION_DAY_OF_MONTH to stringResource(R.string.flosi_rule_field_day_month),
+            TransactionField.TRANSACTION_DATE to stringResource(R.string.flosi_rule_field_date),
+            TransactionField.ACCOUNT to stringResource(R.string.flosi_rule_field_account)
         )
         TextField(
-            value = fieldOptions.firstOrNull { it.first == condition.field }?.second ?: "Amount",
+            value = fieldOptions.firstOrNull { it.first == condition.field }?.second ?: stringResource(R.string.flosi_rule_field_amount),
             onValueChange = { },
             readOnly = true,
-            label = { Text("Field") },
+            label = { Text(stringResource(R.string.flosi_full_field)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = fieldDropdownExpanded) },
             modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
         )
@@ -823,7 +837,7 @@ private fun ConditionFieldSelector(
     when (condition.field) {
         TransactionField.TYPE -> {
             Text(
-                text = "Select transaction type:",
+                text = stringResource(R.string.flosi_full_select_transaction_type),
                 style = MaterialTheme.typography.bodySmall
             )
             FlowRow(
@@ -836,7 +850,7 @@ private fun ConditionFieldSelector(
                         selected = condition.value.equals(type, ignoreCase = true),
                         onClick = { onConditionChange(condition.copy(value = type)) },
                         label = {
-                            Text(displayLabel, style = MaterialTheme.typography.bodySmall)
+                            Text(localizedRuleTransactionTypeLabel(type), style = MaterialTheme.typography.bodySmall)
                         }
                     )
                 }
@@ -883,8 +897,8 @@ private fun ConditionFieldSelector(
             TextField(
                 value = condition.value,
                 onValueChange = { onConditionChange(condition.copy(value = it)) },
-                label = { Text("Day (1-31)") },
-                placeholder = { Text("e.g., 1") },
+                label = { Text(stringResource(R.string.flosi_full_day_1_31)) },
+                placeholder = { Text(stringResource(R.string.flosi_full_e_g_1)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
@@ -904,11 +918,11 @@ private fun ConditionFieldSelector(
                 value = condition.value,
                 onValueChange = { },
                 readOnly = true,
-                label = { Text("Time (HH:mm)") },
-                placeholder = { Text("Tap to select time") },
+                label = { Text(stringResource(R.string.flosi_full_time_hh_mm)) },
+                placeholder = { Text(stringResource(R.string.flosi_full_tap_to_select_time)) },
                 trailingIcon = {
                     IconButton(onClick = { showTimePicker = true }) {
-                        Icon(Icons.Default.AccessTime, contentDescription = "Pick time")
+                        Icon(Icons.Default.AccessTime, contentDescription = stringResource(R.string.flosi_full_pick_time))
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -923,10 +937,10 @@ private fun ConditionFieldSelector(
                             val formatted = String.format("%02d:%02d", timePickerState.hour, timePickerState.minute)
                             onConditionChange(condition.copy(value = formatted))
                             showTimePicker = false
-                        }) { Text("OK") }
+                        }) { Text(stringResource(R.string.flosi_ok)) }
                     },
                     dismissButton = {
-                        TextButton(onClick = { showTimePicker = false }) { Text("Cancel") }
+                        TextButton(onClick = { showTimePicker = false }) { Text(stringResource(R.string.flosi_cancel)) }
                     },
                     text = { TimePicker(state = timePickerState) }
                 )
@@ -937,8 +951,8 @@ private fun ConditionFieldSelector(
             TextField(
                 value = condition.value,
                 onValueChange = { onConditionChange(condition.copy(value = it)) },
-                label = { Text("Hour (0-23)") },
-                placeholder = { Text("e.g., 9") },
+                label = { Text(stringResource(R.string.flosi_full_hour_0_23)) },
+                placeholder = { Text(stringResource(R.string.flosi_full_e_g_9)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
@@ -949,8 +963,8 @@ private fun ConditionFieldSelector(
             TextField(
                 value = condition.value,
                 onValueChange = { onConditionChange(condition.copy(value = it)) },
-                label = { Text("Date (yyyy-MM-dd)") },
-                placeholder = { Text("e.g., 2026-03-21") },
+                label = { Text(stringResource(R.string.flosi_full_date_yyyy_mm_dd)) },
+                placeholder = { Text(stringResource(R.string.flosi_full_e_g_2026_03_21)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -970,7 +984,7 @@ private fun ConditionFieldSelector(
                 // Show raw value if account no longer exists
                 condition.value
             } else {
-                "Select an account"
+                stringResource(R.string.flosi_rule_select_account)
             }
 
             Column {
@@ -982,7 +996,7 @@ private fun ConditionFieldSelector(
                         value = displayText,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Account") },
+                        label = { Text(stringResource(R.string.flosi_account)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = accountDropdownExpanded) },
                         modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
                     )
@@ -1027,7 +1041,7 @@ private fun ConditionFieldSelector(
 
                 if (allAccounts.isEmpty()) {
                     Text(
-                        text = "No accounts found. Add an account first.",
+                        text = stringResource(R.string.flosi_full_no_accounts_found_add_an_account_first),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = Spacing.xs)
@@ -1040,7 +1054,7 @@ private fun ConditionFieldSelector(
             TextField(
                 value = condition.value,
                 onValueChange = { onConditionChange(condition.copy(value = it)) },
-                label = { Text("Value") },
+                label = { Text(stringResource(R.string.flosi_full_value)) },
                 placeholder = {
                     Text(
                         when(condition.field) {
@@ -1090,14 +1104,16 @@ private fun LogicalOperatorToggle(
     }
 }
 
+@Composable
+@Composable
 private fun actionTypeLabel(type: ActionType): String = when (type) {
-    ActionType.BLOCK -> "Block Transaction"
-    ActionType.SET -> "Set Field"
-    ActionType.APPEND -> "Append to Field"
-    ActionType.PREPEND -> "Prepend to Field"
-    ActionType.CLEAR -> "Clear Field"
-    ActionType.ADD_TAG -> "Add Tag"
-    ActionType.REMOVE_TAG -> "Remove Tag"
+    ActionType.BLOCK -> stringResource(R.string.flosi_rule_action_block)
+    ActionType.SET -> stringResource(R.string.flosi_rule_action_set)
+    ActionType.APPEND -> stringResource(R.string.flosi_rule_action_append)
+    ActionType.PREPEND -> stringResource(R.string.flosi_rule_action_prepend)
+    ActionType.CLEAR -> stringResource(R.string.flosi_rule_action_clear)
+    ActionType.ADD_TAG -> stringResource(R.string.flosi_rule_action_add_tag)
+    ActionType.REMOVE_TAG -> stringResource(R.string.flosi_rule_action_remove_tag)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -1121,7 +1137,7 @@ private fun ActionEditor(
                 value = actionTypeLabel(action.actionType),
                 onValueChange = { },
                 readOnly = true,
-                label = { Text("Action Type") },
+                label = { Text(stringResource(R.string.flosi_full_action_type)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = actionTypeDropdownExpanded) },
                 modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
             )
@@ -1134,7 +1150,7 @@ private fun ActionEditor(
                 // Prepend actions the engine has always supported on merchant and
                 // description (#747).
                 val fieldTypes = supportedActionTypes(action.field).map { it to actionTypeLabel(it) }
-                (listOf(ActionType.BLOCK to "Block Transaction") + fieldTypes).forEach { (type, label) ->
+                (listOf(ActionType.BLOCK to actionTypeLabel(ActionType.BLOCK)) + fieldTypes).forEach { (type, label) ->
                     DropdownMenuItem(
                         text = { Text(label) },
                         onClick = {
@@ -1174,7 +1190,7 @@ private fun ActionEditor(
                         tint = MaterialTheme.colorScheme.onErrorContainer
                     )
                     Text(
-                        text = "Transactions matching this rule will be blocked and not saved",
+                        text = stringResource(R.string.flosi_full_transactions_matching_this_rule_will_be_blocked_and_not_saved),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onErrorContainer
                     )
@@ -1198,7 +1214,7 @@ private fun ActionEditor(
                     },
                     onValueChange = { },
                     readOnly = true,
-                    label = { Text("Action") },
+                    label = { Text(stringResource(R.string.flosi_full_action)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = actionFieldDropdownExpanded) },
                     modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
                 )
@@ -1207,11 +1223,11 @@ private fun ActionEditor(
                     onDismissRequest = { actionFieldDropdownExpanded = false }
                 ) {
                     listOf(
-                        TransactionField.CATEGORY to "Category",
+                        TransactionField.CATEGORY to stringResource(R.string.flosi_rule_field_category),
                         TransactionField.MERCHANT to "Merchant Name",
-                        TransactionField.TYPE to "Transaction Type",
+                        TransactionField.TYPE to stringResource(R.string.flosi_rule_field_type),
                         TransactionField.NARRATION to "Description",
-                        TransactionField.BANK_NAME to "Account",
+                        TransactionField.BANK_NAME to stringResource(R.string.flosi_rule_field_account),
                         TransactionField.TAGS to "Tags"
                     ).forEach { (field, label) ->
                         DropdownMenuItem(
@@ -1256,8 +1272,8 @@ private fun ActionEditor(
                     TextField(
                         value = action.value,
                         onValueChange = { onActionChange(action.copy(value = it)) },
-                        label = { Text("Category Name") },
-                        placeholder = { Text("e.g., Rent") },
+                        label = { Text(stringResource(R.string.flosi_category_name)) },
+                        placeholder = { Text(stringResource(R.string.flosi_full_e_g_rent)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -1266,7 +1282,7 @@ private fun ActionEditor(
                 TransactionField.TYPE -> {
                     // Transaction type chips with user-friendly labels
                     Text(
-                        text = "Select transaction type:",
+                        text = stringResource(R.string.flosi_full_select_transaction_type),
                         style = MaterialTheme.typography.bodySmall
                     )
 
@@ -1313,8 +1329,8 @@ private fun ActionEditor(
                     TextField(
                         value = action.value,
                         onValueChange = { onActionChange(action.copy(value = it)) },
-                        label = { Text("Merchant Name") },
-                        placeholder = { Text("e.g., Amazon") },
+                        label = { Text(stringResource(R.string.flosi_full_merchant_name)) },
+                        placeholder = { Text(stringResource(R.string.flosi_full_e_g_amazon)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -1325,8 +1341,8 @@ private fun ActionEditor(
                     TextField(
                         value = action.value,
                         onValueChange = { onActionChange(action.copy(value = it)) },
-                        label = { Text("Description") },
-                        placeholder = { Text("e.g., Monthly subscription payment") },
+                        label = { Text(stringResource(R.string.flosi_description)) },
+                        placeholder = { Text(stringResource(R.string.flosi_full_e_g_monthly_subscription_payment)) },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 2,
                         maxLines = 3
@@ -1338,8 +1354,8 @@ private fun ActionEditor(
                     TextField(
                         value = action.value,
                         onValueChange = { onActionChange(action.copy(value = it)) },
-                        label = { Text("Account / Bank Name") },
-                        placeholder = { Text("e.g., HDFC Bank") },
+                        label = { Text(stringResource(R.string.flosi_full_account_bank_name)) },
+                        placeholder = { Text(stringResource(R.string.flosi_full_e_g_hdfc_bank)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -1349,8 +1365,8 @@ private fun ActionEditor(
                     TextField(
                         value = action.value,
                         onValueChange = { onActionChange(action.copy(value = it)) },
-                        label = { Text("Tag Name") },
-                        placeholder = { Text("e.g., Swiggy") },
+                        label = { Text(stringResource(R.string.flosi_full_tag_name)) },
+                        placeholder = { Text(stringResource(R.string.flosi_full_e_g_swiggy)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -1361,8 +1377,8 @@ private fun ActionEditor(
                     TextField(
                         value = action.value,
                         onValueChange = { onActionChange(action.copy(value = it)) },
-                        label = { Text("Value") },
-                        placeholder = { Text("Enter value") },
+                        label = { Text(stringResource(R.string.flosi_full_value)) },
+                        placeholder = { Text(stringResource(R.string.flosi_full_enter_value)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )

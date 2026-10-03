@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.groups
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -56,11 +58,11 @@ fun TransactionGroupsScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Transaction Groups",
+                title = stringResource(R.string.flosi_transaction_groups),
                 hasBackButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 hazeState = hazeState
@@ -70,7 +72,7 @@ fun TransactionGroupsScreen(
             FloatingActionButton(
                 onClick = { viewModel.showCreateDialog() }
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Create Group")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.flosi_full_create_group))
             }
         }
     ) { paddingValues ->
@@ -219,13 +221,13 @@ private fun CreateGroupDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("New Group") },
+        title = { Text(stringResource(R.string.flosi_full_new_group)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 TextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Group name") },
+                    label = { Text(stringResource(R.string.flosi_group_name)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                     shape = RoundedCornerShape(16.dp),
@@ -238,7 +240,7 @@ private fun CreateGroupDialog(
                 TextField(
                     value = note,
                     onValueChange = { note = it },
-                    label = { Text("Note (optional)") },
+                    label = { Text(stringResource(R.string.flosi_note_optional)) },
                     singleLine = true,
                     shape = RoundedCornerShape(16.dp),
                     colors = TextFieldDefaults.colors(
@@ -254,12 +256,12 @@ private fun CreateGroupDialog(
                 onClick = { onCreate(name, note.ifBlank { null }) },
                 enabled = name.isNotBlank()
             ) {
-                Text("Create")
+                Text(stringResource(R.string.flosi_create))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.flosi_cancel))
             }
         }
     )
