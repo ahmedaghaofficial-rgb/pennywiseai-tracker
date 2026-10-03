@@ -405,11 +405,11 @@ private fun RecurringEditorDialog(
                                 expanded = dowExpanded,
                                 onDismissRequest = { dowExpanded = false }
                             ) {
-                                dayOfWeekNames.forEachIndexed { index, name ->
+                                (1..7).forEach { day ->
                                     DropdownMenuItem(
-                                        text = { Text(localizedCategoryName(name)) },
+                                        text = { Text(java.time.DayOfWeek.of(day).getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.getDefault())) },
                                         onClick = {
-                                            state = state.copy(dayOfWeek = index + 1)
+                                            state = state.copy(dayOfWeek = day)
                                             dowExpanded = false
                                         }
                                     )

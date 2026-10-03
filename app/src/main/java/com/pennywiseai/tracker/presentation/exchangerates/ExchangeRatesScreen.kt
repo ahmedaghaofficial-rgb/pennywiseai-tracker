@@ -249,7 +249,7 @@ private fun ExchangeRateCard(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = if (rate.isCustomRate) "Custom" else "API",
+                    text = if (rate.isCustomRate) stringResource(R.string.flosi_rates_custom) else "API",
                     style = MaterialTheme.typography.labelSmall,
                     color = if (rate.isCustomRate)
                         MaterialTheme.colorScheme.primary

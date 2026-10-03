@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
 import com.opencsv.CSVWriter
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import com.pennywiseai.tracker.data.database.entity.TransactionEntity
 import com.pennywiseai.tracker.data.database.entity.TransactionType
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -57,7 +59,8 @@ class CsvExporter @Inject constructor(
         transactions: List<TransactionEntity>,
         fileName: String? = null
     ): Flow<ExportResult> = flow {
-        emit(ExportResult.Progress(0f, "Preparing export..."))
+        val localizedContext = AppLocaleController.wrap(context)
+        emit(ExportResult.Progress(0f, localizedContext.getString(R.string.flosi_export_preparing)))
         
         try {
             // Prepare export directory
@@ -74,7 +77,7 @@ class CsvExporter @Inject constructor(
             val finalFileName = fileName ?: "transactions_$timestamp"
             val file = File(exportDir, "$finalFileName.csv")
             
-            emit(ExportResult.Progress(0.1f, "Creating CSV file..."))
+            emit(ExportResult.Progress(0.1f, localizedContext.getString(R.string.flosi_export_creating_csv)))
             
             // Write CSV using OpenCSV for proper escaping
             FileWriter(file).use { fileWriter ->
@@ -91,14 +94,14 @@ class CsvExporter @Inject constructor(
                         if (index % 100 == 0 || index == totalTransactions - 1) {
                             emit(ExportResult.Progress(
                                 progress,
-                                "Exporting ${index + 1} of $totalTransactions transactions..."
+                                localizedContext.getString(R.string.flosi_export_progress, index + 1, totalTransactions)
                             ))
                         }
                     }
                 }
             }
             
-            emit(ExportResult.Progress(0.95f, "Finalizing export..."))
+            emit(ExportResult.Progress(0.95f, localizedContext.getString(R.string.flosi_export_finalizing)))
             
             // Generate content URI for sharing
             val uri = FileProvider.getUriForFile(
@@ -107,7 +110,7 @@ class CsvExporter @Inject constructor(
                 file
             )
             
-            emit(ExportResult.Progress(1.0f, "Export complete!"))
+            emit(ExportResult.Progress(1.0f, localizedContext.getString(R.string.flosi_export_progress_complete)))
             emit(ExportResult.Success(
                 uri = uri,
                 fileName = "$finalFileName.csv",
@@ -117,7 +120,7 @@ class CsvExporter @Inject constructor(
             
         } catch (e: Exception) {
             emit(ExportResult.Error(
-                message = "Failed to export transactions: ${e.message}",
+                message = localizedContext.getString(R.string.flosi_export_failure_detail, e.localizedMessage ?: ""),
                 exception = e
             ))
         }

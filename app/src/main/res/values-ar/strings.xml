@@ -1836,4 +1836,11 @@
     <string name="flosi_sms_scan_progress_title">جارٍ فحص المعاملات…</string>
     <string name="flosi_sms_scan_processed">تمت معالجة %1$d من %2$d</string>
     <string name="flosi_sms_scan_reading">جارٍ قراءة الرسائل…</string>
+    <string name="flosi_rates_custom">مخصص</string>
+    <string name="flosi_export_preparing">جارٍ تحضير التصدير…</string>
+    <string name="flosi_export_creating_csv">جارٍ إنشاء ملف CSV…</string>
+    <string name="flosi_export_progress">جارٍ تصدير %1$d من %2$d معاملة…</string>
+    <string name="flosi_export_finalizing">جارٍ إكمال التصدير…</string>
+    <string name="flosi_export_progress_complete">اكتمل التصدير!</string>
+    <string name="flosi_export_failure_detail">فشل تصدير المعاملات: %1$s</string>
 </resources>

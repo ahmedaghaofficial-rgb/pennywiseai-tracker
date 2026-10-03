@@ -1590,20 +1590,20 @@
     <string name="flosi_chat_thinking_4">Crunching the numbers…</string>
     <string name="flosi_chat_thinking_5">One moment…</string>
     <plurals name="flosi_chat_messages">
-        <item quantity="zero">Qwen 2.5 1.5B • لا توجد رسائل</item>
-        <item quantity="one">Qwen 2.5 1.5B • رسالة واحدة</item>
-        <item quantity="two">Qwen 2.5 1.5B • رسالتان</item>
-        <item quantity="few">Qwen 2.5 1.5B • %1$d رسائل</item>
-        <item quantity="many">Qwen 2.5 1.5B • %1$d رسالة</item>
-        <item quantity="other">Qwen 2.5 1.5B • %1$d رسالة</item>
+        <item quantity="zero">Qwen 2.5 1.5B • No messages</item>
+        <item quantity="one">Qwen 2.5 1.5B • %1$d message</item>
+        <item quantity="two">Qwen 2.5 1.5B • %1$d messages</item>
+        <item quantity="few">Qwen 2.5 1.5B • %1$d messages</item>
+        <item quantity="many">Qwen 2.5 1.5B • %1$d messages</item>
+        <item quantity="other">Qwen 2.5 1.5B • %1$d messages</item>
     </plurals>
     <plurals name="flosi_chat_tokens">
-        <item quantity="zero">لا توجد رموز</item>
-        <item quantity="one">رمز واحد</item>
-        <item quantity="two">رمزان</item>
-        <item quantity="few">%1$s رموز</item>
-        <item quantity="many">%1$s رمزًا</item>
-        <item quantity="other">%1$s رمز</item>
+        <item quantity="zero">No tokens</item>
+        <item quantity="one">%1$s token</item>
+        <item quantity="two">%1$s tokens</item>
+        <item quantity="few">%1$s tokens</item>
+        <item quantity="many">%1$s tokens</item>
+        <item quantity="other">%1$s tokens</item>
     </plurals>
     <string name="flosi_chat_deleted">Deleted %1$s at %2$s.</string>
     <string name="flosi_chat_updated">Updated %1$s at %2$s%3$s.</string>
@@ -1644,4 +1644,11 @@
     <string name="flosi_sms_scan_progress_title">Scanning transactions…</string>
     <string name="flosi_sms_scan_processed">Processed %1$d / %2$d</string>
     <string name="flosi_sms_scan_reading">Reading SMS…</string>
+    <string name="flosi_rates_custom">Custom</string>
+    <string name="flosi_export_preparing">Preparing export…</string>
+    <string name="flosi_export_creating_csv">Creating CSV file…</string>
+    <string name="flosi_export_progress">Exporting %1$d of %2$d transactions…</string>
+    <string name="flosi_export_finalizing">Finalizing export…</string>
+    <string name="flosi_export_progress_complete">Export complete!</string>
+    <string name="flosi_export_failure_detail">Failed to export transactions: %1$s</string>
 </resources>
