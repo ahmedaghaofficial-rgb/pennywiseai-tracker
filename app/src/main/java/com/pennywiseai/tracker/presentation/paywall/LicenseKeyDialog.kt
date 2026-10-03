@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.paywall
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,11 +50,11 @@ internal fun LicenseKeyDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Activate license key") },
+        title = { Text(stringResource(R.string.flosi_full_activate_license_key)) },
         text = {
             Column {
                 Text(
-                    text = "Paste the key from your purchase email. Pro activates on this device right away.",
+                    text = stringResource(R.string.flosi_full_paste_the_key_from_your_purchase_email_pro_activates_on_this_devi),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -80,8 +82,8 @@ internal fun LicenseKeyDialog(
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
                         enabled = !isActivating,
-                        label = { Text("Purchase email") },
-                        supportingText = { Text("Confirms you own the key before it leaves the other device.") },
+                        label = { Text(stringResource(R.string.flosi_full_purchase_email)) },
+                        supportingText = { Text(stringResource(R.string.flosi_full_confirms_you_own_the_key_before_it_leaves_the_other_device)) },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
                             imeAction = ImeAction.Done,
@@ -97,13 +99,13 @@ internal fun LicenseKeyDialog(
                     strokeWidth = Spacing.xxs,
                 )
             } else if (canMove) {
-                TextButton(onClick = { onMoveHere(key, email) }, enabled = canMoveNow) { Text("Move to this device") }
+                TextButton(onClick = { onMoveHere(key, email) }, enabled = canMoveNow) { Text(stringResource(R.string.flosi_full_move_to_this_device)) }
             } else {
-                TextButton(onClick = { onActivate(key) }, enabled = canSubmit) { Text("Activate") }
+                TextButton(onClick = { onActivate(key) }, enabled = canSubmit) { Text(stringResource(R.string.flosi_full_activate)) }
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss, enabled = !isActivating) { Text("Cancel") }
+            TextButton(onClick = onDismiss, enabled = !isActivating) { Text(stringResource(R.string.flosi_cancel)) }
         },
     )
 }

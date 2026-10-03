@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.presentation.subscriptions
 
+import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.currency.CurrencyConversionService
@@ -25,6 +29,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SubscriptionsViewModel @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val subscriptionRepository: SubscriptionRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val currencyConversionService: CurrencyConversionService,
@@ -32,6 +37,8 @@ class SubscriptionsViewModel @Inject constructor(
     private val transactionRepository: com.pennywiseai.tracker.data.repository.TransactionRepository,
     accountBalanceRepository: AccountBalanceRepository,
 ) : ViewModel() {
+
+    private fun localizedContext() = AppLocaleController.wrap(context)
 
     private val _uiState = MutableStateFlow(SubscriptionsUiState())
     val uiState: StateFlow<SubscriptionsUiState> = _uiState.asStateFlow()
@@ -226,18 +233,18 @@ class SubscriptionsViewModel @Inject constructor(
         viewModelScope.launch {
             val result = markSubscriptionPaidUseCase.execute(subscriptionId, paymentDate)
             val merchant = _uiState.value.activeSubscriptions.find { it.id == subscriptionId }?.merchantName
-                ?: "Subscription"
+                ?: localizedContext().getString(R.string.flosi_sub_fallback)
             val message = when (result) {
                 is MarkSubscriptionPaidUseCase.Result.Created ->
-                    "$merchant marked paid · next cycle on ${result.nextPaymentDate}"
+                    localizedContext().getString(R.string.flosi_sub_created, merchant, result.nextPaymentDate)
                 is MarkSubscriptionPaidUseCase.Result.Linked ->
-                    "$merchant linked · next cycle on ${result.nextPaymentDate}"
+                    localizedContext().getString(R.string.flosi_sub_linked, merchant, result.nextPaymentDate)
                 is MarkSubscriptionPaidUseCase.Result.AlreadyMarked ->
-                    "$merchant already marked this cycle · advanced to ${result.nextPaymentDate}"
+                    localizedContext().getString(R.string.flosi_sub_already, merchant, result.nextPaymentDate)
                 MarkSubscriptionPaidUseCase.Result.NoScheduledDate ->
-                    "Set a next-payment date on $merchant first"
+                    localizedContext().getString(R.string.flosi_sub_date_needed, merchant)
                 MarkSubscriptionPaidUseCase.Result.SubscriptionNotFound ->
-                    "Couldn't find that subscription"
+                    localizedContext().getString(R.string.flosi_sub_not_found)
             }
             _uiState.value = _uiState.value.copy(markPaidMessage = message)
         }
@@ -279,15 +286,15 @@ class SubscriptionsViewModel @Inject constructor(
         viewModelScope.launch {
             val result = markSubscriptionPaidUseCase.linkExisting(subscriptionId, transactionId)
             val merchant = _uiState.value.activeSubscriptions.find { it.id == subscriptionId }?.merchantName
-                ?: "Subscription"
+                ?: localizedContext().getString(R.string.flosi_sub_fallback)
             val message = when (result) {
                 is MarkSubscriptionPaidUseCase.Result.Linked ->
-                    "$merchant linked to existing payment · next cycle on ${result.nextPaymentDate}"
+                    localizedContext().getString(R.string.flosi_sub_linked_payment, merchant, result.nextPaymentDate)
                 MarkSubscriptionPaidUseCase.Result.NoScheduledDate ->
-                    "Set a next-payment date on $merchant first"
+                    localizedContext().getString(R.string.flosi_sub_date_needed, merchant)
                 MarkSubscriptionPaidUseCase.Result.SubscriptionNotFound ->
-                    "Couldn't find that subscription"
-                else -> "Linked"
+                    localizedContext().getString(R.string.flosi_sub_not_found)
+                else -> localizedContext().getString(R.string.flosi_sub_linked_simple)
             }
             _uiState.value = _uiState.value.copy(markPaidMessage = message)
         }

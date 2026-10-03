@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.screens.settings
 
+import com.pennywiseai.tracker.R
+
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
@@ -71,6 +73,11 @@ class SettingsViewModel @Inject constructor(
     private val contactsResolver: com.pennywiseai.tracker.data.contacts.ContactsResolver,
     entitlementGate: EntitlementGate,
 ) : ViewModel() {
+    private fun uiText(id: Int, vararg args: Any): String =
+        com.pennywiseai.tracker.core.localization.AppLocaleController.wrap(context).getString(id, *args)
+
+    private fun uiQuantity(id: Int, count: Int, vararg args: Any): String =
+        com.pennywiseai.tracker.core.localization.AppLocaleController.wrap(context).resources.getQuantityString(id, count, *args)
 
     /** Drives the Settings → Pro row: shows "Active" when true, "Upgrade" when false. */
     val isProEntitled: StateFlow<Boolean> = entitlementGate.isProEntitled
@@ -373,8 +380,8 @@ class SettingsViewModel @Inject constructor(
             try {
                 // Create download request
                 val request = DownloadManager.Request(Uri.parse(modelUrl))
-                    .setTitle("AI Chat Model")
-                    .setDescription("Downloading AI chat assistant for ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME}")
+                    .setTitle(uiText(R.string.flosi_ai_model_notification))
+                    .setDescription(uiText(R.string.flosi_ai_download_notification, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME))
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, Constants.ModelDownload.MODEL_FILE_NAME)
                     .setAllowedOverMetered(true) // Allow mobile data downloads
@@ -541,15 +548,13 @@ class SettingsViewModel @Inject constructor(
         _deleteAllTransactionsResult.value = buildString {
             append(
                 when (deleted) {
-                    0 -> "There were no transactions to delete."
-                    1 -> "1 transaction deleted."
-                    else -> "$deleted transactions deleted."
+                    0 -> uiText(R.string.flosi_nothing_to_delete)
+                    else -> uiQuantity(R.plurals.flosi_count_transactions_deleted, deleted, deleted)
                 }
             )
             if (arrived > 0) {
                 append(
-                    if (arrived == 1) " 1 new transaction arrived while it ran."
-                    else " $arrived new transactions arrived while it ran."
+                    " " + uiQuantity(R.plurals.flosi_count_new_transactions, arrived, arrived)
                 )
             }
         }
@@ -564,8 +569,7 @@ class SettingsViewModel @Inject constructor(
                         // Nothing was removed; the dialog stays open showing the
                         // new (observed) figure so the user re-authorises it.
                         _deleteAllTransactionsResult.value =
-                            "New transactions arrived while you were confirming, so nothing was deleted. " +
-                                "There are now ${result.actual}. Check the number and try again."
+                            uiText(R.string.flosi_delete_count_changed, result.actual)
                         return@launch
                     }
                     is DeleteAllTransactionsUseCase.Result.Deleted -> {
@@ -574,7 +578,7 @@ class SettingsViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.e("SettingsViewModel", "Delete all transactions failed", e)
-                _deleteAllTransactionsResult.value = "Couldn't delete transactions: ${e.message}"
+                _deleteAllTransactionsResult.value = uiText(R.string.flosi_delete_transactions_error, e.message ?: "")
             } finally {
                 _isDeletingAllTransactions.value = false
                 _deleteAllTransactionsRequested.value = false
@@ -696,16 +700,16 @@ class SettingsViewModel @Inject constructor(
                     is ExportResult.Success -> {
                         // Store the file for later saving
                         _exportedBackupFile.value = result.file
-                        _importExportMessage.value = "Backup created successfully! Choose where to save it."
+                        _importExportMessage.value = uiText(R.string.flosi_backup_created_choose_location)
                     }
                     is ExportResult.Error -> {
-                        _importExportMessage.value = "Export failed: ${result.message}"
+                        _importExportMessage.value = uiText(R.string.flosi_export_failed)
                         Log.e("SettingsViewModel", "Export failed: ${result.message}")
                     }
                     else -> {}
                 }
             } catch (e: Exception) {
-                _importExportMessage.value = "Export error: ${e.message}"
+                _importExportMessage.value = uiText(R.string.flosi_export_error_detail, e.message ?: "")
                 Log.e("SettingsViewModel", "Export error", e)
             }
         }
@@ -720,11 +724,11 @@ class SettingsViewModel @Inject constructor(
                             inputStream.copyTo(outputStream)
                         }
                     }
-                    _importExportMessage.value = "Backup saved successfully!"
+                    _importExportMessage.value = uiText(R.string.flosi_backup_saved)
                     _exportedBackupFile.value = null
                 }
             } catch (e: Exception) {
-                _importExportMessage.value = "Failed to save backup: ${e.message}"
+                _importExportMessage.value = uiText(R.string.flosi_backup_error_detail, e.message ?: "")
                 Log.e("SettingsViewModel", "Error saving backup", e)
             }
         }
@@ -747,12 +751,12 @@ class SettingsViewModel @Inject constructor(
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "application/octet-stream"
                 putExtra(Intent.EXTRA_STREAM, uri)
-                putExtra(Intent.EXTRA_SUBJECT, "PennyWise Backup")
+                putExtra(Intent.EXTRA_SUBJECT, uiText(R.string.flosi_backup_share_subject))
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             
-            context.startActivity(Intent.createChooser(intent, "Share Backup").apply {
+            context.startActivity(Intent.createChooser(intent, uiText(R.string.flosi_share_backup)).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             })
         } catch (e: Exception) {
@@ -763,20 +767,21 @@ class SettingsViewModel @Inject constructor(
     fun importBackup(uri: android.net.Uri) {
         viewModelScope.launch {
             try {
-                _importExportMessage.value = "Importing backup..."
+                _importExportMessage.value = uiText(R.string.flosi_importing_backup)
                 val result = backupImporter.importBackup(uri, ImportStrategy.MERGE)
                 when (result) {
                     is ImportResult.Success -> {
-                        val skipped = if (result.skippedRows > 0) " ${result.skippedRows} rows could not be imported." else ""
-                        _importExportMessage.value = "Import successful! Imported ${result.importedTransactions} transactions, ${result.importedCategories} categories. Skipped ${result.skippedDuplicates} duplicates.$skipped"
+                        val skipped = if (result.skippedRows > 0) " " + uiText(R.string.flosi_import_rows_skipped, result.skippedRows) else ""
+                        _importExportMessage.value = uiText(R.string.flosi_import_success, result.importedTransactions, result.importedCategories, result.skippedDuplicates) + skipped
                     }
                     is ImportResult.Error -> {
-                        _importExportMessage.value = "Import failed: ${result.message}"
+                        _importExportMessage.value = if (result.message == "Incompatible backup version")
+                            uiText(R.string.flosi_incompatible_backup_version) else uiText(R.string.flosi_import_failed)
                         Log.e("SettingsViewModel", "Import failed: ${result.message}")
                     }
                 }
             } catch (e: Exception) {
-                _importExportMessage.value = "Import error: ${e.message}"
+                _importExportMessage.value = uiText(R.string.flosi_import_error_detail, e.message ?: "")
                 Log.e("SettingsViewModel", "Import error", e)
             }
         }
@@ -789,22 +794,22 @@ class SettingsViewModel @Inject constructor(
     fun importCsv(uri: android.net.Uri) {
         viewModelScope.launch {
             try {
-                _importExportMessage.value = "Importing transactions..."
+                _importExportMessage.value = uiText(R.string.flosi_importing_transactions)
                 when (val result = importCsvUseCase.execute(uri)) {
                     is com.pennywiseai.tracker.data.csv.ImportCsvUseCase.Result.Success -> {
                         val failedSuffix = if (result.failed > 0) {
-                            ", ${result.failed} rows could not be parsed"
+                            uiText(R.string.flosi_csv_failed_rows, result.failed)
                         } else ""
                         _importExportMessage.value =
-                            "Imported ${result.imported} transactions, skipped ${result.skippedDuplicate} duplicates$failedSuffix"
+                            uiText(R.string.flosi_csv_import_success, result.imported, result.skippedDuplicate) + failedSuffix
                     }
                     is com.pennywiseai.tracker.data.csv.ImportCsvUseCase.Result.Error -> {
-                        _importExportMessage.value = result.message
+                        _importExportMessage.value = uiText(R.string.flosi_import_failed)
                         Log.e("SettingsViewModel", "CSV import failed: ${result.message}")
                     }
                 }
             } catch (e: Exception) {
-                _importExportMessage.value = "Import error: ${e.message}"
+                _importExportMessage.value = uiText(R.string.flosi_import_error_detail, e.message ?: "")
                 Log.e("SettingsViewModel", "CSV import error", e)
             }
         }
@@ -827,7 +832,7 @@ class SettingsViewModel @Inject constructor(
             } else {
                 userPreferencesRepository.setScheduledFolderBackupEnabled(false)
                 scheduledFolderBackupScheduler.cancel()
-                _importExportMessage.value = "Automatic folder backup disabled"
+                _importExportMessage.value = uiText(R.string.flosi_folder_backup_disabled)
             }
         }
     }
@@ -861,7 +866,7 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                _importExportMessage.value = "Could not access the selected folder: ${e.message}"
+                _importExportMessage.value = uiText(R.string.flosi_folder_access_error, e.message ?: "")
                 Log.e("SettingsViewModel", "Failed to persist backup folder", e)
             }
         }
@@ -876,12 +881,12 @@ class SettingsViewModel @Inject constructor(
     private suspend fun performFolderBackup(showSuccessMessage: Boolean): Boolean {
         val treeUri = userPreferencesRepository.getScheduledFolderBackupTreeUri()
         if (treeUri.isNullOrBlank()) {
-            _importExportMessage.value = "Select a backup folder first"
+            _importExportMessage.value = uiText(R.string.flosi_select_backup_folder)
             return false
         }
 
         if (!folderBackupWriter.canWriteToFolder(treeUri)) {
-            _importExportMessage.value = "Cannot write to the selected backup folder"
+            _importExportMessage.value = uiText(R.string.flosi_cannot_write_backup_folder)
             return false
         }
 
@@ -893,7 +898,7 @@ class SettingsViewModel @Inject constructor(
                             System.currentTimeMillis()
                         )
                         if (showSuccessMessage) {
-                            _importExportMessage.value = "Backup saved to folder"
+                            _importExportMessage.value = uiText(R.string.flosi_backup_saved_to_folder)
                         }
                         true
                     }
@@ -904,7 +909,7 @@ class SettingsViewModel @Inject constructor(
                 }
             }
             is ExportBytesResult.Error -> {
-                _importExportMessage.value = exportResult.message
+                _importExportMessage.value = uiText(R.string.flosi_backup_save_failed)
                 false
             }
         }
@@ -912,7 +917,7 @@ class SettingsViewModel @Inject constructor(
 
     private suspend fun enableScheduledFolderBackup(treeUri: String) {
         if (!folderBackupWriter.canWriteToFolder(treeUri)) {
-            _importExportMessage.value = "Cannot write to the selected backup folder"
+            _importExportMessage.value = uiText(R.string.flosi_cannot_write_backup_folder)
             return
         }
 
@@ -922,7 +927,7 @@ class SettingsViewModel @Inject constructor(
         // performFolderBackup has already surfaced the reason — don't clobber it.
         if (performFolderBackup(showSuccessMessage = false)) {
             _importExportMessage.value =
-                "Automatic folder backup enabled. Backups run daily at 2:00 AM."
+                uiText(R.string.flosi_folder_backup_enabled)
         }
     }
     

@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.categories
 
+import com.pennywiseai.tracker.core.localization.localizedUiMessage
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.CategoryEntity
 import com.pennywiseai.tracker.ui.components.CategoryChip
 import com.pennywiseai.tracker.ui.components.ColorSwatchRow
@@ -52,6 +55,7 @@ fun CategoryEditDialog(
     var selectedColor by remember { mutableStateOf(category?.color ?: "#4CAF50") }
     var emoji by remember { mutableStateOf(category?.icon ?: "") }
     var showDeleteConfirm by remember { mutableStateOf(false) }
+    val requiredNameError = stringResource(R.string.validation_category_name_required)
 
     Dialog(onDismissRequest = onDismiss) {
         PennyWiseCardV2(
@@ -70,7 +74,7 @@ fun CategoryEditDialog(
             ) {
                 // Title
                 Text(
-                    text = if (category == null) "Add Category" else "Edit Category",
+                    text = stringResource(if (category == null) R.string.flosi_add_category_12 else R.string.flosi_edit_category),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
@@ -80,11 +84,11 @@ fun CategoryEditDialog(
                     value = name,
                     onValueChange = {
                         name = it
-                        nameError = if (it.isBlank()) "Category name is required" else null
+                        nameError = if (it.isBlank()) requiredNameError else null
                     },
-                    label = { Text("Category Name", fontWeight = FontWeight.SemiBold) },
+                    label = { Text(stringResource(R.string.flosi_category_name), fontWeight = FontWeight.SemiBold) },
                     isError = nameError != null,
-                    supportingText = nameError?.let { { Text(it) } },
+                    supportingText = nameError?.let { { Text(localizedUiMessage(it)) } },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,
@@ -104,7 +108,7 @@ fun CategoryEditDialog(
                 if (!lockType) {
                     Column {
                         Text(
-                            text = "Category Type",
+                            text = stringResource(R.string.flosi_category_type),
                             style = MaterialTheme.typography.bodyLarge,
                             fontWeight = FontWeight.Medium
                         )
@@ -119,14 +123,14 @@ fun CategoryEditDialog(
                                 enabled = !hasChildren,
                                 selected = !isIncome,
                                 onClick = { isIncome = false; parentId = null },
-                                label = { Text("Expense") },
+                                label = { Text(stringResource(R.string.flosi_expense)) },
                                 modifier = Modifier.weight(1f)
                             )
                             FilterChip(
                                 enabled = !hasChildren,
                                 selected = isIncome,
                                 onClick = { isIncome = true; parentId = null },
-                                label = { Text("Income") },
+                                label = { Text(stringResource(R.string.flosi_income)) },
                                 modifier = Modifier.weight(1f)
                             )
                         }
@@ -141,7 +145,7 @@ fun CategoryEditDialog(
                             value = parentCandidates.firstOrNull { it.id == parentId }?.name ?: "None",
                             onValueChange = {},
                             readOnly = true,
-                            label = { Text("Parent category (optional)", fontWeight = FontWeight.SemiBold) },
+                            label = { Text(stringResource(R.string.flosi_parent_category_optional), fontWeight = FontWeight.SemiBold) },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = parentMenu) },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -155,7 +159,7 @@ fun CategoryEditDialog(
                             )
                         )
                         ExposedDropdownMenu(expanded = parentMenu, onDismissRequest = { parentMenu = false }) {
-                            DropdownMenuItem(text = { Text("None") }, onClick = { parentId = null; parentMenu = false })
+                            DropdownMenuItem(text = { Text(stringResource(R.string.flosi_none)) }, onClick = { parentId = null; parentMenu = false })
                             parentCandidates.forEach { p ->
                                 DropdownMenuItem(
                                     text = { CategoryChip(category = p) },
@@ -170,13 +174,13 @@ fun CategoryEditDialog(
                 TextField(
                     value = emoji,
                     onValueChange = { emoji = lastEmoji(it) ?: emoji },
-                    label = { Text("Icon (emoji, optional)", fontWeight = FontWeight.SemiBold) },
-                    placeholder = { Text("Tap to pick an emoji") },
+                    label = { Text(stringResource(R.string.flosi_icon_emoji_optional), fontWeight = FontWeight.SemiBold) },
+                    placeholder = { Text(stringResource(R.string.flosi_tap_to_pick_an_emoji)) },
                     singleLine = true,
                     trailingIcon = if (emoji.isNotEmpty()) {
                         {
                             IconButton(onClick = { emoji = "" }) {
-                                Icon(Icons.Default.Close, contentDescription = "Clear icon")
+                                Icon(Icons.Default.Close, contentDescription = stringResource(R.string.flosi_clear_icon))
                             }
                         }
                     } else null,
@@ -195,7 +199,7 @@ fun CategoryEditDialog(
                 // Color Selection
                 Column {
                     Text(
-                        text = "Color",
+                        text = stringResource(R.string.flosi_color),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium
                     )
@@ -213,7 +217,7 @@ fun CategoryEditDialog(
                     contentPadding = Dimensions.Padding.content
                 ) {
                     Text(
-                        text = "Preview",
+                        text = stringResource(R.string.flosi_preview),
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -236,7 +240,7 @@ fun CategoryEditDialog(
                             if (emoji.isNotEmpty()) EmojiGlyph(emoji, Dimensions.Icon.small)
                         }
                         Text(
-                            text = name.ifBlank { "Category Name" },
+                            text = name.ifBlank { stringResource(R.string.flosi_category_name) },
                             style = MaterialTheme.typography.bodyLarge
                         )
                     }
@@ -251,20 +255,20 @@ fun CategoryEditDialog(
                         onClick = onDismiss,
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.flosi_cancel))
                     }
                     Button(
                         onClick = {
                             if (name.isNotBlank()) {
                                 onSave(name.trim(), selectedColor, isIncome, emoji.ifBlank { null }, parentId)
                             } else {
-                                nameError = "Category name is required"
+                                nameError = requiredNameError
                             }
                         },
                         modifier = Modifier.weight(1f),
                         enabled = name.isNotBlank()
                     ) {
-                        Text(if (category == null) "Add" else "Save")
+                        Text(stringResource(if (category == null) R.string.flosi_add_new else R.string.flosi_save))
                     }
                 }
 
@@ -284,7 +288,7 @@ fun CategoryEditDialog(
                             modifier = Modifier.size(Dimensions.Icon.small)
                         )
                         Spacer(Modifier.width(Spacing.xs))
-                        Text("Delete category")
+                        Text(stringResource(R.string.flosi_delete_category))
                     }
                 }
             }
@@ -294,11 +298,10 @@ fun CategoryEditDialog(
     if (showDeleteConfirm && category != null) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("Delete category?") },
+            title = { Text(stringResource(R.string.flosi_delete_category_16)) },
             text = {
                 Text(
-                    "\"${category.name}\" will be removed. Existing transactions keep " +
-                        "their current label. This can't be undone."
+                    stringResource(R.string.flosi_delete_category_warning, category.name)
                 )
             },
             confirmButton = {
@@ -310,10 +313,10 @@ fun CategoryEditDialog(
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
                     )
-                ) { Text("Delete") }
+                ) { Text(stringResource(R.string.flosi_delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { showDeleteConfirm = false }) { Text(stringResource(R.string.flosi_cancel)) }
             }
         )
     }

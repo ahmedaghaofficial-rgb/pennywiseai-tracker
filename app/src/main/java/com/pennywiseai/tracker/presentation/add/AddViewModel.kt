@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.add
 
+import com.pennywiseai.tracker.BuildConfig
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -21,6 +22,8 @@ import com.pennywiseai.tracker.domain.usecase.AddSubscriptionUseCase
 import com.pennywiseai.tracker.domain.usecase.GetCategoriesUseCase
 import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.Job
@@ -47,6 +50,8 @@ class AddViewModel @Inject constructor(
     private val receiptManager: ReceiptManager,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private fun uiText(id: Int): String = AppLocaleController.wrap(appContext).getString(id)
 
     /** All known tag names for autocomplete in the add form. */
     val allTagNames: StateFlow<List<String>> = tagRepository.observeAllTagNames()
@@ -354,11 +359,11 @@ class AddViewModel @Inject constructor(
             val to = state.toAccount
             when {
                 from == null || to == null ->
-                    _transactionUiState.update { it.copy(error = "Select both a From and To account") }
+                    _transactionUiState.update { it.copy(error = uiText(R.string.validation_transfer_accounts)) }
                 from.id == to.id ->
-                    _transactionUiState.update { it.copy(error = "From and To accounts must be different") }
+                    _transactionUiState.update { it.copy(error = uiText(R.string.validation_different_accounts)) }
                 from.currency != to.currency ->
-                    _transactionUiState.update { it.copy(error = "Both accounts must use the same currency") }
+                    _transactionUiState.update { it.copy(error = uiText(R.string.validation_same_currency)) }
                 else -> saveTransferInternal(state, from, to, onSuccess)
             }
             return
@@ -397,7 +402,7 @@ class AddViewModel @Inject constructor(
                 _transactionUiState.update { currentState ->
                     currentState.copy(
                         isLoading = false,
-                        error = e.message ?: "Failed to save transaction"
+                        error = e.message ?: uiText(R.string.validation_save_transaction)
                     )
                 }
             }
@@ -433,7 +438,7 @@ class AddViewModel @Inject constructor(
                 _transactionUiState.update { currentState ->
                     currentState.copy(
                         isLoading = false,
-                        error = e.message ?: "Failed to save transfer"
+                        error = e.message ?: uiText(R.string.validation_save_transfer)
                     )
                 }
             }
@@ -445,7 +450,7 @@ class AddViewModel @Inject constructor(
         _subscriptionUiState.update { currentState ->
             currentState.copy(
                 serviceName = service,
-                serviceError = if (service.isBlank()) "Service name is required" else null
+                serviceError = if (service.isBlank()) uiText(R.string.validation_service_required) else null
             )
         }
     }
@@ -527,7 +532,7 @@ class AddViewModel @Inject constructor(
         Log.d("AddViewModel", "saveSubscription called with state: $state")
         
         // Validate all fields
-        val serviceError = if (state.serviceName.isBlank()) "Service name is required" else null
+        val serviceError = if (state.serviceName.isBlank()) uiText(R.string.validation_service_required) else null
         val amountError = validateAmount(state.amount)
         val categoryError = validateCategory(state.category)
         
@@ -578,7 +583,7 @@ class AddViewModel @Inject constructor(
                 _subscriptionUiState.update { currentState ->
                     currentState.copy(
                         isLoading = false,
-                        error = e.message ?: "Failed to save subscription"
+                        error = e.message ?: uiText(R.string.validation_save_subscription)
                     )
                 }
             } finally {
@@ -591,24 +596,24 @@ class AddViewModel @Inject constructor(
     // Validation helpers
     private fun validateAmount(amount: String): String? {
         return when {
-            amount.isBlank() -> "Amount is required"
-            amount.toDoubleOrNull() == null -> "Invalid amount"
-            amount.toDouble() <= 0 -> "Amount must be greater than 0"
+            amount.isBlank() -> uiText(R.string.validation_amount_required)
+            amount.toDoubleOrNull() == null -> uiText(R.string.validation_invalid_amount)
+            amount.toDouble() <= 0 -> uiText(R.string.validation_positive_amount)
             else -> null
         }
     }
     
     private fun validateMerchant(merchant: String): String? {
         return when {
-            merchant.isBlank() -> "Merchant/Description is required"
-            merchant.length < 2 -> "Too short"
+            merchant.isBlank() -> uiText(R.string.validation_merchant_required)
+            merchant.length < 2 -> uiText(R.string.validation_too_short)
             else -> null
         }
     }
     
     private fun validateCategory(category: String): String? {
         return when {
-            category.isBlank() -> "Category is required"
+            category.isBlank() -> uiText(R.string.validation_category_required)
             else -> null
         }
     }
@@ -637,7 +642,7 @@ data class TransactionUiState(
     // For a TRANSFER, [selectedAccount] is the FROM account and this is the TO
     // account. Unused for all other transaction types.
     val toAccount: AccountBalanceEntity? = null,
-    val currency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
     val receiptUri: Uri? = null,
     val budgetImpactType: BudgetImpactType? = null,
     val budgetCategory: String? = null
@@ -679,7 +684,7 @@ data class SubscriptionUiState(
     val notes: String = "",
     val isLoading: Boolean = false,
     val error: String? = null,
-    val currency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
     /**
      * Income vs Expense (#371). Income subscriptions get phantom-created
      * on schedule (wallet top-ups etc.); expense subscriptions match

@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.groups
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -62,38 +64,38 @@ fun TransactionGroupDetailScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = group?.name ?: "Group",
+                title = group?.name ?: stringResource(R.string.flosi_group_fallback),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 actionContent = {
                     if (group != null) {
                         var showMenu by remember { mutableStateOf(false) }
                         IconButton(onClick = { showMenu = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More")
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.flosi_more))
                         }
                         DropdownMenu(
                             expanded = showMenu,
                             onDismissRequest = { showMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Edit") },
+                                text = { Text(stringResource(R.string.flosi_edit)) },
                                 onClick = { showMenu = false; viewModel.showEditDialog() },
                                 leadingIcon = { Icon(Icons.Default.Edit, null) }
                             )
                             if (uiState.linkedTransactions.isNotEmpty()) {
                                 DropdownMenuItem(
-                                    text = { Text("Export CSV") },
+                                    text = { Text(stringResource(R.string.flosi_full_export_csv)) },
                                     onClick = { showMenu = false; showExportDialog = true },
                                     leadingIcon = { Icon(Icons.Default.FileDownload, null) }
                                 )
                             }
                             DropdownMenuItem(
-                                text = { Text("Delete", color = MaterialTheme.colorScheme.error) },
+                                text = { Text(stringResource(R.string.flosi_delete), color = MaterialTheme.colorScheme.error) },
                                 onClick = { showMenu = false; viewModel.showDeleteDialog() },
                                 leadingIcon = {
                                     Icon(
@@ -111,7 +113,7 @@ fun TransactionGroupDetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { viewModel.showAddSheet() }) {
-                Icon(Icons.Default.Add, contentDescription = "Add transaction")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.flosi_full_add_transaction))
             }
         }
     ) { paddingValues ->
@@ -173,7 +175,7 @@ fun TransactionGroupDetailScreen(
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    "Transactions",
+                                    stringResource(R.string.flosi_transactions),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -187,7 +189,7 @@ fun TransactionGroupDetailScreen(
                             if (uiState.expenseByCurrency.values.any { it.isPositive }) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Text(
-                                        "Expenses",
+                                        stringResource(R.string.flosi_expenses),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -202,7 +204,7 @@ fun TransactionGroupDetailScreen(
                             if (uiState.incomeByCurrency.values.any { it.isPositive }) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Text(
-                                        "Income",
+                                        stringResource(R.string.flosi_income),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -222,7 +224,7 @@ fun TransactionGroupDetailScreen(
             if (uiState.linkedTransactions.isNotEmpty()) {
                 item {
                     Text(
-                        "Transactions",
+                        stringResource(R.string.flosi_transactions),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -253,12 +255,12 @@ fun TransactionGroupDetailScreen(
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                "No transactions yet",
+                                stringResource(R.string.flosi_no_transactions_yet),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                "Tap + to add transactions to this group",
+                                stringResource(R.string.flosi_full_tap_to_add_transactions_to_this_group),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -303,16 +305,16 @@ fun TransactionGroupDetailScreen(
     if (uiState.showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.hideDeleteDialog() },
-            title = { Text("Delete Group") },
-            text = { Text("Delete this group? Linked transactions will be ungrouped but not deleted.") },
+            title = { Text(stringResource(R.string.flosi_full_delete_group)) },
+            text = { Text(stringResource(R.string.flosi_full_delete_this_group_linked_transactions_will_be_ungrouped_but_not_d)) },
             confirmButton = {
                 TextButton(onClick = { viewModel.deleteGroup() }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.flosi_delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.hideDeleteDialog() }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -379,7 +381,7 @@ private fun GroupTransactionItem(
             IconButton(onClick = onRemove, modifier = Modifier.size(32.dp)) {
                 Icon(
                     Icons.Default.RemoveCircleOutline,
-                    contentDescription = "Remove from group",
+                    contentDescription = stringResource(R.string.flosi_full_remove_from_group),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(20.dp)
                 )
@@ -413,7 +415,7 @@ private fun AddTransactionToGroupSheet(
                 .imePadding()
         ) {
             Text(
-                "Add Transactions",
+                stringResource(R.string.flosi_full_add_transactions),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
@@ -422,7 +424,7 @@ private fun AddTransactionToGroupSheet(
             TextField(
                 value = searchQuery,
                 onValueChange = onSearchQueryChange,
-                placeholder = { Text("Search transactions…") },
+                placeholder = { Text(stringResource(R.string.flosi_full_search_transactions)) },
                 leadingIcon = { Icon(Icons.Default.Search, null) },
                 singleLine = true,
                 shape = RoundedCornerShape(16.dp),
@@ -440,7 +442,7 @@ private fun AddTransactionToGroupSheet(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        if (searchQuery.isBlank()) "No ungrouped transactions" else "No results",
+                        if (searchQuery.isBlank()) stringResource(R.string.flosi_group_no_ungrouped) else stringResource(R.string.flosi_no_results),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -507,7 +509,7 @@ private fun AddTransactionToGroupSheet(
                                 Spacer(modifier = Modifier.width(Spacing.xs))
                                 Icon(
                                     Icons.Default.AddCircleOutline,
-                                    contentDescription = "Add",
+                                    contentDescription = stringResource(R.string.flosi_full_add),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -532,13 +534,13 @@ private fun EditGroupDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Edit Group") },
+        title = { Text(stringResource(R.string.flosi_full_edit_group)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 TextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Group name") },
+                    label = { Text(stringResource(R.string.flosi_group_name)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                     shape = RoundedCornerShape(16.dp),
@@ -551,7 +553,7 @@ private fun EditGroupDialog(
                 TextField(
                     value = note,
                     onValueChange = { note = it },
-                    label = { Text("Note (optional)") },
+                    label = { Text(stringResource(R.string.flosi_note_optional)) },
                     singleLine = true,
                     shape = RoundedCornerShape(16.dp),
                     colors = TextFieldDefaults.colors(
@@ -567,12 +569,12 @@ private fun EditGroupDialog(
                 onClick = { onSave(name, note.ifBlank { null }) },
                 enabled = name.isNotBlank()
             ) {
-                Text("Save")
+                Text(stringResource(R.string.flosi_save))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.flosi_cancel))
             }
         }
     )

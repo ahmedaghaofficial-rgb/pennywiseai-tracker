@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.ui.viewmodel
 
+import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppLockViewModel @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val appLockRepository: AppLockRepository,
     private val biometricAuthManager: BiometricAuthManager
 ) : ViewModel() {
@@ -82,14 +87,14 @@ class AppLockViewModel @Inject constructor(
      * Called when authentication fails
      */
     fun onAuthenticationError(errorMessage: String) {
-        _uiState.update { it.copy(authenticationError = errorMessage) }
+        _uiState.update { it.copy(authenticationError = AppLocaleController.wrap(context).getString(R.string.flosi_auth_failed)) }
     }
 
     /**
      * Called when authentication fails (wrong fingerprint, etc.)
      */
     fun onAuthenticationFailed() {
-        _uiState.update { it.copy(authenticationError = "Authentication failed. Please try again.") }
+        _uiState.update { it.copy(authenticationError = AppLocaleController.wrap(context).getString(R.string.flosi_auth_failed)) }
     }
 
     /**

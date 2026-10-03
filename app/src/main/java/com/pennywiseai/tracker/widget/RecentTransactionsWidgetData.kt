@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.widget
 
+import com.pennywiseai.tracker.BuildConfig
 import com.pennywiseai.tracker.data.database.entity.TransactionType
 import java.math.BigDecimal
 
@@ -13,6 +14,6 @@ data class RecentTransactionItem(
 
 data class RecentTransactionsWidgetData(
     val totalSpent: BigDecimal = BigDecimal.ZERO,
-    val currency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
     val transactions: List<RecentTransactionItem> = emptyList()
 )

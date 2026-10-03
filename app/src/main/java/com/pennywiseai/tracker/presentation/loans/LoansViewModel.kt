@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.loans
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.currency.CurrencyConversionService
@@ -22,7 +23,7 @@ data class LoansUiState(
     val settledLoans: List<LoanEntity> = emptyList(),
     val totalLentRemaining: BigDecimal = BigDecimal.ZERO,
     val totalBorrowedRemaining: BigDecimal = BigDecimal.ZERO,
-    val summaryCurrency: String = "INR",
+    val summaryCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     val isLoading: Boolean = true,
     val showSettledLoans: Boolean = false
 )

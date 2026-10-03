@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.repository.GroupSummary
 import com.pennywiseai.tracker.ui.theme.Spacing
 import com.pennywiseai.tracker.ui.theme.expense_dark
@@ -75,7 +78,7 @@ fun HomeGroupCard(
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = "${summary.transactionCount} item${if (summary.transactionCount != 1) "s" else ""}",
+                        text = pluralStringResource(R.plurals.flosi_group_items, summary.transactionCount, summary.transactionCount),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -87,7 +90,7 @@ fun HomeGroupCard(
             // holding both directions shows both lines, like the groups screen.
             if (!summary.hasExpense && !summary.hasIncome) {
                 Text(
-                    text = "No transactions yet",
+                    text = stringResource(R.string.flosi_no_transactions_yet),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

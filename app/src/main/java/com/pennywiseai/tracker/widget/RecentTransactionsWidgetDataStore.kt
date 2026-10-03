@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.widget
 
+import com.pennywiseai.tracker.BuildConfig
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -32,7 +33,7 @@ object RecentTransactionsWidgetDataStore {
                 val title = prefs[titleKey(index)] ?: return@mapNotNull null
                 val subtitle = prefs[subtitleKey(index)] ?: ""
                 val amount = prefs[amountKey(index)]?.toBigDecimalOrNull() ?: BigDecimal.ZERO
-                val currency = prefs[currencyKey(index)] ?: prefs[CURRENCY] ?: "INR"
+                val currency = prefs[currencyKey(index)] ?: prefs[CURRENCY] ?: BuildConfig.DEFAULT_CURRENCY
                 val type = prefs[typeKey(index)]
                     ?.let { com.pennywiseai.tracker.data.database.entity.TransactionType.valueOf(it) }
                     ?: com.pennywiseai.tracker.data.database.entity.TransactionType.EXPENSE
@@ -47,7 +48,7 @@ object RecentTransactionsWidgetDataStore {
 
             RecentTransactionsWidgetData(
                 totalSpent = prefs[TOTAL_SPENT]?.toBigDecimalOrNull() ?: BigDecimal.ZERO,
-                currency = prefs[CURRENCY] ?: prefs[currencyKey(0)] ?: "INR",
+                currency = prefs[CURRENCY] ?: prefs[currencyKey(0)] ?: BuildConfig.DEFAULT_CURRENCY,
                 transactions = items
             )
         }

@@ -2,6 +2,8 @@ package com.pennywiseai.tracker.backup.folder
 
 import android.content.Context
 import android.net.Uri
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import androidx.documentfile.provider.DocumentFile
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -11,6 +13,7 @@ import javax.inject.Singleton
 class FolderBackupWriter @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    private fun uiText(id: Int, vararg args: Any): String = AppLocaleController.wrap(context).getString(id, *args)
     fun canWriteToFolder(treeUri: String): Boolean {
         val folder = DocumentFile.fromTreeUri(context, Uri.parse(treeUri)) ?: return false
         if (!folder.isDirectory || !folder.canWrite()) return false
@@ -21,10 +24,10 @@ class FolderBackupWriter @Inject constructor(
 
     fun writeBackup(treeUri: String, bytes: ByteArray): Result {
         val folder = DocumentFile.fromTreeUri(context, Uri.parse(treeUri))
-            ?: return Result.Failure("Backup folder is no longer accessible")
+            ?: return Result.Failure(uiText(R.string.flosi_backup_folder_inaccessible))
 
         if (!folder.isDirectory || !folder.canWrite()) {
-            return Result.Failure("Cannot write to the selected backup folder")
+            return Result.Failure(uiText(R.string.flosi_cannot_write_backup_folder))
         }
 
         // Write to a sibling temp file first, then swap it into place. SAF has no atomic
@@ -34,7 +37,7 @@ class FolderBackupWriter @Inject constructor(
         val tempFile = folder.createFile(
             "application/octet-stream",
             ScheduledFolderBackupConstants.TEMP_BACKUP_FILE_NAME
-        ) ?: return Result.Failure("Could not create backup file in the selected folder")
+        ) ?: return Result.Failure(uiText(R.string.flosi_backup_file_create_failed))
 
         val writeError = writeBytes(tempFile.uri, bytes)
         if (writeError != null) {
@@ -54,7 +57,7 @@ class FolderBackupWriter @Inject constructor(
         val finalFile = folder.createFile(
             "application/octet-stream",
             ScheduledFolderBackupConstants.BACKUP_FILE_NAME
-        ) ?: return Result.Failure("Could not finalize backup file")
+        ) ?: return Result.Failure(uiText(R.string.flosi_backup_file_finalize_failed))
 
         val finalError = writeBytes(finalFile.uri, bytes)
         if (finalError != null) {
@@ -69,10 +72,10 @@ class FolderBackupWriter @Inject constructor(
         return try {
             context.contentResolver.openOutputStream(uri, "wt")?.use { stream ->
                 stream.write(bytes)
-            } ?: "Could not open backup file for writing"
+            } ?: uiText(R.string.flosi_backup_file_open_failed)
             null
         } catch (e: Exception) {
-            "Failed to write backup: ${e.message ?: "unknown error"}"
+            uiText(R.string.flosi_backup_file_write_failed, e.message ?: uiText(R.string.flosi_unknown_error))
         }
     }
 

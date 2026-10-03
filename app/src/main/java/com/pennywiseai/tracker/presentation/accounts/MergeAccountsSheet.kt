@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.accounts
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.AccountBalanceEntity
 import com.pennywiseai.tracker.ui.theme.Dimensions
 import com.pennywiseai.tracker.ui.theme.Spacing
@@ -91,12 +94,12 @@ fun MergeAccountsSheet(
             item(key = "header") {
                 Column {
                     Text(
-                        text = "Merge accounts",
+                        text = stringResource(R.string.flosi_merge_accounts),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = "Move all transactions from one account into another. The source account is removed when done.",
+                        text = stringResource(R.string.flosi_move_all_transactions_from_one_account_into_another_th),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = Spacing.xs, bottom = Spacing.md)
@@ -105,7 +108,7 @@ fun MergeAccountsSheet(
             }
 
             // Source picker
-            item(key = "from-label") { SectionLabel("Move from") }
+            item(key = "from-label") { SectionLabel(stringResource(R.string.flosi_merge_from)) }
             accountPickerItems(
                 idPrefix = "src",
                 accounts = accounts,
@@ -123,7 +126,7 @@ fun MergeAccountsSheet(
                 if (targets.isEmpty()) {
                     item(key = "no-targets") {
                         Text(
-                            text = "No other accounts match this one's currency / type.",
+                            text = stringResource(R.string.flosi_no_other_accounts_match_this_one_s_currency_type),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.error,
                             modifier = Modifier.padding(top = Spacing.md)
@@ -132,7 +135,7 @@ fun MergeAccountsSheet(
                 } else {
                     item(key = "into-header") {
                         Column(modifier = Modifier.padding(top = Spacing.md)) {
-                            SectionLabel("Into")
+                            SectionLabel(stringResource(R.string.flosi_merge_into))
                             Row(
                                 modifier = Modifier.padding(bottom = Spacing.xs),
                                 verticalAlignment = Alignment.CenterVertically
@@ -169,21 +172,26 @@ fun MergeAccountsSheet(
     if (s != null && t != null) {
         AlertDialog(
             onDismissRequest = { target = null },
-            title = { Text("Merge accounts?") },
+            title = { Text(stringResource(R.string.flosi_merge_accounts_15)) },
             text = {
                 val n = sourceTxnCount
                 Text(
-                    if (n != null)
-                        "Move $n transactions from ${AccountBalanceEntity.accountLabel(s.bankName, s.accountLast4)} into ${AccountBalanceEntity.accountLabel(t.bankName, t.accountLast4)}. The source account is removed after the move. This can't be undone."
-                    else
-                        "Move all transactions from ${AccountBalanceEntity.accountLabel(s.bankName, s.accountLast4)} into ${AccountBalanceEntity.accountLabel(t.bankName, t.accountLast4)}. The source account is removed after the move. This can't be undone."
+                    if (n != null) pluralStringResource(
+                        R.plurals.flosi_merge_warning_count, n, n,
+                        AccountBalanceEntity.accountLabel(s.bankName, s.accountLast4),
+                        AccountBalanceEntity.accountLabel(t.bankName, t.accountLast4)
+                    ) else stringResource(
+                        R.string.flosi_merge_warning_all,
+                        AccountBalanceEntity.accountLabel(s.bankName, s.accountLast4),
+                        AccountBalanceEntity.accountLabel(t.bankName, t.accountLast4)
+                    )
                 )
             },
             confirmButton = {
-                TextButton(onClick = { onConfirm(s, t) }) { Text("Merge") }
+                TextButton(onClick = { onConfirm(s, t) }) { Text(stringResource(R.string.flosi_merge)) }
             },
             dismissButton = {
-                TextButton(onClick = { target = null }) { Text("Cancel") }
+                TextButton(onClick = { target = null }) { Text(stringResource(R.string.flosi_cancel)) }
             }
         )
     }
@@ -256,7 +264,7 @@ private fun AccountPickerRow(
                             append(" · ")
                         }
                         append(acct.currency)
-                        if (acct.isCreditCard) append(" · Credit")
+                        if (acct.isCreditCard) append(" · ").append(stringResource(R.string.flosi_credit))
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -265,7 +273,7 @@ private fun AccountPickerRow(
             if (isSelected) {
                 AssistChip(
                     onClick = {},
-                    label = { Text("Selected") },
+                    label = { Text(stringResource(R.string.flosi_selected)) },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Check,

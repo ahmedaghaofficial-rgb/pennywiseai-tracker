@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.presentation.transactions
 
+import com.pennywiseai.tracker.BuildConfig
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.database.dao.TransactionSplitDao
@@ -67,6 +70,9 @@ class TransactionsViewModel @Inject constructor(
 
     // Keep home-screen widgets in sync with edits made here (delete/undo,
     // bulk category changes, transfer marking).
+    private fun uiText(id: Int, vararg args: Any): String = AppLocaleController.wrap(context).getString(id, *args)
+    private fun uiQuantity(id: Int, count: Int, vararg args: Any): String = AppLocaleController.wrap(context).resources.getQuantityString(id, count, *args)
+
     private fun refreshWidgets() =
         com.pennywiseai.tracker.widget.WidgetRefresher.refreshTransactionWidgets(context)
 
@@ -136,7 +142,7 @@ class TransactionsViewModel @Inject constructor(
     private val _sortOption = MutableStateFlow(SortOption.DATE_NEWEST)
     val sortOption: StateFlow<SortOption> = _sortOption.asStateFlow()
 
-    private val _selectedCurrency = MutableStateFlow("INR") // Will be initialized from preferences
+    private val _selectedCurrency = MutableStateFlow(BuildConfig.DEFAULT_CURRENCY) // Will be initialized from preferences
     val selectedCurrency: StateFlow<String> = _selectedCurrency.asStateFlow()
 
     private val _isUnifiedMode = MutableStateFlow(false)
@@ -372,7 +378,7 @@ class TransactionsViewModel @Inject constructor(
             refreshWidgets()
             clearSelection()
             _bulkSnack.value = BulkSnack(
-                message = "${previous.size} updated to \"$newCategory\"",
+                message = uiQuantity(R.plurals.flosi_count_updated_category, previous.size, previous.size, newCategory),
                 undo = {
                     viewModelScope.launch {
                         previous.forEach { (id, oldCategory) ->
@@ -422,7 +428,7 @@ class TransactionsViewModel @Inject constructor(
     fun bulkMarkAsTransfer() {
         val ids = _selectedIds.value.toList()
         if (ids.size != 2) {
-            _bulkSnack.value = BulkSnack("Select exactly 2 transactions to mark as a transfer")
+            _bulkSnack.value = BulkSnack(uiText(R.string.flosi_select_two_for_transfer))
             return
         }
         val all = _uiState.value.transactions
@@ -431,7 +437,7 @@ class TransactionsViewModel @Inject constructor(
         val hasExpense = listOf(a, b).any { it.transactionType == TransactionType.EXPENSE }
         val hasIncome = listOf(a, b).any { it.transactionType == TransactionType.INCOME }
         if (!(hasExpense && hasIncome)) {
-            _bulkSnack.value = BulkSnack("Pick one outgoing (expense) and one incoming (income) transaction")
+            _bulkSnack.value = BulkSnack(uiText(R.string.flosi_pick_outgoing_incoming))
             return
         }
         clearSelection()
@@ -475,7 +481,7 @@ class TransactionsViewModel @Inject constructor(
             )
             refreshWidgets()
             _bulkSnack.value = BulkSnack(
-                message = "Marked as transfer",
+                message = uiText(R.string.flosi_marked_as_transfer),
                 undo = {
                     viewModelScope.launch {
                         val current = _uiState.value.transactions
@@ -512,7 +518,7 @@ class TransactionsViewModel @Inject constructor(
             refreshWidgets()
             clearSelection()
             _bulkSnack.value = BulkSnack(
-                message = "${snapshot.size} deleted",
+                message = uiQuantity(R.plurals.flosi_count_deleted, snapshot.size, snapshot.size),
                 undo = {
                     viewModelScope.launch {
                         restoreTransactionUseCase(snapshot)
@@ -549,7 +555,7 @@ class TransactionsViewModel @Inject constructor(
             }
             clearSelection()
             _bulkSnack.value = BulkSnack(
-                message = "${previous.size} added to \"$groupName\"",
+                message = uiQuantity(R.plurals.flosi_count_added_to_group, previous.size, previous.size, groupName),
                 undo = { restoreGroupMembership(previous) }
             )
         }
@@ -573,7 +579,7 @@ class TransactionsViewModel @Inject constructor(
             }
             clearSelection()
             _bulkSnack.value = BulkSnack(
-                message = "${previous.size} added to \"${name.trim()}\"",
+                message = uiQuantity(R.plurals.flosi_count_added_to_group, previous.size, previous.size, name.trim()),
                 undo = {
                     viewModelScope.launch {
                         restoreGroupMembership(previous).join()
@@ -983,7 +989,7 @@ class TransactionsViewModel @Inject constructor(
      */
     fun setCustomDateRange(startDate: LocalDate, endDate: LocalDate) {
         require(startDate <= endDate) {
-            "Start date ($startDate) must be before or equal to end date ($endDate)"
+            uiText(R.string.flosi_invalid_date_range, startDate, endDate)
         }
         // Store as epoch days for process death survival
         savedStateHandle["customDateRange"] = startDate.toEpochDay() to endDate.toEpochDay()

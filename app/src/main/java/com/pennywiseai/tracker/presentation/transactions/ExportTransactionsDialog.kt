@@ -1,9 +1,9 @@
 package com.pennywiseai.tracker.presentation.transactions
 
 import android.content.Intent
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.BuildConfig
 import com.pennywiseai.tracker.data.database.entity.TransactionEntity
 import com.pennywiseai.tracker.data.export.ExportResult
@@ -36,6 +37,8 @@ fun ExportTransactionsDialog(
     viewModel: ExportViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val shareSubject = stringResource(R.string.flosi_transactions_export_subject, BuildConfig.APP_DISPLAY_NAME)
+    val shareCsvLabel = stringResource(R.string.flosi_share_csv)
     val scope = rememberCoroutineScope()
     var exportState by remember { mutableStateOf<ExportState>(ExportState.Ready) }
     val isProEntitled by viewModel.isProEntitled.collectAsState()
@@ -102,10 +105,10 @@ fun ExportTransactionsDialog(
                 // Title
                 Text(
                     text = when (exportState) {
-                        is ExportState.Ready -> "Export Transactions"
-                        is ExportState.Exporting -> "Exporting..."
-                        is ExportState.Success -> "Export Complete!"
-                        is ExportState.Error -> "Export Failed"
+                        is ExportState.Ready -> stringResource(R.string.flosi_export_transactions_title)
+                        is ExportState.Exporting -> stringResource(R.string.flosi_exporting)
+                        is ExportState.Success -> stringResource(R.string.flosi_export_complete)
+                        is ExportState.Error -> stringResource(R.string.flosi_export_failed)
                     },
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center
@@ -117,7 +120,7 @@ fun ExportTransactionsDialog(
                 when (val state = exportState) {
                     is ExportState.Ready -> {
                         Text(
-                            text = "Export ${transactions.size} transactions to CSV format",
+                            text = stringResource(R.string.flosi_export_transactions_csv, transactions.size),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center
@@ -139,7 +142,7 @@ fun ExportTransactionsDialog(
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        text = "Total transactions:",
+                                        text = stringResource(R.string.flosi_total_transactions),
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                     Text(
@@ -161,7 +164,7 @@ fun ExportTransactionsDialog(
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
                                         Text(
-                                            text = "Date range:",
+                                            text = stringResource(R.string.flosi_date_range),
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -185,7 +188,7 @@ fun ExportTransactionsDialog(
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
-                                    text = "Free export: first $csvLimit of ${transactions.size} rows",
+                                    text = stringResource(R.string.flosi_free_export_rows, csvLimit, transactions.size),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.weight(1f),
@@ -195,7 +198,7 @@ fun ExportTransactionsDialog(
                                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                                 ) {
                                     Text(
-                                        text = "Unlock all",
+                                        text = stringResource(R.string.flosi_unlock_all),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.primary,
                                         fontWeight = FontWeight.Medium,
@@ -222,7 +225,7 @@ fun ExportTransactionsDialog(
                     
                     is ExportState.Success -> {
                         Text(
-                            text = "Successfully exported ${state.transactionCount} transactions",
+                            text = stringResource(R.string.flosi_export_success_count, state.transactionCount),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center
@@ -258,7 +261,7 @@ fun ExportTransactionsDialog(
                                     )
                                 }
                                 Text(
-                                    text = "Size: ${formatFileSize(state.fileSizeBytes)}",
+                                    text = stringResource(R.string.flosi_file_size, formatFileSize(state.fileSizeBytes)),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                                 )
@@ -295,7 +298,7 @@ fun ExportTransactionsDialog(
                                 onClick = onDismiss,
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Cancel")
+                                Text(stringResource(R.string.flosi_cancel))
                             }
                             
                             Button(
@@ -334,7 +337,7 @@ fun ExportTransactionsDialog(
                                 modifier = Modifier.weight(1f)
                             ) {
                                 Text(
-                                    if (willTruncate) "Export first $csvLimit" else "Export"
+                                    if (willTruncate) stringResource(R.string.flosi_export_first_count, csvLimit) else stringResource(R.string.flosi_export)
                                 )
                             }
                         }
@@ -348,7 +351,7 @@ fun ExportTransactionsDialog(
                                 onClick = onDismiss,
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Done")
+                                Text(stringResource(R.string.flosi_done))
                             }
                             
                             Button(
@@ -357,10 +360,10 @@ fun ExportTransactionsDialog(
                                     val shareIntent = Intent(Intent.ACTION_SEND).apply {
                                         type = "text/csv"
                                         putExtra(Intent.EXTRA_STREAM, (exportState as ExportState.Success).uri)
-                                        putExtra(Intent.EXTRA_SUBJECT, "${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} Transactions Export")
+                                        putExtra(Intent.EXTRA_SUBJECT, shareSubject)
                                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                     }
-                                    context.startActivity(Intent.createChooser(shareIntent, "Share CSV"))
+                                    context.startActivity(Intent.createChooser(shareIntent, shareCsvLabel))
                                 },
                                 modifier = Modifier.weight(1f)
                             ) {
@@ -370,7 +373,7 @@ fun ExportTransactionsDialog(
                                     modifier = Modifier.size(Dimensions.Icon.small)
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
-                                Text("Share")
+                                Text(stringResource(R.string.flosi_share))
                             }
                         }
                         
@@ -379,7 +382,7 @@ fun ExportTransactionsDialog(
                                 onClick = onDismiss,
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Close")
+                                Text(stringResource(R.string.flosi_close))
                             }
                             
                             Button(
@@ -388,7 +391,7 @@ fun ExportTransactionsDialog(
                                 },
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Text("Retry")
+                                Text(stringResource(R.string.flosi_retry))
                             }
                         }
                     }

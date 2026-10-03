@@ -5,6 +5,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import com.pennywiseai.tracker.ui.icons.categoryNameResource
 import android.content.Intent
 import android.provider.Telephony
 import android.util.Log
@@ -147,18 +149,21 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                         val discrepancyLine = savedTransaction?.let { tx ->
                             runCatching { entryPoint.detectBalanceDiscrepancy().execute(tx) }.getOrNull()
                         }?.let { d ->
-                            "⚠ Balance off by ${com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(d.delta.abs(), d.currency)} — " +
-                                "expected ${com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(d.expected, d.currency)}, " +
-                                "bank says ${com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(d.reported, d.currency)}"
+                            AppLocaleController.wrap(context).getString(
+                                R.string.flosi_notification_balance_mismatch,
+                                com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(d.delta.abs(), d.currency),
+                                com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(d.expected, d.currency),
+                                com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(d.reported, d.currency)
+                            )
                         }
 
                         showTransactionNotification(
                             context = context,
                             transactionId = result.transactionId,
                             amount = parsedTransaction.amount.toString(),
-                            merchant = parsedTransaction.merchant ?: "Unknown",
+                            merchant = parsedTransaction.merchant ?: AppLocaleController.wrap(context).getString(R.string.flosi_notification_unknown),
                             type = parsedTransaction.type.name,
-                            bankName = parsedTransaction.bankName ?: "Bank",
+                            bankName = parsedTransaction.bankName ?: AppLocaleController.wrap(context).getString(R.string.flosi_notification_bank),
                             category = savedTransaction?.category ?: "Others",
                             repository = repository,
                             discrepancyLine = discrepancyLine
@@ -195,14 +200,15 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     ) {
         try {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val localizedContext = AppLocaleController.wrap(context)
 
             // Create notification channel
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                CHANNEL_NAME,
+                localizedContext.getString(R.string.flosi_notification_channel),
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Notifications for new transactions"
+                description = localizedContext.getString(R.string.flosi_notification_channel_desc)
             }
             notificationManager.createNotificationChannel(channel)
 
@@ -231,7 +237,8 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
             }
 
             val title = "$typeEmoji $amount - $merchant"
-            val content = if (discrepancyLine != null) "$category • $bankName\n$discrepancyLine" else "$category • $bankName"
+            val localizedCategory = categoryNameResource(category)?.let(localizedContext::getString) ?: category
+            val content = if (discrepancyLine != null) "$localizedCategory • $bankName\n$discrepancyLine" else "$localizedCategory • $bankName"
 
             // Get top 3 categories by usage (personalized for user)
             val topCategories = try {
@@ -273,7 +280,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
 
                 notificationBuilder.addAction(
                     0, // No icon for actions
-                    topCategory,
+                    categoryNameResource(topCategory)?.let(localizedContext::getString) ?: topCategory,
                     categoryPendingIntent
                 )
             }
@@ -291,7 +298,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                 pickerIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
-            notificationBuilder.addAction(0, "More…", pickerPendingIntent)
+            notificationBuilder.addAction(0, localizedContext.getString(R.string.flosi_notification_more), pickerPendingIntent)
 
             // Account balances stay off the lock screen (#734): private visibility
             // with a public version that carries no figures.
@@ -301,8 +308,8 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                     .setPublicVersion(
                         NotificationCompat.Builder(context, CHANNEL_ID)
                             .setSmallIcon(R.drawable.ic_launcher_foreground)
-                            .setContentTitle("$typeEmoji New transaction")
-                            .setContentText("$bankName • balance needs a look")
+                            .setContentTitle("$typeEmoji ${localizedContext.getString(R.string.flosi_notification_new)}")
+                            .setContentText(localizedContext.getString(R.string.flosi_notification_balance_attention, bankName))
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)
                             .build()

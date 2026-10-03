@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.components
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -18,6 +20,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.components.cards.PennyWiseCardV2
 import com.pennywiseai.tracker.ui.theme.Dimensions
 import com.pennywiseai.tracker.ui.theme.Spacing
@@ -52,7 +55,7 @@ fun SmsParsingProgressDialog(
                 ) {
                     // Title
                     Text(
-                        text = "Scanning SMS Messages",
+                        text = stringResource(R.string.flosi_scanning_sms_messages),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
@@ -87,14 +90,14 @@ fun SmsParsingProgressDialog(
                                 modifier = Modifier.size(Dimensions.Icon.small)
                             )
                             Spacer(modifier = Modifier.width(Spacing.sm))
-                            Text("Cancel Scan")
+                            Text(stringResource(R.string.flosi_cancel_scan))
                         }
                     } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                         TextButton(
                             onClick = onDismiss,
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("Done")
+                            Text(stringResource(R.string.flosi_done))
                         }
                     } else if (workInfo.state == WorkInfo.State.FAILED) {
                         TextButton(
@@ -104,7 +107,7 @@ fun SmsParsingProgressDialog(
                                 contentColor = MaterialTheme.colorScheme.error
                             )
                         ) {
-                            Text("Close")
+                            Text(stringResource(R.string.flosi_close))
                         }
                     }
                 }
@@ -131,9 +134,9 @@ private fun ProgressDetails(workInfo: WorkInfo) {
         // Main progress text
         if (totalMessages > 0) {
             val progressText = if (processedMessages == totalMessages) {
-                "All messages processed!"
+                stringResource(R.string.flosi_all_messages_processed)
             } else {
-                "Processed $processedMessages of $totalMessages messages"
+                stringResource(R.string.flosi_messages_processed_count, processedMessages, totalMessages)
             }
 
             Text(
@@ -146,10 +149,12 @@ private fun ProgressDetails(workInfo: WorkInfo) {
 
         // Transaction details
         if (parsedTransactions > 0 || savedTransactions > 0) {
+            val parsedText = pluralStringResource(R.plurals.flosi_transactions_parsed, parsedTransactions, parsedTransactions)
+            val savedText = pluralStringResource(R.plurals.flosi_transactions_saved, savedTransactions, savedTransactions)
             val detailsText = buildAnnotatedString {
                 if (parsedTransactions > 0) {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
-                        append("$parsedTransactions transactions parsed")
+                        append(parsedText)
                     }
                 }
                 if (parsedTransactions > 0 && savedTransactions > 0) {
@@ -157,7 +162,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                 }
                 if (savedTransactions > 0) {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
-                        append("$savedTransactions saved")
+                        append(savedText)
                     }
                 }
             }
@@ -186,7 +191,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                 // Estimated time remaining
                 if (estimatedTimeRemaining > 0 && workInfo.state == WorkInfo.State.RUNNING) {
                     Text(
-                        text = "~${formatDuration(estimatedTimeRemaining)} left",
+                        text = stringResource(R.string.flosi_time_left, formatDuration(estimatedTimeRemaining)),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -197,7 +202,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
         // Batch information (for parallel processing)
         if (totalBatches > 1 && workInfo.state == WorkInfo.State.RUNNING) {
             Text(
-                text = "Batch $currentBatch of $totalBatches",
+                text = stringResource(R.string.flosi_batch_progress, currentBatch, totalBatches),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -215,7 +220,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         strokeWidth = 2.dp
                     )
                     Text(
-                        text = "Processing...",
+                        text = stringResource(R.string.flosi_processing),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -233,7 +238,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
                     Text(
-                        text = "Scan completed successfully!",
+                        text = stringResource(R.string.flosi_scan_completed_successfully),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -251,7 +256,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
                     Text(
-                        text = "Scan failed. Please try again.",
+                        text = stringResource(R.string.flosi_scan_failed_please_try_again),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
                     )
@@ -269,7 +274,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         modifier = Modifier.size(Dimensions.Icon.medium)
                     )
                     Text(
-                        text = "Scan cancelled",
+                        text = stringResource(R.string.flosi_scan_cancelled),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -286,7 +291,7 @@ private fun ProgressDetails(workInfo: WorkInfo) {
                         strokeWidth = 2.dp
                     )
                     Text(
-                        text = "Starting scan...",
+                        text = stringResource(R.string.flosi_starting_scan),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -332,7 +337,7 @@ fun SmsParsingProgressIndicator(
                 )
 
                 Text(
-                    text = "Scanning SMS: $processedMessages/$totalMessages",
+                    text = stringResource(R.string.flosi_scanning_sms_progress, processedMessages, totalMessages),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

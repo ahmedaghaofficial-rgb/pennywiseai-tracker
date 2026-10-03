@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Recent Transactions"
+            android:text="@string/preview_recent"
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="?android:attr/textColorPrimary" />
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="₹12,450"
+        android:text="@string/preview_recent_total"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="?android:attr/textColorPrimary" />
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:text="Total spend this month"
+        android:text="@string/preview_recent_caption"
         android:textSize="12sp"
         android:textColor="?android:attr/textColorSecondary" />
 
@@ -66,7 +66,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Zomato"
+                    android:text="@string/preview_recent_merchant"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:textColor="?android:attr/textColorPrimary" />
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Food • Sep 12"
+                    android:text="@string/preview_recent_food"
                     android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary" />
             </LinearLayout>
@@ -82,7 +82,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-₹850"
+                android:text="@string/preview_recent_out"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="#D32F2F" />
@@ -108,7 +108,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Salary"
+                    android:text="@string/preview_recent_salary"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:textColor="?android:attr/textColorPrimary" />
@@ -116,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Income • Sep 05"
+                    android:text="@string/preview_recent_income"
                     android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary" />
             </LinearLayout>
@@ -124,7 +124,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+₹85,000"
+                android:text="@string/preview_recent_in"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:textColor="#2E7D32" />

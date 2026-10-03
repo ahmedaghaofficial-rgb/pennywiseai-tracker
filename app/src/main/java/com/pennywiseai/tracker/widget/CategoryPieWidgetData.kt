@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.widget
 
+import com.pennywiseai.tracker.BuildConfig
 import kotlinx.serialization.Serializable
 
 /**
@@ -23,7 +24,7 @@ data class CategoryPieSlice(
 @Serializable
 data class CategoryPieWidgetData(
     val monthLabel: String = "",
-    val currency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
     val totalFormatted: String = "",
     val slices: List<CategoryPieSlice> = emptyList()
 )

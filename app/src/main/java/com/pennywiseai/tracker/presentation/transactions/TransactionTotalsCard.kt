@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.transactions
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.theme.*
 import com.pennywiseai.tracker.utils.CurrencyFormatter
 import java.math.BigDecimal
@@ -123,12 +125,12 @@ fun TransactionTotalsCard(
                             icon = {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.TrendingUp,
-                                    contentDescription = "Income",
+                                    contentDescription = stringResource(R.string.flosi_income),
                                     modifier = Modifier.size(Dimensions.Icon.inline),
                                     tint = if (!isSystemInDarkTheme()) income_light else income_dark
                                 )
                             },
-                            label = "Income",
+                            label = stringResource(R.string.flosi_income),
                             amount = CurrencyFormatter.formatCurrency(income, currency),
                             color = if (!isSystemInDarkTheme()) income_light else income_dark,
                             modifier = Modifier.alpha(incomeAlpha)
@@ -158,13 +160,13 @@ fun TransactionTotalsCard(
                             icon = {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.TrendingDown,
-                                    contentDescription = "Expenses",
+                                    contentDescription = stringResource(R.string.flosi_expenses),
                                     modifier = Modifier.size(Dimensions.Icon.inline),
                                     tint = if (!isSystemInDarkTheme()) expense_light else expense_dark
                                 )
                             },
                             // Four tiles leave no room for the plural — it wraps.
-                            label = if (credit != null) "Expense" else "Expenses",
+                            label = stringResource(if (credit != null) R.string.flosi_expense else R.string.flosi_expenses),
                             amount = CurrencyFormatter.formatCurrency(expenses, currency),
                             color = if (!isSystemInDarkTheme()) expense_light else expense_dark,
                             modifier = Modifier.alpha(expenseAlpha)
@@ -191,12 +193,12 @@ fun TransactionTotalsCard(
                                 icon = {
                                     Icon(
                                         imageVector = Icons.Filled.CreditCard,
-                                        contentDescription = "Credit",
+                                        contentDescription = stringResource(R.string.flosi_credit),
                                         modifier = Modifier.size(Dimensions.Icon.inline),
                                         tint = creditColor
                                     )
                                 },
-                                label = "Credit",
+                                label = stringResource(R.string.flosi_credit),
                                 amount = CurrencyFormatter.formatCurrency(credit, currency),
                                 color = creditColor,
                                 modifier = Modifier.alpha(expenseAlpha)
@@ -238,12 +240,12 @@ fun TransactionTotalsCard(
                             icon = {
                                 Icon(
                                     imageVector = Icons.Filled.SettingsEthernet,
-                                    contentDescription = "Net",
+                                    contentDescription = stringResource(R.string.flosi_net),
                                     modifier = Modifier.size(Dimensions.Icon.inline),
                                     tint = netColor
                                 )
                             },
-                            label = "Net",
+                            label = stringResource(R.string.flosi_net),
                             amount = "$netPrefix${CurrencyFormatter.formatCurrency(netBalance, currency)}",
                             color = netColor,
                             modifier = Modifier.alpha(netAlpha)
@@ -328,7 +330,7 @@ private fun CurrencyPickerPill(
                 )
                 Icon(
                     imageVector = Icons.Default.ExpandMore,
-                    contentDescription = "Select currency",
+                    contentDescription = stringResource(R.string.flosi_select_currency),
                     modifier = Modifier.size(Dimensions.Icon.small),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )

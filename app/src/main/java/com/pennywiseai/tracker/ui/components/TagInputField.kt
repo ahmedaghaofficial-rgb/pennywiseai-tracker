@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -27,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.theme.Dimensions
 import com.pennywiseai.tracker.ui.theme.Spacing
 
@@ -45,7 +47,7 @@ fun TagInputField(
     onAddTag: (String) -> Unit,
     onRemoveTag: (String) -> Unit,
     modifier: Modifier = Modifier,
-    label: String = "Tags (Optional)"
+    label: String? = null
 ) {
     var input by remember { mutableStateOf("") }
 
@@ -93,7 +95,7 @@ fun TagInputField(
                         trailingIcon = {
                             Icon(
                                 Icons.Default.Close,
-                                contentDescription = "Remove $tag",
+                                contentDescription = stringResource(R.string.flosi_remove_tag_name, tag),
                                 modifier = Modifier.size(Dimensions.Icon.small)
                             )
                         }
@@ -105,7 +107,7 @@ fun TagInputField(
         TextField(
             value = input,
             onValueChange = { input = it },
-            label = { Text(label) },
+            label = { Text(label ?: stringResource(R.string.flosi_tags_optional)) },
             singleLine = true,
             leadingIcon = {
                 Icon(
@@ -119,7 +121,7 @@ fun TagInputField(
                     IconButton(onClick = { commit(input) }) {
                         Icon(
                             Icons.Default.Add,
-                            contentDescription = "Add tag",
+                            contentDescription = stringResource(R.string.flosi_add_tag),
                             modifier = Modifier.size(Dimensions.Icon.medium)
                         )
                     }
@@ -156,7 +158,7 @@ fun TagInputField(
                         },
                         label = {
                             Text(
-                                "Create \"$trimmed\"",
+                                stringResource(R.string.flosi_create_tag_name, trimmed),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
                             )

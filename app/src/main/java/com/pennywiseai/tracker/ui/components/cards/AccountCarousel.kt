@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.R
+
+import com.pennywiseai.tracker.BuildConfig
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -53,7 +57,7 @@ fun AccountCarousel(
     onAccountClick: (bankName: String, accountLast4: String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier,
     isUnifiedMode: Boolean = false,
-    selectedCurrency: String = "INR",
+    selectedCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     blurEffects: Boolean = false,
     hazeState: HazeState? = null
 ) {
@@ -104,7 +108,7 @@ private fun AccountCarouselCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isUnifiedMode: Boolean = false,
-    selectedCurrency: String = "INR",
+    selectedCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     blurEffects: Boolean = false,
     hazeState: HazeState? = null
 ) {
@@ -186,7 +190,7 @@ private fun AccountCarouselCard(
                 color = MaterialTheme.colorScheme.secondaryContainer
             ) {
                 Text(
-                    text = if (isCreditCard) "Credit" else "Savings",
+                    text = stringResource(if (isCreditCard) R.string.flosi_account_credit else R.string.flosi_account_savings),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     fontWeight = FontWeight.Medium,
@@ -205,9 +209,9 @@ private fun AccountCarouselCard(
         ) {
             Text(
                 text = when {
-                    isLowBalance -> "Low balance"
-                    isCreditCard -> "Outstanding"
-                    else -> "Balance"
+                    isLowBalance -> stringResource(R.string.flosi_low_balance)
+                    isCreditCard -> stringResource(R.string.flosi_outstanding)
+                    else -> stringResource(R.string.flosi_balance)
                 },
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = if (isLowBalance) FontWeight.Medium else null,
@@ -247,7 +251,7 @@ private fun AccountCarouselCard(
                     Icon(
                         imageVector = if (isAmountHidden) Icons.Default.VisibilityOff
                                       else Icons.Default.Visibility,
-                        contentDescription = if (isAmountHidden) "Show balance" else "Hide balance",
+                        contentDescription = stringResource(if (isAmountHidden) R.string.flosi_show_balance else R.string.flosi_hide_balance),
                         modifier = Modifier.size(Dimensions.Icon.small),
                         tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
