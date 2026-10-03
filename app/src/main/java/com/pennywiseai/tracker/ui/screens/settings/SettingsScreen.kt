@@ -833,7 +833,7 @@ fun SettingsScreen(
                                 .selectable(
                                     selected = language == currentLanguage,
                                     onClick = {
-                                        AppLocaleController.setLanguage(context, language)
+                                        selectLanguage(context, language)
                                         showLanguageDialog = false
                                         activity?.recreate()
                                     }
@@ -844,7 +844,7 @@ fun SettingsScreen(
                             RadioButton(
                                 selected = language == currentLanguage,
                                 onClick = {
-                                    AppLocaleController.setLanguage(context, language)
+                                    selectLanguage(context, language)
                                     showLanguageDialog = false
                                     activity?.recreate()
                                 }
@@ -1548,12 +1548,12 @@ private fun AiChatSettingsItem(
             RowLabels(
                 title = stringResource(R.string.flosi_ai_chat_assistant),
                 subtitle = when (downloadState) {
-                    DownloadState.NOT_DOWNLOADED -> "Download AI model (${Constants.ModelDownload.MODEL_SIZE_MB} MB)"
-                    DownloadState.DOWNLOADING -> "Downloading AI model..."
-                    DownloadState.PAUSED -> "Download interrupted"
-                    DownloadState.COMPLETED -> "AI model ready for chat"
-                    DownloadState.FAILED -> "Download failed"
-                    DownloadState.ERROR_INSUFFICIENT_SPACE -> "Not enough storage space"
+                    DownloadState.NOT_DOWNLOADED -> stringResource(R.string.flosi_ai_download_size, Constants.ModelDownload.MODEL_SIZE_MB)
+                    DownloadState.DOWNLOADING -> stringResource(R.string.flosi_ai_downloading)
+                    DownloadState.PAUSED -> stringResource(R.string.flosi_ai_interrupted)
+                    DownloadState.COMPLETED -> stringResource(R.string.flosi_ai_ready)
+                    DownloadState.FAILED -> stringResource(R.string.flosi_ai_failed)
+                    DownloadState.ERROR_INSUFFICIENT_SPACE -> stringResource(R.string.flosi_ai_storage)
                 }
             )
 
@@ -1659,7 +1659,7 @@ private fun AiChatSettingsItem(
             HorizontalDivider()
             Text(
                 text = stringResource(R.string.flosi_full_chat_with_ai_about_your_expenses_and_get_financial_insights) +
-                        "All conversations stay private on your device.",
+                        stringResource(R.string.flosi_ai_private),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -1710,7 +1710,15 @@ private fun numberFormatStyleExample(style: NumberFormatStyle): String = stringR
 })
 
 @Composable
-private fun localizedOrdinalDay(day: Int): String = if (com.pennywiseai.tracker.core.localization.AppLocaleController.getLanguage(androidx.compose.ui.platform.LocalContext.current) == AppLanguage.ARABIC) day.toString() else ordinalSuffix(day)
+private fun localizedOrdinalDay(day: Int): String = if (AppLocaleController.getLanguage(androidx.compose.ui.platform.LocalContext.current) == AppLanguage.ARABIC) day.toString() else ordinalSuffix(day)
+
+private fun selectLanguage(context: android.content.Context, language: AppLanguage) {
+    AppLocaleController.setLanguage(context, language)
+    // Workers refresh the dated text stored in widget snapshots after a language change.
+    com.pennywiseai.tracker.widget.BudgetWidgetUpdateWorker.enqueueOneShot(context)
+    com.pennywiseai.tracker.widget.CategoryPieWidgetUpdateWorker.enqueueOneShot(context)
+    com.pennywiseai.tracker.widget.RecentTransactionsWidgetUpdateWorker.enqueueOneShot(context)
+}
 
 /**
  * English ordinal suffix for the budget cycle start day — "1st", "2nd", "3rd",

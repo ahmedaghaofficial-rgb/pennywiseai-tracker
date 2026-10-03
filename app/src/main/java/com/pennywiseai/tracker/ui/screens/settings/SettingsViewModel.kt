@@ -380,8 +380,8 @@ class SettingsViewModel @Inject constructor(
             try {
                 // Create download request
                 val request = DownloadManager.Request(Uri.parse(modelUrl))
-                    .setTitle("AI Chat Model")
-                    .setDescription("Downloading AI chat assistant for ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME}")
+                    .setTitle(uiText(R.string.flosi_ai_model_notification))
+                    .setDescription(uiText(R.string.flosi_ai_download_notification, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME))
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, Constants.ModelDownload.MODEL_FILE_NAME)
                     .setAllowedOverMetered(true) // Allow mobile data downloads

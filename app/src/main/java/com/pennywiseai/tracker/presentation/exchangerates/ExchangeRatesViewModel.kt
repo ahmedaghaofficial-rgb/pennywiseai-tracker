@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.presentation.exchangerates
 
+import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.currency.CurrencyConversionService
@@ -27,9 +31,12 @@ data class ExchangeRatesUiState(
 
 @HiltViewModel
 class ExchangeRatesViewModel @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val currencyConversionService: CurrencyConversionService,
     private val transactionRepository: TransactionRepository
 ) : ViewModel() {
+
+    private fun uiText(id: Int) = AppLocaleController.wrap(context).getString(id)
 
     private val _uiState = MutableStateFlow(ExchangeRatesUiState())
     val uiState: StateFlow<ExchangeRatesUiState> = _uiState.asStateFlow()
@@ -56,7 +63,7 @@ class ExchangeRatesViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _uiState.update {
-                    it.copy(isLoading = false, error = "Failed to load rates")
+                    it.copy(isLoading = false, error = uiText(R.string.flosi_rates_load_failed))
                 }
             }
         }
@@ -83,7 +90,7 @@ class ExchangeRatesViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _uiState.update {
-                    it.copy(isRefreshing = false, error = "Failed to refresh rates")
+                    it.copy(isRefreshing = false, error = uiText(R.string.flosi_rates_refresh_failed))
                 }
             }
         }
@@ -95,7 +102,7 @@ class ExchangeRatesViewModel @Inject constructor(
                 currencyConversionService.setCustomRate(fromCurrency, toCurrency, rate)
                 loadRates()
             } catch (e: Exception) {
-                _uiState.update { it.copy(error = "Failed to set custom rate") }
+                _uiState.update { it.copy(error = uiText(R.string.flosi_rates_set_failed)) }
             }
         }
     }
@@ -106,7 +113,7 @@ class ExchangeRatesViewModel @Inject constructor(
                 currencyConversionService.clearCustomRate(fromCurrency, toCurrency)
                 loadRates()
             } catch (e: Exception) {
-                _uiState.update { it.copy(error = "Failed to clear custom rate") }
+                _uiState.update { it.copy(error = uiText(R.string.flosi_rates_clear_failed)) }
             }
         }
     }
@@ -117,7 +124,7 @@ class ExchangeRatesViewModel @Inject constructor(
                 currencyConversionService.clearAllCustomRates()
                 loadRates()
             } catch (e: Exception) {
-                _uiState.update { it.copy(error = "Failed to clear custom rates") }
+                _uiState.update { it.copy(error = uiText(R.string.flosi_rates_clear_all_failed)) }
             }
         }
     }

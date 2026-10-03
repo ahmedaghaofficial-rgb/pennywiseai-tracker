@@ -226,9 +226,9 @@ private fun BrandHeader(isMember: Boolean) {
             )
             Text(
                 text = if (isMember) {
-                    "All Pro capabilities active"
+                    stringResource(R.string.flosi_pro_capabilities_active)
                 } else {
-                    "One tap to unlock everything"
+                    stringResource(R.string.flosi_pro_unlock)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -332,11 +332,7 @@ private fun SupportNote() {
 // Plan segment — 3 tabs in a pill, single source of truth for cadence.
 // ─────────────────────────────────────────────────────────────────────────
 
-private enum class PlanTier(val displayName: String) {
-    Monthly("Monthly"),
-    Annual("Annual"),
-    Lifetime("Lifetime"),
-}
+private enum class PlanTier { Monthly, Annual, Lifetime }
 
 @Composable
 private fun PlanSegment(
@@ -405,7 +401,7 @@ private fun SegmentTab(
     ) {
         Box(contentAlignment = Alignment.Center) {
             Text(
-                text = tier.displayName,
+                text = stringResource(when (tier) { PlanTier.Monthly -> R.string.flosi_pro_monthly; PlanTier.Annual -> R.string.flosi_pro_annual; PlanTier.Lifetime -> R.string.flosi_pro_lifetime }),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                 color = content,
@@ -566,7 +562,7 @@ private fun CtaButton(
                 )
             } else {
                 Text(
-                    text = selectedPlan?.ctaLabel() ?: "Select a plan",
+                    text = selectedPlan?.ctaLabel() ?: stringResource(R.string.flosi_pro_select),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -595,10 +591,10 @@ private fun CtaButton(
 // ─────────────────────────────────────────────────────────────────────────
 
 private val PRO_FEATURES = listOf(
-    "Unlimited custom rules",
-    "Unlimited PDF statement imports",
-    "Unlimited CSV export",
-    "Merge duplicate accounts",
+    R.string.flosi_pro_rules,
+    R.string.flosi_pro_pdf,
+    R.string.flosi_pro_csv,
+    R.string.flosi_pro_merge,
 )
 
 @Composable
@@ -629,7 +625,7 @@ private fun IncludesBlock() {
                 )
                 Spacer(Modifier.width(Spacing.sm))
                 Text(
-                    text = feature,
+                    text = stringResource(feature),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -815,7 +811,7 @@ private fun CelebrationContent(onContinue: () -> Unit) {
                         )
                         Spacer(Modifier.width(Spacing.sm))
                         Text(
-                            text = feature,
+                            text = stringResource(feature),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -877,7 +873,7 @@ private fun MemberCard(licenseProductName: String?) {
             if (licenseProductName != null) {
                 Spacer(Modifier.height(Spacing.xs))
                 Text(
-                    text = "Via license key · $licenseProductName",
+                    text = stringResource(R.string.flosi_pro_via_license, licenseProductName),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -1006,10 +1002,11 @@ private fun List<ProProduct>.productForTier(tier: PlanTier): ProProduct? = when 
     PlanTier.Lifetime -> find { it.type == ProProduct.ProductType.LIFETIME }
 }
 
+@Composable
 private fun ProProduct.eyebrowText(): String = when (type) {
-    ProProduct.ProductType.LIFETIME -> if (isDiscounted) "FOUNDER OFFER" else "LIFETIME ACCESS"
-    ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> if (isDiscounted) "LIMITED OFFER" else "BILLED ANNUALLY"
-    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> if (isDiscounted) "LIMITED OFFER" else "BILLED MONTHLY"
+    ProProduct.ProductType.LIFETIME -> if (isDiscounted) stringResource(R.string.flosi_pro_founder) else stringResource(R.string.flosi_pro_lifetime_access)
+    ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> if (isDiscounted) stringResource(R.string.flosi_pro_limited) else stringResource(R.string.flosi_pro_billed_annual)
+    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> if (isDiscounted) stringResource(R.string.flosi_pro_limited) else stringResource(R.string.flosi_pro_billed_monthly)
 }
 
 /**
@@ -1017,32 +1014,34 @@ private fun ProProduct.eyebrowText(): String = when (type) {
  * the "you're saving money" highlight. For lifetime we lead with the rupee
  * amount saved (Indian shoppers respond to ₹ saved more than to %).
  */
+@Composable
 private fun ProProduct.dealOrCadence(monthlyMicros: Long?): Pair<String, Boolean> = when (type) {
     ProProduct.ProductType.LIFETIME -> when {
         isDiscounted -> {
             val savedMicros = (originalPriceMicros ?: 0L) - priceMicros
             val savedRupees = (savedMicros / 1_000_000.0).toInt()
             val pct = ((savedMicros.toDouble() / (originalPriceMicros ?: priceMicros).toDouble()) * 100).toInt()
-            "Save ₹$savedRupees · $pct% off · Pay once, keep forever" to true
+            stringResource(R.string.flosi_pro_lifetime_deal, savedRupees, pct) to true
         }
-        else -> "Pay once. Keep forever." to false
+        else -> stringResource(R.string.flosi_pro_once) to false
     }
     ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> {
         val pct = annualSavingsPct(monthlyMicros)
         val perMo = (priceMicros / 12L / 1_000_000.0).toInt()
         if (pct != null) {
-            "Save $pct% · works out to ₹$perMo/month" to true
+            stringResource(R.string.flosi_pro_annual_deal, pct, perMo) to true
         } else {
-            "Works out to ₹$perMo/month" to false
+            stringResource(R.string.flosi_pro_annual_cadence, perMo) to false
         }
     }
-    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> "Cancel anytime" to false
+    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> stringResource(R.string.flosi_pro_cancel) to false
 }
 
+@Composable
 private fun ProProduct.ctaLabel(): String = when (type) {
-    ProProduct.ProductType.LIFETIME -> "Get Lifetime · $priceFormatted"
-    ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> "Subscribe · $priceFormatted/year"
-    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> "Start · $priceFormatted/month"
+    ProProduct.ProductType.LIFETIME -> stringResource(R.string.flosi_pro_get_lifetime, priceFormatted)
+    ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> stringResource(R.string.flosi_pro_subscribe_annual, priceFormatted)
+    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> stringResource(R.string.flosi_pro_start_monthly, priceFormatted)
 }
 
 private fun ProProduct.annualSavingsPct(monthlyMicros: Long?): Int? {

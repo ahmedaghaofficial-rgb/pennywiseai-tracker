@@ -11,6 +11,7 @@ import androidx.work.*
 import com.pennywiseai.parser.core.ParsedTransaction
 import com.pennywiseai.parser.core.bank.*
 import com.pennywiseai.tracker.data.database.entity.AccountBalanceEntity
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.ProfileEntity
 import com.pennywiseai.tracker.data.database.entity.CardType
 import com.pennywiseai.tracker.data.database.entity.TransactionType
@@ -118,13 +119,13 @@ class OptimizedSmsReaderWorker @AssistedInject constructor(
             val nm = context.getSystemService(android.app.NotificationManager::class.java)
             if (nm.getNotificationChannel(channelId) == null) {
                 nm.createNotificationChannel(
-                    android.app.NotificationChannel(channelId, "SMS Scan", android.app.NotificationManager.IMPORTANCE_LOW)
+                    android.app.NotificationChannel(channelId, context.getString(R.string.flosi_sms_scan_channel), android.app.NotificationManager.IMPORTANCE_LOW)
                 )
             }
             return androidx.core.app.NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(android.R.drawable.ic_popup_sync)
-                .setContentTitle("Scanning transactions…")
-                .setContentText(if (total > 0) "Processed $processed / $total" else "Reading SMS…")
+                .setContentTitle(context.getString(R.string.flosi_sms_scan_progress_title))
+                .setContentText(if (total > 0) context.getString(R.string.flosi_sms_scan_processed, processed, total) else context.getString(R.string.flosi_sms_scan_reading))
                 .setProgress(total, processed, total == 0)
                 .setOngoing(true)
                 .setSilent(true)

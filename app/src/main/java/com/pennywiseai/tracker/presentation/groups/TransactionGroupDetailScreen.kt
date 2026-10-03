@@ -442,7 +442,7 @@ private fun AddTransactionToGroupSheet(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        if (searchQuery.isBlank()) stringResource(R.string.flosi_group_no_ungrouped) else "No results",
+                        if (searchQuery.isBlank()) stringResource(R.string.flosi_group_no_ungrouped) else stringResource(R.string.flosi_no_results),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

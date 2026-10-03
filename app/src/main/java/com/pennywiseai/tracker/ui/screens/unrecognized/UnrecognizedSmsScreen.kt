@@ -143,8 +143,7 @@ fun UnrecognizedSmsScreen(
                             }
 
                             Text(
-                                text = "These messages from potential banks couldn't be automatically parsed. " +
-                                        "Help improve ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} by reporting them so we can add support for more banks.",
+                                text = stringResource(R.string.flosi_unrecognized_intro, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -203,7 +202,7 @@ fun UnrecognizedSmsScreen(
                 item {
                     PennyWiseEmptyState(
                         icon = Icons.Outlined.MarkEmailRead,
-                        headline = "All messages recognized",
+                        headline = stringResource(R.string.flosi_unrecognized_all),
                         description = stringResource(R.string.flosi_unrecognized_empty_desc)
                     )
                 }

@@ -2,6 +2,8 @@ package com.pennywiseai.tracker.ui.screens.chat
 
 import com.pennywiseai.tracker.R
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -131,11 +133,11 @@ fun ChatScreen(
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = if (isDownloading) "Downloading Model..." else "AI Model Required",
+                                    text = if (isDownloading) stringResource(R.string.flosi_chat_model_downloading) else stringResource(R.string.flosi_chat_model_required),
                                     style = MaterialTheme.typography.headlineSmall
                                 )
                                 Text(
-                                    text = if (isDownloading) "${downloadedMB} MB / ${totalMB} MB" else "Download the AI model to start chatting",
+                                    text = if (isDownloading) "${downloadedMB} MB / ${totalMB} MB" else stringResource(R.string.flosi_chat_model_prompt),
                                     style = MaterialTheme.typography.bodyMedium,
                                     textAlign = TextAlign.Center,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -166,7 +168,7 @@ fun ChatScreen(
                                             modifier = Modifier.size(Dimensions.Icon.small)
                                         )
                                         Spacer(modifier = Modifier.width(Spacing.xs))
-                                        Text("Download (${totalMB} MB)")
+                                        Text(stringResource(R.string.flosi_chat_download_size, totalMB))
                                     }
                                 }
                                 TextButton(onClick = onNavigateToSettings) {
@@ -431,7 +433,7 @@ fun ChatScreen(
                                     // One status line per request, picked when the wait starts,
                                     // so a tool call's silent few seconds don't look like a hang.
                                     val status = remember(uiState.isLoading) { THINKING_LINES.random() }
-                                    TypingIndicator(status = status)
+                                    TypingIndicator(status = stringResource(status))
                                 }
                             }
                         }
@@ -557,9 +559,9 @@ fun TokenLimitWarning(
     }
     
     val message = when {
-        usagePercent >= 95 -> "Chat memory almost full! Clear chat to continue."
-        usagePercent >= 90 -> "Chat memory is ${usagePercent}% full. Consider clearing soon."
-        else -> "Chat memory is ${usagePercent}% full."
+        usagePercent >= 95 -> stringResource(R.string.flosi_chat_memory_full)
+        usagePercent >= 90 -> stringResource(R.string.flosi_chat_memory_warning, usagePercent)
+        else -> stringResource(R.string.flosi_chat_memory_usage, usagePercent)
     }
     
     Surface(
@@ -646,7 +648,7 @@ fun DeveloperInfoCard(
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "Qwen 2.5 1.5B • ${chatStats.messageCount} messages",
+                        text = pluralStringResource(R.plurals.flosi_chat_messages, chatStats.messageCount, chatStats.messageCount),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -657,14 +659,14 @@ fun DeveloperInfoCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${TokenUtils.formatNumber(chatStats.estimatedTokens)} tokens",
+                        text = pluralStringResource(R.plurals.flosi_chat_tokens, chatStats.estimatedTokens, TokenUtils.formatNumber(chatStats.estimatedTokens)),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = usageColor
                     )
                     Icon(
                         if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                        contentDescription = if (isExpanded) "Collapse" else "Expand",
+                        contentDescription = if (isExpanded) stringResource(R.string.flosi_collapse) else stringResource(R.string.flosi_expand),
                         modifier = Modifier.size(Dimensions.Icon.small),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -722,13 +724,13 @@ fun DeveloperInfoCard(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "${TokenUtils.formatNumber(chatStats.estimatedTokens)} / ${TokenUtils.formatNumber(chatStats.maxTokens)} tokens",
+                            text = stringResource(R.string.flosi_chat_token_progress, TokenUtils.formatNumber(chatStats.estimatedTokens), TokenUtils.formatNumber(chatStats.maxTokens)),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         if (chatStats.systemPromptTokens > 0) {
                             Text(
-                                text = "System: ${TokenUtils.formatNumber(chatStats.systemPromptTokens)}",
+                                text = stringResource(R.string.flosi_chat_system_tokens, TokenUtils.formatNumber(chatStats.systemPromptTokens)),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -740,11 +742,9 @@ fun DeveloperInfoCard(
 }
 
 private val THINKING_LINES = listOf(
-    "Reading that…",
-    "Working it out…",
-    "Checking your transactions…",
-    "Crunching the numbers…",
-    "One moment…"
+    R.string.flosi_chat_thinking_1, R.string.flosi_chat_thinking_2,
+    R.string.flosi_chat_thinking_3, R.string.flosi_chat_thinking_4,
+    R.string.flosi_chat_thinking_5
 )
 
 @Composable
@@ -870,10 +870,10 @@ private fun ChatEmptyState(
     onPromptClick: (String) -> Unit
 ) {
     val examplePrompts = listOf(
-        "coffee 120 at Starbucks",
-        "got 50000 salary today",
-        "How much on groceries this month?",
-        "How much have I spent this month?"
+        stringResource(R.string.flosi_chat_prompt_coffee),
+        stringResource(R.string.flosi_chat_prompt_salary),
+        stringResource(R.string.flosi_chat_prompt_groceries),
+        stringResource(R.string.flosi_chat_prompt_spent)
     )
 
     Column(
@@ -942,16 +942,16 @@ private fun PendingActionCard(
     val (title, headline, detail, button) = when (action) {
         is com.pennywiseai.tracker.data.model.PendingChatAction.Add -> {
             val d = action.draft
-            listOf(if (d.type == income) "Add income?" else "Add expense?", "${fmt(d.amount)} · ${d.merchant}", "${d.category} · ${d.accountLabel} · today", "Add")
+            listOf(if (d.type == income) stringResource(R.string.flosi_chat_type_add_income) else stringResource(R.string.flosi_chat_type_add_expense), "${fmt(d.amount)} · ${d.merchant}", stringResource(R.string.flosi_chat_new_today, localizedCategoryName(d.category), d.accountLabel), stringResource(R.string.flosi_full_add))
         }
         is com.pennywiseai.tracker.data.model.PendingChatAction.Delete -> {
             val t = action.transaction
-            listOf("Delete this transaction?", "${own(t)} · ${t.merchantName}", "${t.category} · ${t.dateTime.toLocalDate()}", "Delete")
+            listOf(stringResource(R.string.flosi_chat_type_delete), "${own(t)} · ${t.merchantName}", "${localizedCategoryName(t.category)} · ${t.dateTime.toLocalDate()}", stringResource(R.string.flosi_delete))
         }
         is com.pennywiseai.tracker.data.model.PendingChatAction.Update -> {
             val t = action.transaction
-            val changes = listOfNotNull(action.newMerchant?.let { "merchant → $it" }, action.newCategory?.let { "category → $it" }).joinToString(", ")
-            listOf("Update this transaction?", "${own(t)} · ${t.merchantName}", "${t.category} · ${t.dateTime.toLocalDate()}\n$changes", "Update")
+            val changes = listOfNotNull(action.newMerchant?.let { stringResource(R.string.flosi_chat_merchant_change, it) }, action.newCategory?.let { stringResource(R.string.flosi_chat_category_change, localizedCategoryName(it)) }).joinToString(", ")
+            listOf(stringResource(R.string.flosi_chat_type_update), "${own(t)} · ${t.merchantName}", "${localizedCategoryName(t.category)} · ${t.dateTime.toLocalDate()}\n$changes", stringResource(R.string.flosi_update))
         }
     }
     val isDelete = action is com.pennywiseai.tracker.data.model.PendingChatAction.Delete

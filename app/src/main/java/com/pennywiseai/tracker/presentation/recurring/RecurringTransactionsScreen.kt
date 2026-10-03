@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.presentation.recurring
 
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -177,7 +178,7 @@ private fun RecurringItem(
                 )
                 template.category.takeIf { it.isNotBlank() }?.let {
                     Text(
-                        text = it,
+                        text = localizedCategoryName(it),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -259,7 +260,6 @@ private fun RecurringEditorDialog(
     var categoryExpanded by remember { mutableStateOf(false) }
     var dowExpanded by remember { mutableStateOf(false) }
 
-    val dayOfWeekNames = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun") // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below // Localized via DateTimeFormatter display below
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -321,7 +321,7 @@ private fun RecurringEditorDialog(
                     onExpandedChange = { categoryExpanded = it }
                 ) {
                     OutlinedTextField(
-                        value = state.category,
+                        value = localizedCategoryName(state.category),
                         onValueChange = {},
                         readOnly = true,
                         label = { Text(stringResource(R.string.flosi_category)) },
@@ -334,7 +334,7 @@ private fun RecurringEditorDialog(
                     ) {
                         categoryNames.forEach { name ->
                             DropdownMenuItem(
-                                text = { Text(name) },
+                                text = { Text(localizedCategoryName(name)) },
                                 onClick = {
                                     state = state.copy(category = name)
                                     categoryExpanded = false
@@ -394,7 +394,7 @@ private fun RecurringEditorDialog(
                             onExpandedChange = { dowExpanded = it }
                         ) {
                             OutlinedTextField(
-                                value = state.dayOfWeek?.let { java.time.DayOfWeek.of(it).getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.getDefault()) } ?: "Any",
+                                value = state.dayOfWeek?.let { java.time.DayOfWeek.of(it).getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.getDefault()) } ?: stringResource(R.string.flosi_recurring_any),
                                 onValueChange = {},
                                 readOnly = true,
                                 label = { Text(stringResource(R.string.flosi_full_day_of_week)) },
@@ -407,7 +407,7 @@ private fun RecurringEditorDialog(
                             ) {
                                 dayOfWeekNames.forEachIndexed { index, name ->
                                     DropdownMenuItem(
-                                        text = { Text(name) },
+                                        text = { Text(localizedCategoryName(name)) },
                                         onClick = {
                                             state = state.copy(dayOfWeek = index + 1)
                                             dowExpanded = false

@@ -3,6 +3,8 @@ package com.pennywiseai.tracker.ui.screens.chat
 import com.pennywiseai.tracker.BuildConfig
 import android.app.DownloadManager
 import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
@@ -41,6 +43,8 @@ class ChatViewModel @Inject constructor(
     private val deleteTransactionUseCase: com.pennywiseai.tracker.domain.usecase.DeleteTransactionUseCase,
     private val transactionRepository: com.pennywiseai.tracker.data.repository.TransactionRepository
 ) : ViewModel() {
+
+    private fun uiText(id: Int, vararg args: Any): String = AppLocaleController.wrap(context).getString(id, *args)
 
     private val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
@@ -190,7 +194,7 @@ class ChatViewModel @Inject constructor(
                         deleteTransactionUseCase(action.transaction)
                         llmRepository.clearPendingAction()
                         val t = action.transaction
-                        llmRepository.appendAssistantMessage("Deleted ${com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(t.amount, t.currency)} at ${t.merchantName}.")
+                        llmRepository.appendAssistantMessage(uiText(R.string.flosi_chat_deleted, com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(t.amount, t.currency), t.merchantName))
                         return@launch
                     }
                     is com.pennywiseai.tracker.data.model.PendingChatAction.Update -> {
@@ -202,8 +206,7 @@ class ChatViewModel @Inject constructor(
                         llmRepository.clearPendingAction()
                         val t = action.transaction
                         llmRepository.appendAssistantMessage(
-                            "Updated ${com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(t.amount, t.currency)} at ${action.newMerchant ?: t.merchantName}" +
-                                (action.newCategory?.let { " → $it" } ?: "") + "."
+                            uiText(R.string.flosi_chat_updated, com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(t.amount, t.currency), action.newMerchant ?: t.merchantName, action.newCategory?.let { " → $it" } ?: "")
                         )
                         return@launch
                     }
@@ -216,18 +219,17 @@ class ChatViewModel @Inject constructor(
                     category = draft.category,
                     type = draft.type,
                     date = java.time.LocalDateTime.now(),
-                    notes = "Added from chat: \"${draft.sourceText}\"",
+                    notes = uiText(R.string.flosi_chat_added_note, draft.sourceText),
                     bankName = draft.bankName,
                     accountLast4 = draft.accountLast4,
                     currency = currency
                 )
                 llmRepository.clearPendingAction()
                 llmRepository.appendAssistantMessage(
-                    "Added ${com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(draft.amount, currency)} " +
-                        "${if (draft.type == com.pennywiseai.tracker.data.database.entity.TransactionType.INCOME) "from" else "at"} ${draft.merchant} (${draft.category})."
+                    uiText(R.string.flosi_chat_added, com.pennywiseai.tracker.utils.CurrencyFormatter.formatCurrency(draft.amount, currency), if (draft.type == com.pennywiseai.tracker.data.database.entity.TransactionType.INCOME) uiText(R.string.flosi_chat_from) else uiText(R.string.flosi_chat_at), draft.merchant, draft.category)
                 )
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Couldn't apply that: ${e.message}")
+                _uiState.value = _uiState.value.copy(error = uiText(R.string.flosi_chat_apply_error))
             } finally {
                 _isConfirming.value = false
             }
@@ -252,12 +254,12 @@ class ChatViewModel @Inject constructor(
                     .catch { error ->
                         val errorMessage = when {
                             error.message?.contains("memory is full") == true -> 
-                                "Chat memory is full. Please clear the chat to continue."
+                                uiText(R.string.flosi_chat_memory_limit)
                             error.message?.contains("downloading") == true ->
-                                "Model is downloading. Please wait."
+                                uiText(R.string.flosi_chat_model_wait)
                             error.message?.contains("not downloaded") == true ->
-                                "AI model not downloaded. Go to Settings to download."
-                            else -> error.message ?: "Failed to generate response"
+                                uiText(R.string.flosi_chat_model_missing)
+                            else -> uiText(R.string.flosi_chat_generation_failed)
                         }
                         _uiState.value = _uiState.value.copy(
                             isLoading = false,
@@ -273,12 +275,12 @@ class ChatViewModel @Inject constructor(
             } catch (e: Exception) {
                 val errorMessage = when {
                     e.message?.contains("memory is full") == true -> 
-                        "Chat memory is full. Please clear the chat to continue."
+                        uiText(R.string.flosi_chat_memory_limit)
                     e.message?.contains("downloading") == true ->
-                        "Model is downloading. Please wait."
+                        uiText(R.string.flosi_chat_model_wait)
                     e.message?.contains("not downloaded") == true ->
-                        "AI model not downloaded. Go to Settings to download."
-                    else -> e.message ?: "Failed to send message"
+                        uiText(R.string.flosi_chat_model_missing)
+                    else -> uiText(R.string.flosi_chat_send_failed)
                 }
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -332,7 +334,7 @@ class ChatViewModel @Inject constructor(
 
             val availableSpace = context.filesDir.usableSpace
             if (availableSpace < Constants.ModelDownload.REQUIRED_SPACE_BYTES) {
-                _uiState.value = _uiState.value.copy(error = "Not enough storage space for download")
+                _uiState.value = _uiState.value.copy(error = uiText(R.string.flosi_ai_storage))
                 return@launch
             }
 
@@ -341,7 +343,7 @@ class ChatViewModel @Inject constructor(
             if (modelUrl.isBlank() || !modelUrl.startsWith("http")) {
                 Log.e("ChatViewModel", "Invalid MODEL_URL: '$modelUrl'")
                 modelRepository.updateModelState(ModelState.ERROR)
-                _uiState.value = _uiState.value.copy(error = "AI model download is not available in this build.")
+                _uiState.value = _uiState.value.copy(error = uiText(R.string.flosi_chat_download_unavailable))
                 return@launch
             }
 
@@ -353,8 +355,8 @@ class ChatViewModel @Inject constructor(
 
             try {
                 val request = DownloadManager.Request(Uri.parse(modelUrl))
-                    .setTitle("AI Chat Model")
-                    .setDescription("Downloading AI chat assistant for ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME}")
+                    .setTitle(uiText(R.string.flosi_ai_model_notification))
+                    .setDescription(uiText(R.string.flosi_ai_download_notification, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME))
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, Constants.ModelDownload.MODEL_FILE_NAME)
                     .setAllowedOverMetered(true)
@@ -367,7 +369,7 @@ class ChatViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("ChatViewModel", "Failed to start download", e)
                 modelRepository.updateModelState(ModelState.ERROR)
-                _uiState.value = _uiState.value.copy(error = "Failed to start download. Please try again.")
+                _uiState.value = _uiState.value.copy(error = uiText(R.string.flosi_chat_download_start_failed))
             }
         }
     }
@@ -405,14 +407,14 @@ class ChatViewModel @Inject constructor(
                                     _downloadProgress.value = 0
                                     modelRepository.updateModelState(ModelState.ERROR)
                                     _uiState.value = _uiState.value.copy(
-                                        error = "Downloaded model failed its integrity check and was removed. Please try downloading again."
+                                        error = uiText(R.string.flosi_chat_integrity)
                                     )
                                 }
                             }
                             DownloadManager.STATUS_FAILED -> {
                                 userPreferencesRepository.clearActiveDownloadId()
                                 modelRepository.updateModelState(ModelState.ERROR)
-                                _uiState.value = _uiState.value.copy(error = "Download failed. Please try again.")
+                                _uiState.value = _uiState.value.copy(error = uiText(R.string.flosi_chat_download_failed))
                             }
                         }
                     }

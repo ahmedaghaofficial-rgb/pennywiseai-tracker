@@ -32,6 +32,7 @@ import com.pennywiseai.tracker.domain.usecase.DryRunResult
 import com.pennywiseai.tracker.ui.components.CustomTitleTopAppBar
 import com.pennywiseai.tracker.ui.components.cards.PennyWiseCardV2
 import com.pennywiseai.tracker.ui.components.cards.SectionHeaderV2
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import com.pennywiseai.tracker.ui.theme.Dimensions
@@ -355,6 +356,12 @@ fun RulesScreen(
 }
 
 @Composable
+private fun displayRuleName(rule: com.pennywiseai.tracker.domain.model.rule.TransactionRule): String =
+    if (rule.isSystemTemplate && rule.name == "Small Payments to Food")
+        stringResource(R.string.flosi_rule_template_name)
+    else rule.name
+
+@Composable
 private fun RuleCard(
     rule: com.pennywiseai.tracker.domain.model.rule.TransactionRule,
     onToggle: (Boolean) -> Unit,
@@ -379,14 +386,14 @@ private fun RuleCard(
                 verticalArrangement = Arrangement.spacedBy(Spacing.xs)
             ) {
                 Text(
-                    text = rule.name,
+                    text = displayRuleName(rule),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
 
                 rule.description?.let { description ->
                     Text(
-                        text = description,
+                        text = if (rule.isSystemTemplate && description == "Categorize small expense payments (under 200) as Food & Dining") stringResource(R.string.flosi_rule_template_desc) else description,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -528,7 +535,7 @@ private fun RuleCard(
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
             title = { Text(stringResource(R.string.flosi_full_delete_rule)) },
-            text = { Text(stringResource(R.string.flosi_rule_delete, rule.name)) },
+            text = { Text(stringResource(R.string.flosi_rule_delete, displayRuleName(rule))) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -566,7 +573,7 @@ private fun BatchApplyDialog(
     val title = when {
         progress != null -> stringResource(R.string.flosi_rule_applying)
         isLoading && dryRunResult == null -> stringResource(R.string.flosi_rule_previewing)
-        dryRunResult != null && result == null -> stringResource(R.string.flosi_rule_preview_name, rule.name)
+        dryRunResult != null && result == null -> stringResource(R.string.flosi_rule_preview_name, displayRuleName(rule))
         result != null -> stringResource(R.string.flosi_rule_apply_past)
         else -> stringResource(R.string.flosi_rule_apply_past)
     }
@@ -656,7 +663,7 @@ private fun BatchApplyDialog(
                                                 val mod = diff.modified
                                                 if (orig.category != mod.category) {
                                                     Text(
-                                                        text = stringResource(R.string.flosi_rule_diff_category, orig.category, mod.category),
+                                                        text = stringResource(R.string.flosi_rule_diff_category, localizedCategoryName(orig.category), localizedCategoryName(mod.category)),
                                                         style = MaterialTheme.typography.bodySmall
                                                     )
                                                 }
@@ -668,7 +675,7 @@ private fun BatchApplyDialog(
                                                 }
                                                 if (orig.transactionType != mod.transactionType) {
                                                     Text(
-                                                        text = stringResource(R.string.flosi_rule_diff_type, orig.transactionType, mod.transactionType),
+                                                        text = stringResource(R.string.flosi_rule_diff_type, localizedRuleTransactionTypeLabel(orig.transactionType.name), localizedRuleTransactionTypeLabel(mod.transactionType.name)),
                                                         style = MaterialTheme.typography.bodySmall
                                                     )
                                                 }
@@ -702,7 +709,7 @@ private fun BatchApplyDialog(
                     // Initial state — show options with preview button
                     progress == null && result == null -> {
                         Text(
-                            text = stringResource(R.string.flosi_rule_confirm_apply, rule.name),
+                            text = stringResource(R.string.flosi_rule_confirm_apply, displayRuleName(rule)),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(

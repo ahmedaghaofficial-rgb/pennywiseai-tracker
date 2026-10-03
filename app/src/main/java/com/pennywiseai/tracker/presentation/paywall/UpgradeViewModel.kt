@@ -1,6 +1,10 @@
 package com.pennywiseai.tracker.presentation.paywall
 
 import android.app.Activity
+import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.billing.EntitlementGate
@@ -34,11 +38,14 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class UpgradeViewModel @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val entitlementSource: EntitlementSource,
     private val purchaseLauncher: PurchaseLauncher,
     private val entitlementGate: EntitlementGate,
     private val licenseManager: LicenseManager,
 ) : ViewModel() {
+
+    private fun uiText(id: Int): String = AppLocaleController.wrap(context).getString(id)
 
     private val initialEntitled = entitlementGate.isProEntitled.value
 
@@ -133,15 +140,15 @@ class UpgradeViewModel @Inject constructor(
                     LicenseManager.ActivationOutcome.Activated ->
                         ui.copy(isActivating = false, showLicenseDialog = false)
                     LicenseManager.ActivationOutcome.InvalidKey ->
-                        ui.copy(isActivating = false, licenseError = "That key isn't valid. Check for typos and try again.")
+                        ui.copy(isActivating = false, licenseError = uiText(R.string.flosi_license_invalid))
                     LicenseManager.ActivationOutcome.ActiveElsewhere ->
                         ui.copy(
                             isActivating = false,
-                            licenseError = "This key is already active on another device.",
+                            licenseError = uiText(R.string.flosi_license_elsewhere),
                             licenseCanMove = BuildConfig.LICENSE_MOVE_URL.isNotBlank(),
                         )
                     LicenseManager.ActivationOutcome.Offline ->
-                        ui.copy(isActivating = false, licenseError = "Couldn't reach the license server. Check your connection and try again.")
+                        ui.copy(isActivating = false, licenseError = uiText(R.string.flosi_license_offline))
                 }
             }
         }
@@ -185,7 +192,7 @@ class UpgradeViewModel @Inject constructor(
     fun onPurchase(activity: Activity, product: ProProduct?) {
         if (product == null) {
             _state.update {
-                it.copy(errorMessage = "Plans are still loading. Try again in a moment.")
+                it.copy(errorMessage = uiText(R.string.flosi_plans_loading))
             }
             return
         }
@@ -226,21 +233,21 @@ class UpgradeViewModel @Inject constructor(
             is PurchaseResult.Failed -> _state.update {
                 it.copy(
                     isPurchasing = false,
-                    errorMessage = result.debugMessage ?: "Purchase failed. Please try again.",
+                    errorMessage = uiText(R.string.flosi_purchase_failed),
                 )
             }
 
             is PurchaseResult.ServiceUnavailable -> _state.update {
                 it.copy(
                     isPurchasing = false,
-                    errorMessage = "Play Store unavailable. Check your connection and try again.",
+                    errorMessage = uiText(R.string.flosi_store_unavailable),
                 )
             }
 
             is PurchaseResult.Unsupported -> _state.update {
                 it.copy(
                     isPurchasing = false,
-                    errorMessage = "Purchases aren't available in this build.",
+                    errorMessage = uiText(R.string.flosi_purchases_unsupported),
                 )
             }
         }
@@ -255,7 +262,7 @@ class UpgradeViewModel @Inject constructor(
                 it.copy(
                     isLoading = false,
                     isPurchasing = false,
-                    errorMessage = "Couldn't reach Play Store. Try again later.",
+                    errorMessage = uiText(R.string.flosi_store_offline),
                 )
             }
             else -> _state.update { it.copy(isLoading = false, isPurchasing = false) }

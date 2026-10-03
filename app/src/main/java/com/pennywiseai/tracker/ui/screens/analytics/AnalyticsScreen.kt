@@ -295,9 +295,9 @@ fun AnalyticsScreen(
                                 Spacer(modifier = Modifier.width(Spacing.xs))
                                 Text(
                                     text = when (chartType) {
-                                        ChartType.LINE -> "Line"
-                                        ChartType.BAR -> "Bar"
-                                        ChartType.HEATMAP -> "Heatmap"
+                                        ChartType.LINE -> stringResource(R.string.flosi_chart_line)
+                                        ChartType.BAR -> stringResource(R.string.flosi_chart_bar)
+                                        ChartType.HEATMAP -> stringResource(R.string.flosi_chart_heatmap)
                                     },
                                     style = MaterialTheme.typography.labelMedium
                                 )
@@ -346,9 +346,9 @@ fun AnalyticsScreen(
                                         )
                                         Text(
                                             text = when (type) {
-                                                ChartType.LINE -> "Line Chart"
-                                                ChartType.BAR -> "Bar Chart"
-                                                ChartType.HEATMAP -> "Heatmap"
+                                                ChartType.LINE -> stringResource(R.string.flosi_chart_line_full)
+                                                ChartType.BAR -> stringResource(R.string.flosi_chart_bar_full)
+                                                ChartType.HEATMAP -> stringResource(R.string.flosi_chart_heatmap)
                                             },
                                             style = MaterialTheme.typography.bodyMedium,
                                             color = if (chartType == type)
@@ -730,7 +730,7 @@ private fun AnalyticsFilterBar(
                         colors = analyticsFilterChipColors(),
                         border = analyticsFilterChipBorder(selected = selectedProfileId != null),
                         selected = selectedProfileId != null,
-                        text = selectedProfileLabel ?: "All Accounts",
+                        text = selectedProfileLabel ?: stringResource(R.string.flosi_all_accounts),
                         icon = profileFilterIcon(profiles, selectedProfileId),
                         onClick = onProfileClick
                     )
@@ -856,7 +856,7 @@ private fun AnalyticsFilterBar(
                         colors = analyticsFilterChipColors(),
                         border = analyticsFilterChipBorder(selected = categoryFilter != null),
                         selected = categoryFilter != null,
-                        text = categoryFilter ?: "Category",
+                        text = categoryFilter ?: stringResource(R.string.flosi_category),
                         icon = Icons.Default.Category,
                         onClick = onCategoryClick
                     )
@@ -914,7 +914,7 @@ private fun AnalyticsFilterBar(
                         colors = analyticsFilterChipColors(),
                         border = analyticsFilterChipBorder(selected = accountFilter != null),
                         selected = accountFilter != null,
-                        text = selectedAccountLabel ?: "Account",
+                        text = selectedAccountLabel ?: stringResource(R.string.flosi_account),
                         icon = Icons.Default.AccountBalanceWallet,
                         onClick = onAccountClick
                     )
@@ -1096,9 +1096,9 @@ private fun EmptyAnalyticsState(
     ) {
         PennyWiseEmptyState(
             icon = Icons.AutoMirrored.Filled.ShowChart,
-            headline = "Not enough data yet",
+            headline = stringResource(R.string.flosi_analytics_insufficient),
             description = stringResource(R.string.flosi_analytics_empty_desc),
-            actionLabel = "Scan SMS",
+            actionLabel = stringResource(R.string.flosi_scan_sms),
             onAction = onScanSmsClick
         )
     }

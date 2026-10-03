@@ -512,8 +512,10 @@ class TransactionDetailViewModel @Inject constructor(
             ruleRepository.insertRule(
                 TransactionRule(
                     id = ruleId,
-                    name = "Tags for $merchantName",
-                    description = "Created from a transaction: tag everything from $merchantName",
+                    name = com.pennywiseai.tracker.core.localization.AppLocaleController.wrap(context)
+                        .getString(com.pennywiseai.tracker.R.string.flosi_rule_tags_for, merchantName),
+                    description = com.pennywiseai.tracker.core.localization.AppLocaleController.wrap(context)
+                        .getString(com.pennywiseai.tracker.R.string.flosi_rule_created_from, merchantName),
                     conditions = listOf(RuleCondition(TransactionField.MERCHANT, ConditionOperator.EQUALS, merchantName)),
                     actions = tags.map { RuleAction(TransactionField.TAGS, ActionType.ADD_TAG, it) }
                 )

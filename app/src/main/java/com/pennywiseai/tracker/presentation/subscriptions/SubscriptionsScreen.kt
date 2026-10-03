@@ -780,7 +780,7 @@ private fun SwipeableSubscriptionItem(
                                 )
                                 Spacer(modifier = Modifier.width(Spacing.sm))
                                 Text(
-                                    text = if (subscription.bankName == "Manual Entry") "Notes" else "Original SMS",
+                                    text = if (subscription.bankName == "Manual Entry") stringResource(R.string.flosi_sub_notes) else stringResource(R.string.flosi_sub_original_sms),
                                     style = MaterialTheme.typography.titleSmall,
                                     fontWeight = FontWeight.Bold
                                 )

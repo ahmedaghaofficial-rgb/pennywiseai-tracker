@@ -68,6 +68,8 @@ fun GreetingCard(
     // Oct 20 with startDay=25, where the cycle ends Oct 24).
     cycleEnd: LocalDate? = null
 ) {
+    val displayName = userName.takeIf { it.isNotBlank() && it != "User" }
+        ?: stringResource(R.string.flosi_app_user)
     val today = LocalDate.now()
     val subtitle = run {
         val now = today
@@ -140,24 +142,24 @@ fun GreetingCard(
             if (avatarResId != null) {
                 Image(
                     painter = painterResource(id = avatarResId),
-                    contentDescription = userName,
+                    contentDescription = displayName,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
             } else if (profileImageUri != null) {
                 AsyncImage(
                     model = profileImageUri,
-                    contentDescription = userName,
+                    contentDescription = displayName,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
             } else {
-                val initials = remember(userName) {
-                    val parts = userName.trim().split("\\s+".toRegex())
+                val initials = remember(displayName) {
+                    val parts = displayName.trim().split("\\s+".toRegex())
                     if (parts.size >= 2) {
                         "${parts.first().first()}${parts.last().first()}".uppercase()
                     } else {
-                        userName.trim().take(2).uppercase()
+                        displayName.trim().take(2).uppercase()
                     }
                 }
                 Text(
@@ -179,7 +181,7 @@ fun GreetingCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = userName.ifBlank { "User" },
+                text = displayName,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
