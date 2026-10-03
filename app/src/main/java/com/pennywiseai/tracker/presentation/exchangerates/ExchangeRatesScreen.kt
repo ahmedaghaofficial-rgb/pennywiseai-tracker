@@ -131,7 +131,7 @@ fun ExchangeRatesScreen(
                     uiState.lastUpdated?.let { lastUpdated ->
                         item {
                             Text(
-                                text = "Last updated: ${lastUpdated.format(DateTimeFormatter.ofPattern("MMM d, yyyy h:mm a"))}",
+                                text = stringResource(R.string.flosi_exchange_updated, lastUpdated.format(DateTimeFormatter.ofPattern("MMM d, yyyy h:mm a"))),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )

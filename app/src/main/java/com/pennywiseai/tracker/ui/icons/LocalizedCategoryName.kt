@@ -8,7 +8,13 @@ import com.pennywiseai.tracker.R
 /** Only the visible label is translated; database and parser category keys stay stable. */
 @Composable
 fun localizedCategoryName(name: String): String {
-    @StringRes val resource = when (name) {
+    val resource = categoryNameResource(name) ?: return name // Preserve user-created names.
+    return stringResource(resource)
+}
+
+/** Resource for built-in display labels; the stored category key stays unchanged. */
+@StringRes
+fun categoryNameResource(name: String): Int? = when (name) {
         "Food & Dining" -> R.string.category_food_dining
         "Groceries" -> R.string.category_groceries
         "Transportation" -> R.string.category_transportation
@@ -31,7 +37,5 @@ fun localizedCategoryName(name: String): String {
         "Travel" -> R.string.category_travel
         "Others" -> R.string.category_others
         "Uncategorized" -> R.string.category_uncategorized
-        else -> return name // Never rewrite user-created category names.
-    }
-    return stringResource(resource)
+        else -> null
 }

@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.ui.screens.analytics
 
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -19,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import com.pennywiseai.tracker.ui.effects.rememberOverscrollFlingBehavior
 import androidx.compose.foundation.shape.CircleShape
@@ -455,7 +457,7 @@ fun AnalyticsScreen(
                     // netted in full off the total, but a category bar can't go negative (#704).
                     if (uiState.refundNettedFromTotal > BigDecimal.ZERO) {
                         Text(
-                            text = "Total is net of ${CurrencyFormatter.formatCurrency(uiState.refundNettedFromTotal, selectedCurrency)} in refunds. Category bars can't go below zero, so they may add up to more than the total shown.",
+                            text = stringResource(R.string.flosi_analytics_refunds, CurrencyFormatter.formatCurrency(uiState.refundNettedFromTotal, selectedCurrency)),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(horizontal = Spacing.sm)
@@ -1002,8 +1004,8 @@ private fun CategoryListItem(
                 )
             }
         },
-        title = category.name,
-        subtitle = "${category.transactionCount} transactions",
+        title = localizedCategoryName(category.name),
+        subtitle = pluralStringResource(R.plurals.flosi_analytics_transactions, category.transactionCount, category.transactionCount),
         amount = CurrencyFormatter.formatCurrency(category.amount, currency),
         trailingContent = {
             Text(
@@ -1070,8 +1072,7 @@ private fun AccountBreakdownListItem(
             }
         },
         title = account.label,
-        subtitle = "${account.transactionCount} " +
-            if (account.transactionCount == 1) "transaction" else "transactions",
+        subtitle = pluralStringResource(R.plurals.flosi_analytics_transactions, account.transactionCount, account.transactionCount),
         amount = CurrencyFormatter.formatCurrency(account.amount, currency),
         trailingContent = {
             Text(
@@ -1096,7 +1097,7 @@ private fun EmptyAnalyticsState(
         PennyWiseEmptyState(
             icon = Icons.AutoMirrored.Filled.ShowChart,
             headline = "Not enough data yet",
-            description = "Your spending insights will appear here after your first week of tracking",
+            description = stringResource(R.string.flosi_analytics_empty_desc),
             actionLabel = "Scan SMS",
             onAction = onScanSmsClick
         )

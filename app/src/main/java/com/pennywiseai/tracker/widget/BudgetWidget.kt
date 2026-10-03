@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.widget
 
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import android.content.Context
 import android.os.Build
 import androidx.compose.runtime.Composable
@@ -96,7 +97,7 @@ class BudgetWidget : GlanceAppWidget() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_monthly_budget),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_monthly_budget),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 14.sp,
@@ -105,7 +106,7 @@ class BudgetWidget : GlanceAppWidget() {
             )
             Spacer(modifier = GlanceModifier.height(6.dp))
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_tap_to_set_up),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_full_tap_to_set_up),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 12.sp
@@ -126,7 +127,7 @@ class BudgetWidget : GlanceAppWidget() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_monthly_budget),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_monthly_budget),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 14.sp,
@@ -135,7 +136,7 @@ class BudgetWidget : GlanceAppWidget() {
             )
             Spacer(modifier = GlanceModifier.defaultWeight())
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_widget_used, data.percentageUsed.toInt()),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_widget_used, data.percentageUsed.toInt()),
                 style = TextStyle(
                     color = statusColor,
                     fontSize = 13.sp,
@@ -190,7 +191,7 @@ class BudgetWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = androidx.glance.LocalContext.current.getString(R.string.flosi_widget_of, CurrencyFormatter.formatCurrency(data.totalLimit, data.currency)),
+                    text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_widget_of, CurrencyFormatter.formatCurrency(data.totalLimit, data.currency)),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurfaceVariant,
                         fontSize = 12.sp
@@ -198,9 +199,9 @@ class BudgetWidget : GlanceAppWidget() {
                 )
                 Spacer(modifier = GlanceModifier.defaultWeight())
                 val remainingText = if (data.remaining >= BigDecimal.ZERO) {
-                    androidx.glance.LocalContext.current.getString(R.string.flosi_widget_left, CurrencyFormatter.formatCurrency(data.remaining, data.currency))
+                    AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_widget_left, CurrencyFormatter.formatCurrency(data.remaining, data.currency))
                 } else {
-                    androidx.glance.LocalContext.current.getString(R.string.flosi_widget_over, CurrencyFormatter.formatCurrency(data.remaining.abs(), data.currency))
+                    AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_widget_over, CurrencyFormatter.formatCurrency(data.remaining.abs(), data.currency))
                 }
                 Text(
                     text = remainingText,
@@ -221,7 +222,7 @@ class BudgetWidget : GlanceAppWidget() {
             ) {
                 if (data.dailyAllowance > BigDecimal.ZERO) {
                     Text(
-                        text = androidx.glance.LocalContext.current.getString(R.string.flosi_widget_per_day, CurrencyFormatter.formatCurrency(data.dailyAllowance, data.currency)),
+                        text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_widget_per_day, CurrencyFormatter.formatCurrency(data.dailyAllowance, data.currency)),
                         style = TextStyle(
                             color = GlanceTheme.colors.onSurfaceVariant,
                             fontSize = 12.sp
@@ -234,7 +235,7 @@ class BudgetWidget : GlanceAppWidget() {
 
                     val savingsColor = PennyWiseWidgetTheme.savingsColor(data.netSavings >= BigDecimal.ZERO)
 
-                    val savingsText = androidx.glance.LocalContext.current.getString(
+                    val savingsText = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(
                         if (data.netSavings >= BigDecimal.ZERO) R.string.flosi_widget_saved else R.string.flosi_widget_overspent,
                         CurrencyFormatter.formatCurrency(data.netSavings.abs(), data.currency)
                     ) + (data.savingsDelta?.takeIf { it.compareTo(BigDecimal.ZERO) != 0 }?.let { if (it >= BigDecimal.ZERO) " ↑" else " ↓" } ?: "")

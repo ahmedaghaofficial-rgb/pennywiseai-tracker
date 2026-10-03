@@ -2,6 +2,7 @@ package com.pennywiseai.tracker.ui.screens.analytics
 
 import com.pennywiseai.tracker.R
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -108,7 +109,7 @@ fun AnalyticsSummaryCard(
                             tint = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                         Text(
-                            text = "$transactionCount TXNS",
+                            text = pluralStringResource(R.plurals.flosi_analytics_transactions, transactionCount, transactionCount),
                             style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -166,7 +167,7 @@ fun AnalyticsSummaryCard(
 
                     Column(horizontalAlignment = Alignment.End) {
                         Text(
-                            text = "${topCategoryPercentage.toInt()}% of total",
+                            text = stringResource(R.string.flosi_analytics_top_percent, topCategoryPercentage.toInt()),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 4.dp)

@@ -41,6 +41,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.pennywiseai.tracker.MainActivity
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import com.pennywiseai.tracker.data.database.entity.TransactionType
 import com.pennywiseai.tracker.utils.CurrencyFormatter
 import kotlinx.coroutines.flow.first
@@ -115,7 +116,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_recent_transactions),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_recent_transactions),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 14.sp,
@@ -137,7 +138,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
                 ) {
                     Image(
                         provider = ImageProvider(R.drawable.ic_widget_add),
-                        contentDescription = androidx.glance.LocalContext.current.getString(R.string.flosi_add_transaction),
+                        contentDescription = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_add_transaction),
                         modifier = GlanceModifier.size(20.dp)
                     )
                 }
@@ -151,7 +152,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
             modifier = GlanceModifier.fillMaxWidth()
         ) {
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_total_spend_this_month),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_full_total_spend_this_month),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 13.sp
@@ -242,7 +243,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_no_transactions_yet),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_no_transactions_yet),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 13.sp
@@ -250,7 +251,7 @@ class RecentTransactionsWidget : GlanceAppWidget() {
             )
             Spacer(modifier = GlanceModifier.height(2.dp))
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_tap_to_add_manually),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_full_tap_to_add_manually),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 12.sp

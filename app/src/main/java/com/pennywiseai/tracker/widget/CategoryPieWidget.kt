@@ -39,6 +39,8 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.pennywiseai.tracker.MainActivity
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import com.pennywiseai.tracker.ui.icons.categoryNameResource
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
 
@@ -83,7 +85,7 @@ class CategoryPieWidget : GlanceAppWidget() {
         ) {
             Row(modifier = GlanceModifier.fillMaxWidth()) {
                 Text(
-                    text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_spending),
+                    text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_full_spending),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurface,
                         fontSize = 13.sp,
@@ -112,7 +114,7 @@ class CategoryPieWidget : GlanceAppWidget() {
                     Box(contentAlignment = Alignment.Center) {
                         Image(
                             provider = ImageProvider(renderDonut(data.slices)),
-                            contentDescription = androidx.glance.LocalContext.current.getString(R.string.flosi_full_spending_by_category),
+                            contentDescription = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_full_spending_by_category),
                             modifier = GlanceModifier.size(110.dp)
                         )
                         Text(
@@ -154,7 +156,8 @@ class CategoryPieWidget : GlanceAppWidget() {
             ) {}
             Spacer(modifier = GlanceModifier.width(6.dp))
             Text(
-                text = slice.name,
+                text = categoryNameResource(slice.name)?.let { AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(it) }
+                    ?: if (slice.name == "Other") AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_widget_other) else slice.name,
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 11.sp
@@ -182,7 +185,7 @@ class CategoryPieWidget : GlanceAppWidget() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = androidx.glance.LocalContext.current.getString(R.string.flosi_full_no_spending_yet_this_month),
+                text = AppLocaleController.wrap(androidx.glance.LocalContext.current).getString(R.string.flosi_full_no_spending_yet_this_month),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
                     fontSize = 12.sp

@@ -2,6 +2,7 @@ package com.pennywiseai.tracker.ui.screens.unrecognized
 
 import com.pennywiseai.tracker.R
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -174,14 +175,14 @@ fun UnrecognizedSmsScreen(
                                             Badge(
                                                 containerColor = MaterialTheme.colorScheme.primary
                                             ) {
-                                                Text("$unreportedCount new")
+                                                Text(pluralStringResource(R.plurals.flosi_unrecognized_new, unreportedCount, unreportedCount))
                                             }
                                         }
                                         if (reportedCount > 0) {
                                             Badge(
                                                 containerColor = MaterialTheme.colorScheme.surfaceVariant
                                             ) {
-                                                Text("$reportedCount reported")
+                                                Text(pluralStringResource(R.plurals.flosi_unrecognized_reported, reportedCount, reportedCount))
                                             }
                                         }
                                     }
@@ -203,7 +204,7 @@ fun UnrecognizedSmsScreen(
                     PennyWiseEmptyState(
                         icon = Icons.Outlined.MarkEmailRead,
                         headline = "All messages recognized",
-                        description = "No unrecognized bank messages found"
+                        description = stringResource(R.string.flosi_unrecognized_empty_desc)
                     )
                 }
             } else {

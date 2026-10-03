@@ -268,21 +268,21 @@ private fun SuccessContent(
             verticalArrangement = Arrangement.spacedBy(Spacing.sm)
         ) {
             ResultRow(
-                label = "Transactions imported",
+                label = stringResource(R.string.flosi_statement_imported),
                 value = "${result.imported}",
                 isHighlighted = true
             )
 
             if (result.enriched > 0) {
                 ResultRow(
-                    label = "Transactions enriched",
+                    label = stringResource(R.string.flosi_statement_enriched),
                     value = "${result.enriched}",
                     isHighlighted = true
                 )
             }
 
             ResultRow(
-                label = "Total parsed from PDF",
+                label = stringResource(R.string.flosi_statement_total),
                 value = "${result.totalParsed}"
             )
 
@@ -290,7 +290,7 @@ private fun SuccessContent(
                 HorizontalDivider(modifier = Modifier.padding(vertical = Spacing.xs))
 
                 Text(
-                    text = "Duplicates skipped: ${result.skippedDuplicates}",
+                    text = stringResource(R.string.flosi_import_count, result.skippedDuplicates),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -298,21 +298,21 @@ private fun SuccessContent(
 
                 if (result.skippedByHash > 0) {
                     ResultRow(
-                        label = "Exact re-imports",
+                        label = stringResource(R.string.flosi_statement_exact),
                         value = "${result.skippedByHash}",
                         indent = true
                     )
                 }
                 if (result.skippedByReference > 0) {
                     ResultRow(
-                        label = "By UPI reference",
+                        label = stringResource(R.string.flosi_statement_reference),
                         value = "${result.skippedByReference}",
                         indent = true
                     )
                 }
                 if (result.skippedByAmountDate > 0) {
                     ResultRow(
-                        label = "By amount & date",
+                        label = stringResource(R.string.flosi_statement_amount),
                         value = "${result.skippedByAmountDate}",
                         indent = true
                     )

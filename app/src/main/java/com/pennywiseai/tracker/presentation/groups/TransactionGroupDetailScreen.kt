@@ -64,7 +64,7 @@ fun TransactionGroupDetailScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = group?.name ?: "Group",
+                title = group?.name ?: stringResource(R.string.flosi_group_fallback),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
@@ -442,7 +442,7 @@ private fun AddTransactionToGroupSheet(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        if (searchQuery.isBlank()) "No ungrouped transactions" else "No results",
+                        if (searchQuery.isBlank()) stringResource(R.string.flosi_group_no_ungrouped) else "No results",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
