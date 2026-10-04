@@ -72,6 +72,7 @@ import com.pennywiseai.tracker.presentation.common.TimePeriod
 import com.pennywiseai.tracker.presentation.common.chipLabel
 import com.pennywiseai.tracker.presentation.common.TransactionTypeFilter
 import com.pennywiseai.tracker.data.database.entity.ProfileEntity
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import com.pennywiseai.tracker.ui.components.profileIcon
 import com.pennywiseai.tracker.ui.components.*
 import com.pennywiseai.tracker.ui.components.skeleton.TransactionItemSkeleton
@@ -1322,7 +1323,7 @@ private fun TransactionFilterHeader(
                         Box {
                             ExpressiveFilterChip(
                                 selected = tagFilter != null,
-                                text = tagFilter ?: "Tag",
+                                text = tagFilter ?: stringResource(R.string.flosi_tag),
                                 icon = Icons.Default.Sell,
                                 onClick = onTagClick
                             )
@@ -1542,12 +1543,12 @@ private fun categoryFilterLabel(
     selected: List<String>?,
     available: List<String>
 ): String? {
-    if (single != null) return single
+    if (single != null) return localizedCategoryName(single)
     if (selected == null) return null
     val excluded = available - selected.toSet()
     return when {
-        selected.size == 1 -> selected.first()
-        excluded.size in 1..2 && selected.size >= 2 -> stringResource(R.string.flosi_all_except, excluded.joinToString(", "))
+        selected.size == 1 -> localizedCategoryName(selected.first())
+        excluded.size in 1..2 && selected.size >= 2 -> stringResource(R.string.flosi_all_except, excluded.map { localizedCategoryName(it) }.joinToString(", "))
         else -> pluralStringResource(R.plurals.flosi_category_count, selected.size, selected.size)
     }
 }

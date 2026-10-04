@@ -1651,4 +1651,14 @@
     <string name="flosi_export_finalizing">Finalizing export…</string>
     <string name="flosi_export_progress_complete">Export complete!</string>
     <string name="flosi_export_failure_detail">Failed to export transactions: %1$s</string>
+    <string name="flosi_analytics_subscription">Subscription</string>
+    <string name="flosi_biometric_prompt_title">Unlock PennyWise</string>
+    <string name="flosi_biometric_prompt_description">Use your biometric credential or device PIN</string>
+    <string name="flosi_biometric_available">Biometric authentication is available</string>
+    <string name="flosi_biometric_no_hardware">This device has no biometric hardware</string>
+    <string name="flosi_biometric_hardware_unavailable">Biometric hardware is currently unavailable</string>
+    <string name="flosi_biometric_none_enrolled">No biometric credentials enrolled. Set up fingerprint or face unlock in device settings</string>
+    <string name="flosi_biometric_security_update">A security update is required for biometric authentication</string>
+    <string name="flosi_biometric_unsupported">Biometric authentication is not supported on this device</string>
+    <string name="flosi_biometric_unknown">Biometric status is unknown</string>
 </resources>

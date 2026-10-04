@@ -117,9 +117,10 @@ fun AnalyticsScreen(
     val customRangeLabel = remember(customDateRange) {
         DateRangeUtils.formatDateRange(customDateRange)
     }
-    val periodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel) {
+    val rawPeriodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel) {
         selectedPeriod.chipLabel(budgetCycleStartDay, customRangeLabel)
     }
+    val periodChipLabel = if (rawPeriodChipLabel == selectedPeriod.label) localizedAnalyticsPeriodLabel(selectedPeriod) else rawPeriodChipLabel
     // Carry the custom range through drill-down navigation so the Transactions
     // screen (and its CSV export) shows exactly the slice being viewed here.
     val navStartEpochDay = if (selectedPeriod == TimePeriod.CUSTOM) customDateRange?.first?.toEpochDay() else null
@@ -766,7 +767,7 @@ private fun AnalyticsFilterBar(
                 ) {
                     timePeriods.forEach { period ->
                         DropdownMenuItem(
-                            text = { Text(period.label) },
+                            text = { Text(localizedAnalyticsPeriodLabel(period)) },
                             leadingIcon = {
                                 if (selectedPeriod == period) {
                                     Icon(Icons.Default.Check, contentDescription = null)
@@ -799,7 +800,7 @@ private fun AnalyticsFilterBar(
                 ) {
                     TransactionTypeFilter.values().forEach { typeFilter ->
                         DropdownMenuItem(
-                            text = { Text(typeFilter.label) },
+                            text = { Text(typeFilter.shortLabel()) },
                             leadingIcon = {
                                 if (transactionTypeFilter == typeFilter) {
                                     Icon(Icons.Default.Check, contentDescription = null)
@@ -856,7 +857,7 @@ private fun AnalyticsFilterBar(
                         colors = analyticsFilterChipColors(),
                         border = analyticsFilterChipBorder(selected = categoryFilter != null),
                         selected = categoryFilter != null,
-                        text = categoryFilter ?: stringResource(R.string.flosi_category),
+                        text = categoryFilter?.let { localizedCategoryName(it) } ?: stringResource(R.string.flosi_category),
                         icon = Icons.Default.Category,
                         onClick = onCategoryClick
                     )
@@ -882,7 +883,7 @@ private fun AnalyticsFilterBar(
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        category,
+                                        localizedCategoryName(category),
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
                                     )
@@ -1023,13 +1024,10 @@ private fun MerchantListItem(
     currency: String,
     onClick: () -> Unit = {}
 ) {
-    val subtitle = buildString {
-        append("${merchant.transactionCount} ")
-        append(if (merchant.transactionCount == 1) "transaction" else "transactions")
-        if (merchant.isSubscription) {
-            append(" • Subscription")
-        }
-    }
+    val countLabel = pluralStringResource(R.plurals.flosi_analytics_transactions, merchant.transactionCount, merchant.transactionCount)
+    val subtitle = if (merchant.isSubscription) {
+        "$countLabel • ${stringResource(R.string.flosi_analytics_subscription)}"
+    } else countLabel
 
     // Brand icon stays keyed on the raw merchant; only the label uses the alias (#583).
     val merchantDisplay = LocalMerchantDisplay.current
@@ -1103,3 +1101,12 @@ private fun EmptyAnalyticsState(
         )
     }
 }
+
+@Composable
+private fun localizedAnalyticsPeriodLabel(period: TimePeriod): String = stringResource(when (period) {
+    TimePeriod.THIS_MONTH -> R.string.flosi_this_month_period
+    TimePeriod.LAST_MONTH -> R.string.flosi_last_month_period
+    TimePeriod.CURRENT_FY -> R.string.flosi_current_fy
+    TimePeriod.ALL -> R.string.flosi_all_time
+    TimePeriod.CUSTOM -> R.string.flosi_custom_range
+})

@@ -142,7 +142,7 @@ fun CategoryEditDialog(
                     var parentMenu by remember { mutableStateOf(false) }
                     ExposedDropdownMenuBox(expanded = parentMenu, onExpandedChange = { parentMenu = it }) {
                         TextField(
-                            value = parentCandidates.firstOrNull { it.id == parentId }?.name ?: "None",
+                            value = parentCandidates.firstOrNull { it.id == parentId }?.name ?: stringResource(R.string.flosi_none),
                             onValueChange = {},
                             readOnly = true,
                             label = { Text(stringResource(R.string.flosi_parent_category_optional), fontWeight = FontWeight.SemiBold) },

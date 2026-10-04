@@ -55,6 +55,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pennywiseai.tracker.core.Constants
 import com.pennywiseai.tracker.core.localization.AppLanguage
 import com.pennywiseai.tracker.core.localization.AppLocaleController
+import com.pennywiseai.tracker.ui.components.localizedBiometricErrorMessage
 import com.pennywiseai.tracker.ui.components.CustomTitleTopAppBar
 import com.pennywiseai.tracker.ui.components.SupportDevelopmentDialog
 import com.pennywiseai.tracker.ui.components.cards.GroupedColumn
@@ -511,7 +512,7 @@ fun SettingsScreen(
                     subtitle = if (appLockUiState.canUseBiometric) {
                         stringResource(R.string.flosi_biometric_protection)
                     } else {
-                        appLockUiState.biometricCapability.getErrorMessage()
+                        localizedBiometricErrorMessage(appLockUiState.biometricCapability)
                     },
                     checked = appLockUiState.isLockEnabled,
                     onCheckedChange = { appLockViewModel.setAppLockEnabled(it) },

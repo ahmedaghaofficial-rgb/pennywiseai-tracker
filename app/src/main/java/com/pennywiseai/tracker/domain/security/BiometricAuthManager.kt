@@ -71,9 +71,9 @@ class BiometricAuthManager @Inject constructor(
      */
     fun authenticate(
         activity: FragmentActivity,
-        title: String = "Unlock PennyWise",
-        subtitle: String = "Authenticate to access your expense data",
-        description: String = "Use your biometric credential or device PIN",
+        title: String,
+        subtitle: String,
+        description: String,
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
         onFailed: () -> Unit = {}
@@ -125,13 +125,5 @@ sealed class BiometricCapability {
     object Unsupported : BiometricCapability()
     object Unknown : BiometricCapability()
 
-    fun getErrorMessage(): String = when (this) {
-        Available -> ""
-        NoHardware -> "This device doesn't have biometric hardware"
-        HardwareUnavailable -> "Biometric hardware is currently unavailable"
-        NoneEnrolled -> "No biometric credentials enrolled. Please set up fingerprint or face unlock in device settings"
-        SecurityUpdateRequired -> "Security update required for biometric authentication"
-        Unsupported -> "Biometric authentication is not supported on this device"
-        Unknown -> "Unknown biometric status"
-    }
+
 }

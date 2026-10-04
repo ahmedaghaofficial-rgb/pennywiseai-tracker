@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pennywiseai.tracker.domain.security.BiometricAuthManager
 import com.pennywiseai.tracker.domain.security.BiometricCapability
+import com.pennywiseai.tracker.ui.components.localizedBiometricErrorMessage
 import com.pennywiseai.tracker.ui.components.PennyWiseScaffold
 import com.pennywiseai.tracker.ui.theme.Spacing
 import com.pennywiseai.tracker.ui.viewmodel.AppLockViewModel
@@ -152,7 +153,7 @@ fun AppLockScreen(
                                 )
                                 Spacer(modifier = Modifier.height(Spacing.sm))
                                 Text(
-                                    text = uiState.biometricCapability.getErrorMessage(),
+                                    text = localizedBiometricErrorMessage(uiState.biometricCapability),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onErrorContainer
                                 )

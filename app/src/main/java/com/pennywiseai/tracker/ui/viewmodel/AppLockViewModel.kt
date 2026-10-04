@@ -147,8 +147,12 @@ class AppLockViewModel @Inject constructor(
      * This must be called with a FragmentActivity from the UI layer
      */
     fun triggerAuthentication(activity: FragmentActivity) {
+        val localizedContext = AppLocaleController.wrap(context)
         biometricAuthManager.authenticate(
             activity = activity,
+            title = localizedContext.getString(R.string.flosi_biometric_prompt_title),
+            subtitle = localizedContext.getString(R.string.flosi_full_authenticate_to_access_your_expense_data),
+            description = localizedContext.getString(R.string.flosi_biometric_prompt_description),
             onSuccess = { onAuthenticationSuccess() },
             onError = { error -> onAuthenticationError(error) },
             onFailed = { onAuthenticationFailed() }

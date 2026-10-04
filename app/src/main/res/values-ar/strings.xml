@@ -1843,4 +1843,14 @@
     <string name="flosi_export_finalizing">جارٍ إكمال التصدير…</string>
     <string name="flosi_export_progress_complete">اكتمل التصدير!</string>
     <string name="flosi_export_failure_detail">فشل تصدير المعاملات: %1$s</string>
+    <string name="flosi_analytics_subscription">اشتراك</string>
+    <string name="flosi_biometric_prompt_title">افتح فلوسي</string>
+    <string name="flosi_biometric_prompt_description">استخدم البصمة أو رمز قفل الجهاز</string>
+    <string name="flosi_biometric_available">المصادقة بالبصمة متاحة</string>
+    <string name="flosi_biometric_no_hardware">الجهاز لا يدعم البصمة</string>
+    <string name="flosi_biometric_hardware_unavailable">البصمة غير متاحة حاليًا على الجهاز</string>
+    <string name="flosi_biometric_none_enrolled">لم تُضف بصمة بعد. أضف بصمة الوجه أو الإصبع من إعدادات الجهاز</string>
+    <string name="flosi_biometric_security_update">يلزم تحديث أمان لاستخدام البصمة</string>
+    <string name="flosi_biometric_unsupported">المصادقة بالبصمة غير مدعومة على هذا الجهاز</string>
+    <string name="flosi_biometric_unknown">تعذّر التحقق من حالة البصمة</string>
 </resources>
