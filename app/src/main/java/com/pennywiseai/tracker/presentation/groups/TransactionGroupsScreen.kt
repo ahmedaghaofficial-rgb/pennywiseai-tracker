@@ -2,6 +2,7 @@ package com.pennywiseai.tracker.presentation.groups
 
 import com.pennywiseai.tracker.R
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -183,7 +184,7 @@ private fun GroupListItem(
                     )
                 }
                 Text(
-                    "${summary.transactionCount} transaction${if (summary.transactionCount != 1) "s" else ""}",
+                    pluralStringResource(R.plurals.flosi_group_transactions, summary.transactionCount, summary.transactionCount),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

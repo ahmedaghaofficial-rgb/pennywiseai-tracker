@@ -428,7 +428,7 @@ fun TransactionsScreen(
                 ?: categoryFilter?.let { setOf(it) }
                 ?: availableCategories.toSet(),
             onCategoryToggled = { viewModel.toggleCategory(it, availableCategories) },
-            selectedProfileName = profiles.firstOrNull { it.id == selectedProfileId }?.name ?: stringResource(R.string.flosi_profile),
+            selectedProfileName = profiles.firstOrNull { it.id == selectedProfileId }?.let { localizedProfileName(it) } ?: stringResource(R.string.flosi_profile),
             hasProfileFilter = selectedProfileId != null,
             hasAnyActiveFilter = hasAnyActiveFilter,
             showSortMenu = showSortMenu,
@@ -1299,7 +1299,7 @@ private fun TransactionFilterHeader(
                             )
                             profiles.forEach { profile ->
                                 DropdownMenuItem(
-                                    text = { Text(profile.name, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                                    text = { Text(localizedProfileName(profile), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                                     leadingIcon = {
                                         if (selectedProfileId == profile.id) {
                                             Icon(Icons.Default.Check, contentDescription = null)
@@ -1578,3 +1578,10 @@ private fun localizedSortLabel(option: SortOption): String = stringResource(when
     SortOption.MERCHANT_AZ -> R.string.flosi_merchant_az
     SortOption.MERCHANT_ZA -> R.string.flosi_merchant_za
 })
+
+@Composable
+private fun localizedProfileName(profile: ProfileEntity): String = when (profile.id) {
+    ProfileEntity.PERSONAL_ID -> stringResource(R.string.flosi_personal)
+    ProfileEntity.BUSINESS_ID -> stringResource(R.string.flosi_business)
+    else -> profile.name
+}

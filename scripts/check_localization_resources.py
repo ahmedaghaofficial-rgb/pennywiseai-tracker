@@ -87,7 +87,7 @@ for name in (
 # Restrict this guard to direct text sinks; logging, database keys, samples,
 # animation labels and tool prompts are deliberately outside its scope.
 ui_root = RES.parent / "java/com/pennywiseai/tracker"
-ui_literal = re.compile(r'\b(?:Text\(|text\s*=\s*|contentDescription\s*=\s*|\.setContentTitle\(|\.setContentText\()\s*"([A-Za-z][^"\\\n]*)"')
+ui_literal = re.compile(r'\b(?:Text\(|text\s*=\s*|contentDescription\s*=\s*|\.setContentTitle\(|\.setContentText\()\s*"((?:[A-Za-z]|\$\{)[^"\\\n]*)"')
 allowed_display_literals = {
     "English",             # The language's native name in the picker.
     "PENNYWISE", "PennyWise Pro", "PennyWise v${com.pennywiseai.tracker.BuildConfig.VERSION_NAME}",
@@ -96,13 +96,22 @@ allowed_display_literals = {
 }
 hardcoded = []
 for path in ui_root.rglob("*.kt"):
-    for line_no, line in enumerate(path.read_text().splitlines(), 1):
-        if line.lstrip().startswith(("//", "*")):
+    source = path.read_text()
+    for match in ui_literal.finditer(source):
+        value = match.group(1)
+        if value in allowed_display_literals:
             continue
-        for match in ui_literal.finditer(line):
-            value = match.group(1)
-            if value not in allowed_display_literals:
-                hardcoded.append(f"{path.relative_to(RES.parent)}:{line_no}: {value}")
+        # Remove interpolation expressions and simple variable references before
+        # checking for English words; currency codes and percentages are data.
+        if value.startswith("${"):
+            copy = re.sub(r"\$\{[^}]*\}|\$[A-Za-z_]\w*", "", value)
+            copy = re.sub(r"\$\{[^}]*$", "", copy)
+            if not re.search(r"[A-Za-z]{3,}", copy):
+                continue
+        line_no = source.count("\n", 0, match.start()) + 1
+        if source.splitlines()[line_no - 1].lstrip().startswith(("//", "*")):
+            continue
+        hardcoded.append(f"{path.relative_to(RES.parent)}:{line_no}: {value}")
 assert not hardcoded, "Direct English UI literals:\n" + "\n".join(hardcoded)
 
 print(f"Localization resources OK: {len(english)} paired strings/plurals")

@@ -38,6 +38,10 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
+import androidx.glance.appwidget.updateAll
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import androidx.compose.ui.text.AnnotatedString
 import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.core.localization.localizedUiMessage
@@ -1718,6 +1722,10 @@ private fun selectLanguage(context: android.content.Context, language: AppLangua
     com.pennywiseai.tracker.widget.BudgetWidgetUpdateWorker.enqueueOneShot(context)
     com.pennywiseai.tracker.widget.CategoryPieWidgetUpdateWorker.enqueueOneShot(context)
     com.pennywiseai.tracker.widget.RecentTransactionsWidgetUpdateWorker.enqueueOneShot(context)
+    // Glance widgets need an explicit refresh after the locale preference changes.
+    CoroutineScope(Dispatchers.IO).launch {
+        com.pennywiseai.tracker.widget.AddTransactionWidget().updateAll(context.applicationContext)
+    }
 }
 
 /**
