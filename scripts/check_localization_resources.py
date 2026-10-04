@@ -115,11 +115,12 @@ for path in ui_root.rglob("*.kt"):
 # Also catch simple Elvis and single-line conditional display fallbacks.
 fallback_literal = re.compile(r'\b(?:text\s*=\s*|Text\(\s*)[^,\n]*\?:\s*"([A-Za-z][^"\\\n]*)"')
 conditional_literal = re.compile(r'\b(?:text\s*=\s*|Text\(\s*)if\s*\([^()\n]*\)\s*"([A-Za-z][^"\\\n]*)"')
+helper_fallback_literal = re.compile(r'\b(?:text\s*=\s*|Text\(\s*)[^,\n]*\.if(?:Blank|Empty)\s*\{\s*"([A-Za-z][^"\\\n]*)"')
 for path in ui_root.rglob("*.kt"):
     for line_no, line in enumerate(path.read_text().splitlines(), 1):
         if line.lstrip().startswith(("//", "*")):
             continue
-        for pattern in (fallback_literal, conditional_literal):
+        for pattern in (fallback_literal, conditional_literal, helper_fallback_literal):
             for match in pattern.finditer(line):
                 if match.group(1) not in allowed_display_literals:
                     hardcoded.append(f"{path.relative_to(RES.parent)}:{line_no}: {match.group(1)}")

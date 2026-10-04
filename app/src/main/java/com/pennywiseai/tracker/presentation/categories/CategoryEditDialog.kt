@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.CategoryEntity
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import com.pennywiseai.tracker.ui.components.CategoryChip
 import com.pennywiseai.tracker.ui.components.ColorSwatchRow
 import com.pennywiseai.tracker.ui.components.EmojiGlyph
@@ -142,7 +143,7 @@ fun CategoryEditDialog(
                     var parentMenu by remember { mutableStateOf(false) }
                     ExposedDropdownMenuBox(expanded = parentMenu, onExpandedChange = { parentMenu = it }) {
                         TextField(
-                            value = parentCandidates.firstOrNull { it.id == parentId }?.name ?: stringResource(R.string.flosi_none),
+                            value = parentCandidates.firstOrNull { it.id == parentId }?.let { localizedCategoryName(it.name) } ?: stringResource(R.string.flosi_none),
                             onValueChange = {},
                             readOnly = true,
                             label = { Text(stringResource(R.string.flosi_parent_category_optional), fontWeight = FontWeight.SemiBold) },

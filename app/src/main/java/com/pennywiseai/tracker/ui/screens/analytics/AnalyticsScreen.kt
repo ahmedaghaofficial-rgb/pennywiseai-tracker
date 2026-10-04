@@ -824,7 +824,7 @@ private fun AnalyticsFilterBar(
                             selected = selectedCurrency != availableCurrencies.firstOrNull()
                         ),
                         selected = selectedCurrency != availableCurrencies.firstOrNull(),
-                        text = selectedCurrency.ifBlank { "Currency" },
+                        text = selectedCurrency.ifBlank { stringResource(R.string.flosi_currency) },
                         icon = Icons.Default.CurrencyExchange,
                         onClick = onCurrencyClick
                     )
