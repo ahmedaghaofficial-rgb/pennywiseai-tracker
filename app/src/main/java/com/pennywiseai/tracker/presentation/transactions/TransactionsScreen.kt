@@ -1578,10 +1578,3 @@ private fun localizedSortLabel(option: SortOption): String = stringResource(when
     SortOption.MERCHANT_AZ -> R.string.flosi_merchant_az
     SortOption.MERCHANT_ZA -> R.string.flosi_merchant_za
 })
-
-@Composable
-private fun localizedProfileName(profile: ProfileEntity): String = when (profile.id) {
-    ProfileEntity.PERSONAL_ID -> stringResource(R.string.flosi_personal)
-    ProfileEntity.BUSINESS_ID -> stringResource(R.string.flosi_business)
-    else -> profile.name
-}

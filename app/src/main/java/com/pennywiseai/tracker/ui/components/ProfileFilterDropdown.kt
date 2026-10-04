@@ -44,7 +44,7 @@ fun ProfileFilterDropdown(
         )
         profiles.forEach { profile ->
             DropdownMenuItem(
-                text = { Text(profile.name) },
+                text = { Text(localizedProfileName(profile)) },
                 onClick = {
                     onProfileSelected(profile.id)
                     onDismiss()
@@ -70,4 +70,11 @@ fun profileFilterIcon(profiles: List<ProfileEntity>, selectedProfileId: Long?): 
     if (selectedProfileId == null) return Icons.Outlined.AccountBalance
     val profile = profiles.find { it.id == selectedProfileId }
     return if (profile != null) profileIcon(profile) else Icons.Outlined.AccountBalance
+}
+
+@Composable
+fun localizedProfileName(profile: ProfileEntity): String = when (profile.id) {
+    ProfileEntity.PERSONAL_ID -> stringResource(R.string.flosi_personal)
+    ProfileEntity.BUSINESS_ID -> stringResource(R.string.flosi_business)
+    else -> profile.name
 }

@@ -119,11 +119,10 @@ class OptimizedSmsReaderWorker @AssistedInject constructor(
             val localizedContext = AppLocaleController.wrap(context)
             // SDK_INT is always >= 26 for this project; NotificationChannel is always available
             val nm = context.getSystemService(android.app.NotificationManager::class.java)
-            if (nm.getNotificationChannel(channelId) == null) {
-                nm.createNotificationChannel(
-                    android.app.NotificationChannel(channelId, localizedContext.getString(R.string.flosi_sms_scan_channel), android.app.NotificationManager.IMPORTANCE_LOW)
-                )
-            }
+            // Re-registering the same ID updates the channel name after a language switch.
+            nm.createNotificationChannel(
+                android.app.NotificationChannel(channelId, localizedContext.getString(R.string.flosi_sms_scan_channel), android.app.NotificationManager.IMPORTANCE_LOW)
+            )
             return androidx.core.app.NotificationCompat.Builder(localizedContext, channelId)
                 .setSmallIcon(android.R.drawable.ic_popup_sync)
                 .setContentTitle(localizedContext.getString(R.string.flosi_sms_scan_progress_title))

@@ -724,7 +724,7 @@ private fun AnalyticsFilterBar(
 
         if (profiles.isNotEmpty()) {
             item {
-                val selectedProfileLabel = profiles.find { it.id == selectedProfileId }?.name
+                val selectedProfileLabel = profiles.find { it.id == selectedProfileId }?.let { localizedProfileName(it) }
                 Box {
                     ExpressiveFilterChip(
                         colors = analyticsFilterChipColors(),
