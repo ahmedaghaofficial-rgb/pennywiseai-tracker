@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.presentation.accounts
 
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -159,7 +160,7 @@ fun BalanceHistoryScreen(
                 
                 // Info text
                 Text(
-                    text = stringResource(R.string.flosi_balance_records_count, balanceHistory.size),
+                    text = pluralStringResource(R.plurals.flosi_balance_records_count, balanceHistory.size, balanceHistory.size),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = Spacing.sm)

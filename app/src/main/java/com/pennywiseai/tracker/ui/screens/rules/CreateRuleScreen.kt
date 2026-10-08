@@ -1011,6 +1011,10 @@ private fun ConditionFieldSelector(
                             val key = "${account.bankName}||${account.accountLast4}"
                             val accountTypeLabel = when {
                                 account.isCreditCard -> stringResource(R.string.flosi_credit)
+                                account.accountType == "SAVINGS" -> stringResource(R.string.flosi_account_savings)
+                                account.accountType == "CURRENT" -> stringResource(R.string.flosi_account_current)
+                                account.accountType == "CREDIT" -> stringResource(R.string.flosi_account_credit)
+                                account.accountType == "CASH" -> stringResource(R.string.flosi_account_cash)
                                 account.accountType != null -> account.accountType
                                 else -> ""
                             }

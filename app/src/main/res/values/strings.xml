@@ -427,7 +427,10 @@
     <string name="flosi_welcome_to_app">Welcome to %1$s</string>
     <string name="flosi_setup_steps">1. Your profile\n2. SMS permissions for auto-detection\n3. Initial transaction scan\n4. Your main bank account</string>
     <string name="flosi_selected_count">%1$d selected</string>
-    <string name="flosi_balance_records_count">%1$d records • Latest balance is shown in accounts</string>
+    <plurals name="flosi_balance_records_count">
+        <item quantity="one">%1$d record • Latest balance is shown in accounts</item>
+        <item quantity="other">%1$d records • Latest balance is shown in accounts</item>
+    </plurals>
     <string name="flosi_active_subscriptions">%1$d active subscriptions</string>
     <plurals name="flosi_active_loans">
         <item quantity="one">%1$d active loan</item>

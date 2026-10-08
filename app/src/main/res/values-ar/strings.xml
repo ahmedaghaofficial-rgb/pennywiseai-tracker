@@ -419,7 +419,14 @@
     <string name="flosi_welcome_to_app">أهلًا بك في %1$s</string>
     <string name="flosi_setup_steps">١. ملفك الشخصي\n٢. إذن الرسائل للاكتشاف التلقائي\n٣. فحص المعاملات\n٤. حسابك الرئيسي</string>
     <string name="flosi_selected_count">تم تحديد %1$d</string>
-    <string name="flosi_balance_records_count">%1$d سجلات • يظهر آخر رصيد في الحسابات</string>
+    <plurals name="flosi_balance_records_count">
+        <item quantity="zero">لا توجد سجلات • يظهر آخر رصيد في الحسابات</item>
+        <item quantity="one">سجل واحد • يظهر آخر رصيد في الحسابات</item>
+        <item quantity="two">سجلان • يظهر آخر رصيد في الحسابات</item>
+        <item quantity="few">%1$d سجلات • يظهر آخر رصيد في الحسابات</item>
+        <item quantity="many">%1$d سجلًا • يظهر آخر رصيد في الحسابات</item>
+        <item quantity="other">%1$d سجل • يظهر آخر رصيد في الحسابات</item>
+    </plurals>
     <string name="flosi_active_subscriptions">%1$d اشتراكات نشطة</string>
     <plurals name="flosi_active_loans">
         <item quantity="zero">لا توجد قروض نشطة</item>
