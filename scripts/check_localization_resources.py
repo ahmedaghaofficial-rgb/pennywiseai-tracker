@@ -124,6 +124,12 @@ for path in ui_root.rglob("*.kt"):
             for match in pattern.finditer(line):
                 if match.group(1) not in allowed_display_literals:
                     hardcoded.append(f"{path.relative_to(RES.parent)}:{line_no}: {match.group(1)}")
+# AccountType.displayName() returns English literals; keep it out of direct UI labels.
+english_type_label = re.compile(r'\b(?:text\s*=\s*|Text\(\s*)accountType\.displayName\(\)')
+for path in ui_root.rglob("*.kt"):
+    for line_no, line in enumerate(path.read_text().splitlines(), 1):
+        if english_type_label.search(line) and not line.lstrip().startswith(("//", "*")):
+            hardcoded.append(f"{path.relative_to(RES.parent)}:{line_no}: accountType.displayName()")
 assert not hardcoded, "Direct English UI literals:\n" + "\n".join(hardcoded)
 
 print(f"Localization resources OK: {len(english)} paired strings/plurals")

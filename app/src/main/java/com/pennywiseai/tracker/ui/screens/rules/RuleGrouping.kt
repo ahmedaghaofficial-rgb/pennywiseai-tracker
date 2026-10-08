@@ -17,10 +17,14 @@ internal fun ruleGroup(rule: TransactionRule): RuleGroup {
         return RuleGroup.BANKING
     }
     val categories = setActions.filter { it.field == TransactionField.CATEGORY }.map { it.value }.toSet()
+    val subscriptionTemplate = rule.conditions.any {
+        it.field == TransactionField.SMS_TEXT && it.value == "(?i)(subscription|recurring|auto-debit|mandate)"
+    }
     return when {
         categories.any { it in setOf("Food & Dining", "Groceries", "Transportation", "Fuel") } -> RuleGroup.DAILY
         categories.any { it in setOf("Salary", "Income", "Cashback") } -> RuleGroup.INCOME
-        categories.any { it in setOf("Bills & Utilities", "Rent", "Subscriptions") } -> RuleGroup.RECURRING
+        categories.any { it in setOf("Bills & Utilities", "Rent", "Subscriptions", "Housing", "EMI") } ||
+            ("Entertainment" in categories && subscriptionTemplate) -> RuleGroup.RECURRING
         categories.any { it in setOf("Investments", "Banking", "Credit Card Payment", "Transfer") } -> RuleGroup.BANKING
         "Healthcare" in categories -> RuleGroup.HEALTH
         else -> RuleGroup.OTHER

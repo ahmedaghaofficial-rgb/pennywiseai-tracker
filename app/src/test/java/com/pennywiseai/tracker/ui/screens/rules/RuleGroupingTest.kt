@@ -26,4 +26,19 @@ class RuleGroupingTest {
             assertEquals(expected, ruleGroup(rule("اسم عربي مختلف", field, value)))
         }
     }
+
+    @Test fun `recurring templates use stable actions and conditions across display names`() {
+        for (category in listOf("Housing", "EMI")) {
+            assertEquals(RuleGroup.RECURRING, ruleGroup(rule("اسم مختلف", TransactionField.CATEGORY, category)))
+        }
+        val subscription = rule("اسم اشتراك", TransactionField.CATEGORY, "Entertainment").copy(
+            conditions = listOf(RuleCondition(
+                TransactionField.SMS_TEXT,
+                ConditionOperator.REGEX_MATCHES,
+                "(?i)(subscription|recurring|auto-debit|mandate)"
+            ))
+        )
+        assertEquals(RuleGroup.RECURRING, ruleGroup(subscription))
+        assertEquals(RuleGroup.OTHER, ruleGroup(rule("ترفيه", TransactionField.CATEGORY, "Entertainment")))
+    }
 }

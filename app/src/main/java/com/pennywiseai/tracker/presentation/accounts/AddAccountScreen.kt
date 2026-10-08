@@ -327,7 +327,7 @@ fun AddAccountScreen(
     }
 }
 @Composable
-private fun accountTypeLabel(type: AccountType): String = stringResource(when (type) {
+internal fun accountTypeLabel(type: AccountType): String = stringResource(when (type) {
     AccountType.SAVINGS -> R.string.flosi_account_savings
     AccountType.CURRENT -> R.string.flosi_account_current
     AccountType.CREDIT -> R.string.flosi_account_credit
