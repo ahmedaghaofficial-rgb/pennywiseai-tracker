@@ -7,6 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.database.entity.CategoryEntity
+import com.pennywiseai.tracker.ui.icons.categoryNameResource
 import com.pennywiseai.tracker.data.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -171,8 +172,12 @@ class CategoriesViewModel @Inject constructor(
                 try {
                     val updated = categoryRepository.toggleCategoryHidden(categoryId)
                     if (updated != null) {
+                        val displayName = if (updated.isSystem) {
+                            categoryNameResource(updated.name)?.let { uiText(it) } ?: updated.name
+                        } else updated.name
                         _snackbarMessage.value =
-                            if (updated.isHidden) uiText(R.string.flosi_category_hidden, updated.name) else uiText(R.string.flosi_category_shown, updated.name)
+                            if (updated.isHidden) uiText(R.string.flosi_category_hidden, displayName)
+                            else uiText(R.string.flosi_category_shown, displayName)
                     }
                 } catch (e: Exception) {
                     _snackbarMessage.value = uiText(R.string.flosi_category_update_error, e.message ?: "")

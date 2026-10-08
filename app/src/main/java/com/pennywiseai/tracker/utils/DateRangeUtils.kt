@@ -2,13 +2,12 @@ package com.pennywiseai.tracker.utils
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
  * Utility functions for date range formatting
  */
 object DateRangeUtils {
-
-    private val defaultFormatter = DateTimeFormatter.ofPattern("MMM d")
 
     /**
      * Formats a date range as a compact label string.
@@ -28,9 +27,11 @@ object DateRangeUtils {
     fun formatDateRange(
         startDate: LocalDate,
         endDate: LocalDate,
-        formatter: DateTimeFormatter = defaultFormatter
+        formatter: DateTimeFormatter? = null,
+        locale: Locale = Locale.getDefault()
     ): String {
-        return "${startDate.format(formatter)} - ${endDate.format(formatter)}"
+        val currentFormatter = formatter ?: DateTimeFormatter.ofPattern("MMM d", locale)
+        return "${startDate.format(currentFormatter)} - ${endDate.format(currentFormatter)}"
     }
 
     /**
@@ -43,10 +44,11 @@ object DateRangeUtils {
      */
     fun formatDateRange(
         dateRange: Pair<LocalDate, LocalDate>?,
-        formatter: DateTimeFormatter = defaultFormatter
+        formatter: DateTimeFormatter? = null,
+        locale: Locale = Locale.getDefault()
     ): String? {
         return dateRange?.let { (start, end) ->
-            formatDateRange(start, end, formatter)
+            formatDateRange(start, end, formatter, locale)
         }
     }
 }

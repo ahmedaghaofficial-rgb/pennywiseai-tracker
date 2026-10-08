@@ -259,30 +259,11 @@ fun RulesScreen(
 
                 // Group rules by category for better organization
                 item {
-                    val groupedRules = rules.groupBy { rule ->
-                        when {
-                            rule.name.contains("Food", ignoreCase = true) ||
-                            rule.name.contains("Fuel", ignoreCase = true) -> "Daily Expenses"
-
-                            rule.name.contains("Salary", ignoreCase = true) ||
-                            rule.name.contains("Cashback", ignoreCase = true) -> "Income & Cashback"
-
-                            rule.name.contains("Rent", ignoreCase = true) ||
-                            rule.name.contains("EMI", ignoreCase = true) ||
-                            rule.name.contains("Subscription", ignoreCase = true) -> "Recurring Payments"
-
-                            rule.name.contains("Investment", ignoreCase = true) ||
-                            rule.name.contains("Transfer", ignoreCase = true) -> "Banking & Investments"
-
-                            rule.name.contains("Healthcare", ignoreCase = true) -> "Healthcare"
-
-                            else -> "Other"
-                        }
-                    }
+                    val groupedRules = rules.groupBy(::ruleGroup)
 
                     groupedRules.forEach { (category, categoryRules) ->
                         if (categoryRules.isNotEmpty()) {
-                            SectionHeaderV2(title = stringResource(when (category) { "Daily Expenses" -> R.string.flosi_rule_group_daily; "Income & Cashback" -> R.string.flosi_rule_group_income; "Recurring Payments" -> R.string.flosi_rule_group_recurring; "Banking & Investments" -> R.string.flosi_rule_group_banking; "Healthcare" -> R.string.flosi_rule_group_health; else -> R.string.flosi_rule_group_other }))
+                            SectionHeaderV2(title = stringResource(when (category) { RuleGroup.DAILY -> R.string.flosi_rule_group_daily; RuleGroup.INCOME -> R.string.flosi_rule_group_income; RuleGroup.RECURRING -> R.string.flosi_rule_group_recurring; RuleGroup.BANKING -> R.string.flosi_rule_group_banking; RuleGroup.HEALTH -> R.string.flosi_rule_group_health; RuleGroup.OTHER -> R.string.flosi_rule_group_other }))
 
                             categoryRules.forEach { rule ->
                                 RuleCard(

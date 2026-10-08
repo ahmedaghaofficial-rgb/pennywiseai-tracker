@@ -40,6 +40,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.platform.LocalContext
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import java.util.Locale
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pennywiseai.tracker.data.contacts.LocalMerchantDisplay
@@ -114,11 +117,12 @@ fun AnalyticsScreen(
 
     // Cache expensive operations
     val timePeriods = remember { TimePeriod.values().toList() }
-    val customRangeLabel = remember(customDateRange) {
-        DateRangeUtils.formatDateRange(customDateRange)
+    val appLocale = Locale.forLanguageTag(AppLocaleController.getLanguage(LocalContext.current).tag)
+    val customRangeLabel = remember(customDateRange, appLocale) {
+        DateRangeUtils.formatDateRange(customDateRange, locale = appLocale)
     }
-    val rawPeriodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel) {
-        selectedPeriod.chipLabel(budgetCycleStartDay, customRangeLabel)
+    val rawPeriodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel, appLocale) {
+        selectedPeriod.chipLabel(budgetCycleStartDay, customRangeLabel, locale = appLocale)
     }
     val periodChipLabel = if (rawPeriodChipLabel == selectedPeriod.label) localizedAnalyticsPeriodLabel(selectedPeriod) else rawPeriodChipLabel
     // Carry the custom range through drill-down navigation so the Transactions

@@ -58,6 +58,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalContext
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import java.util.Locale
 import android.view.HapticFeedbackConstants
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -205,11 +208,12 @@ fun TransactionsScreen(
 
     // Cache expensive operations
     val timePeriods = remember { TimePeriod.values().toList() }
-    val customRangeLabel = remember(customDateRange) {
-        DateRangeUtils.formatDateRange(customDateRange)
+    val appLocale = Locale.forLanguageTag(AppLocaleController.getLanguage(LocalContext.current).tag)
+    val customRangeLabel = remember(customDateRange, appLocale) {
+        DateRangeUtils.formatDateRange(customDateRange, locale = appLocale)
     }
-    val rawPeriodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel) {
-        selectedPeriod.chipLabel(budgetCycleStartDay, customRangeLabel)
+    val rawPeriodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel, appLocale) {
+        selectedPeriod.chipLabel(budgetCycleStartDay, customRangeLabel, locale = appLocale)
     }
     val periodChipLabel = if (rawPeriodChipLabel == selectedPeriod.label) localizedPeriodLabel(selectedPeriod) else rawPeriodChipLabel
     
