@@ -412,7 +412,8 @@ class ManageAccountsViewModel @Inject constructor(
                             balance = card.lastBalance!!,
                             timestamp = card.lastBalanceDate ?: LocalDateTime.now(),
                             smsSource = card.lastBalanceSource,
-                            sourceType = "CARD_LINK"
+                            sourceType = "CARD_LINK",
+                            currency = card.currency
                         )
                         android.util.Log.d("ManageAccountsViewModel", "Balance copied to account. Insert ID: $insertedId")
                         
