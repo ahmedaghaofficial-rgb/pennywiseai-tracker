@@ -2,6 +2,8 @@ package com.pennywiseai.tracker.presentation.transactions
 
 import com.pennywiseai.tracker.BuildConfig
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.BALANCE_ADJUSTMENT_STORAGE_NAME
+import com.pennywiseai.tracker.core.localization.storedBalanceAdjustmentDescription
 import com.pennywiseai.tracker.core.localization.AppLocaleController
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -347,11 +349,11 @@ class TransactionDetailViewModel @Inject constructor(
                 transactionRepository.insertTransaction(
                     TransactionEntity(
                         amount = delta.abs(),
-                        merchantName = uiText(R.string.flosi_balance_adjustment),
+                        merchantName = BALANCE_ADJUSTMENT_STORAGE_NAME,
                         category = "Others",
                         transactionType = if (delta.signum() < 0) TransactionType.EXPENSE else TransactionType.INCOME,
                         dateTime = at,
-                        description = uiText(R.string.flosi_balance_adjustment_description, CurrencyFormatter.formatCurrency(d.reported, d.currency)),
+                        description = storedBalanceAdjustmentDescription(CurrencyFormatter.formatCurrency(d.reported, d.currency)),
                         smsBody = null,
                         bankName = tx.bankName,
                         smsSender = null,

@@ -6,6 +6,8 @@ import com.pennywiseai.tracker.BuildConfig
 import android.content.Intent
 import android.net.Uri
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.localizedTransactionMerchant
+import com.pennywiseai.tracker.core.localization.localizedTransactionDescription
 import com.pennywiseai.tracker.data.contacts.LocalMerchantDisplay
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
@@ -560,6 +562,7 @@ private fun TransactionReceipt(
     onUnmarkLoanClick: () -> Unit,
     accountProfileId: Long? = null
 ) {
+    val context = LocalContext.current
     val isDark = isSystemInDarkTheme()
     val typeColor = when (transaction.transactionType) {
         TransactionType.INCOME -> if (isDark) income_dark else income_light
@@ -621,10 +624,10 @@ private fun TransactionReceipt(
                 // Edit field below renders so users can correct mis-detections.
                 val merchantDisplay = LocalMerchantDisplay.current
                 val currentAlias by viewModel.currentMerchantAlias.collectAsStateWithLifecycle()
+                val localizedMerchant = localizedTransactionMerchant(context, transaction)
                 Text(
-                    text = currentAlias
-                        ?: merchantDisplay(transaction.merchantName)
-                        ?: transaction.merchantName,
+                    text = if (localizedMerchant != transaction.merchantName) localizedMerchant
+                        else currentAlias ?: merchantDisplay(transaction.merchantName) ?: transaction.merchantName,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center
@@ -846,7 +849,7 @@ private fun TransactionReceipt(
                 DetailInfoRow(
                     icon = Icons.Default.Description,
                     label = stringResource(R.string.flosi_description),
-                    value = it
+                    value = localizedTransactionDescription(context, transaction) ?: it
                 )
             }
 
@@ -1227,7 +1230,7 @@ private fun EditableTransactionHeader(
             verticalArrangement = Arrangement.spacedBy(1.5.dp)
         ) {
             TextField(
-                value = transaction.merchantName,
+                value = localizedTransactionMerchant(LocalContext.current, transaction),
                 onValueChange = { viewModel.updateMerchantName(it) },
                 label = { Text(stringResource(R.string.flosi_merchant), fontWeight = FontWeight.SemiBold) },
                 leadingIcon = {
@@ -1267,7 +1270,7 @@ private fun EditableTransactionHeader(
             )
 
             TextField(
-                value = transaction.description ?: "",
+                value = localizedTransactionDescription(LocalContext.current, transaction) ?: "",
                 onValueChange = { viewModel.updateDescription(it) },
                 label = { Text(stringResource(R.string.flosi_description_optional), fontWeight = FontWeight.SemiBold) },
                 leadingIcon = {

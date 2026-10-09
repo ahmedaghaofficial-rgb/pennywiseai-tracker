@@ -1830,6 +1830,9 @@
     <string name="flosi_unrecognized_all">تم التعرف على كل الرسائل</string>
     <string name="flosi_analytics_insufficient">البيانات غير كافية بعد</string>
     <string name="flosi_auth_failed">فشل التحقق من الهوية. حاول مرة أخرى.</string>
+    <string name="flosi_biometric_lockout_temporary">محاولات كثيرة. انتظر قليلًا ثم حاول مرة أخرى.</string>
+    <string name="flosi_biometric_lockout_permanent">البصمة مقفلة. افتح قفل الجهاز برمز PIN أو النمط أو كلمة المرور أولًا.</string>
+    <string name="flosi_biometric_device_credential_missing">أضف رمز PIN أو نمطًا أو كلمة مرور من إعدادات الجهاز لفتح التطبيق.</string>
     <string name="flosi_rates_load_failed">تعذر تحميل أسعار الصرف</string>
     <string name="flosi_rates_refresh_failed">تعذر تحديث أسعار الصرف</string>
     <string name="flosi_rates_set_failed">تعذر تعيين سعر الصرف المخصص</string>

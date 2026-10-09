@@ -642,9 +642,14 @@ fun CreateRuleScreen(
                         )
                         Text(
                             text = buildString {
-                                append(stringResource(R.string.flosi_rule_when))
+                                append(stringResource(R.string.flosi_rule_when).trim())
+                                append(' ')
                                 conditions.forEachIndexed { index, condition ->
-                                    if (index > 0) append(stringResource(R.string.flosi_rule_and))
+                                    if (index > 0) {
+                                        append(' ')
+                                        append(stringResource(R.string.flosi_rule_and).trim())
+                                        append(' ')
+                                    }
                                     append(when(condition.field) {
                                         TransactionField.AMOUNT -> stringResource(R.string.flosi_rule_field_amount)
                                         TransactionField.TYPE -> stringResource(R.string.flosi_rule_field_type)

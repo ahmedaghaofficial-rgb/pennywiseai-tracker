@@ -66,7 +66,7 @@ class BiometricAuthManager @Inject constructor(
      * @param subtitle Optional subtitle
      * @param description Optional description
      * @param onSuccess Callback when authentication succeeds
-     * @param onError Callback when authentication fails with error message
+     * @param onError Callback when authentication ends with a BiometricPrompt error code
      * @param onFailed Callback when authentication fails (e.g., wrong fingerprint)
      */
     fun authenticate(
@@ -75,7 +75,7 @@ class BiometricAuthManager @Inject constructor(
         subtitle: String,
         description: String,
         onSuccess: () -> Unit,
-        onError: (String) -> Unit,
+        onError: (Int) -> Unit,
         onFailed: () -> Unit = {}
     ) {
         val executor = ContextCompat.getMainExecutor(context)
@@ -94,7 +94,7 @@ class BiometricAuthManager @Inject constructor(
                     // Don't treat user cancellation as an error
                     if (errorCode != BiometricPrompt.ERROR_USER_CANCELED &&
                         errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-                        onError(errString.toString())
+                        onError(errorCode)
                     }
                 }
 

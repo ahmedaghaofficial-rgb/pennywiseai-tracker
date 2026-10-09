@@ -3,6 +3,7 @@ package com.pennywiseai.tracker.widget
 import android.content.Context
 import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.core.localization.AppLocaleController
+import com.pennywiseai.tracker.core.localization.localizedTransactionMerchant
 import com.pennywiseai.tracker.ui.icons.categoryNameResource
 import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
@@ -129,7 +130,7 @@ class RecentTransactionsWidgetUpdateWorker @AssistedInject constructor(
                     }
                     val amount = converted ?: tx.amount
                     val itemCurrency = if (converted != null) targetCurrency else tx.currency
-                    val title = tx.merchantName.takeIf { it.isNotBlank() }
+                    val title = localizedTransactionMerchant(localizedContext, tx).takeIf { it.isNotBlank() }
                         ?: tx.description?.takeIf { it.isNotBlank() }
                         ?: localizedContext.getString(R.string.flosi_widget_fallback_transaction)
                     val dateText = tx.dateTime.toLocalDate().format(formatter)

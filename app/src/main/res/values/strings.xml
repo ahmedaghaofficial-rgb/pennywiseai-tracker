@@ -1630,6 +1630,9 @@
     <string name="flosi_unrecognized_all">All messages recognized</string>
     <string name="flosi_analytics_insufficient">Not enough data yet</string>
     <string name="flosi_auth_failed">Authentication failed. Please try again.</string>
+    <string name="flosi_biometric_lockout_temporary">Too many attempts. Wait a moment, then try again.</string>
+    <string name="flosi_biometric_lockout_permanent">Biometrics are locked. Unlock your device with its PIN, pattern, or password first.</string>
+    <string name="flosi_biometric_device_credential_missing">Set up a device PIN, pattern, or password in device settings to unlock the app.</string>
     <string name="flosi_rates_load_failed">Failed to load rates</string>
     <string name="flosi_rates_refresh_failed">Failed to refresh rates</string>
     <string name="flosi_rates_set_failed">Failed to set custom rate</string>

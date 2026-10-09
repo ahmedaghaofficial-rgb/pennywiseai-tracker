@@ -1,6 +1,8 @@
 package com.pennywiseai.tracker.ui.components.cards
 
 import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.localizedTransactionMerchant
+import com.pennywiseai.tracker.core.localization.localizedTransactionDescription
 import androidx.compose.ui.res.stringResource
 import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 
@@ -81,7 +83,7 @@ fun TransactionItem(
     // brand-name merchants ("Uber", "Netflix") and routinely got truncated. The
     // merchant stays the visual heading; the description is a small contextual
     // tag below. (#383)
-    val description = transaction.description?.takeIf { it.isNotBlank() }
+    val description = localizedTransactionDescription(view.context, transaction)?.takeIf { it.isNotBlank() }
 
     val categoryLabel = localizedCategoryName(transaction.category)
     val creditLabel = stringResource(R.string.flosi_credit)
@@ -92,7 +94,7 @@ fun TransactionItem(
     val excludedLabel = stringResource(R.string.flosi_excluded)
     val balanceLabel = stringResource(R.string.flosi_balance_prefix, "")
     val transferTitle = transferTitleOverride(transaction)
-    val subtitle = remember(transaction, dateTimeText, isEffectivelyBusiness, categoryLabel,
+    val subtitle = remember(transaction, description, dateTimeText, isEffectivelyBusiness, categoryLabel,
         creditLabel, transferLabel, investmentLabel, recurringLabel, businessLabel,
         excludedLabel, balanceLabel, transferTitle) {
         buildList {
@@ -144,13 +146,15 @@ fun TransactionItem(
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
     val merchantDisplay = LocalMerchantDisplay.current
+    val localizedMerchant = localizedTransactionMerchant(view.context, transaction)
 
     // For a paired self-transfer row, the event ("Transfer → 9999" /
     // "Transfer from 1234") is more informative than the merchant name (often
     // the user's own contact name), and stops the two legs from looking like
     // duplicate rows in the list. Falls back to merchant otherwise.
     ListItemCardV2(
-        title = transferTitle ?: merchantDisplay(transaction.merchantName) ?: transaction.merchantName,
+        title = transferTitle ?: if (localizedMerchant != transaction.merchantName) localizedMerchant
+            else merchantDisplay(transaction.merchantName) ?: transaction.merchantName,
         subtitle = subtitle,
         amount = "$amountPrefix$formattedAmount",
         amountColor = amountColor,
