@@ -3,6 +3,7 @@ package com.pennywiseai.tracker.widget
 import android.content.Context
 import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.core.localization.AppLocaleController
+import com.pennywiseai.tracker.ui.icons.categoryNameResource
 import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
@@ -134,7 +135,10 @@ class RecentTransactionsWidgetUpdateWorker @AssistedInject constructor(
                     val dateText = tx.dateTime.toLocalDate().format(formatter)
                     val subtitle = tx.category
                         .takeIf { it.isNotBlank() }
-                        ?.let { "$it • $dateText" }
+                        ?.let { category ->
+                            val label = categoryNameResource(category)?.let { localizedContext.getString(it) } ?: category
+                            "$label • $dateText"
+                        }
                         ?: dateText
 
                     RecentTransactionItem(
