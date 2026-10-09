@@ -431,7 +431,10 @@
         <item quantity="one">%1$d record • Latest balance is shown in accounts</item>
         <item quantity="other">%1$d records • Latest balance is shown in accounts</item>
     </plurals>
-    <string name="flosi_active_subscriptions">%1$d active subscriptions</string>
+    <plurals name="flosi_active_subscriptions">
+        <item quantity="one">%1$d active subscription</item>
+        <item quantity="other">%1$d active subscriptions</item>
+    </plurals>
     <plurals name="flosi_active_loans">
         <item quantity="one">%1$d active loan</item>
         <item quantity="other">%1$d active loans</item>

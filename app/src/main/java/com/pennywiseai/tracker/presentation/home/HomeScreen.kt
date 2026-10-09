@@ -1579,7 +1579,7 @@ private fun UpcomingSubscriptionsCard(
                 }
                 Column {
                     Text(
-                        text = stringResource(R.string.flosi_active_subscriptions, subscriptions.size),
+                        text = pluralStringResource(R.plurals.flosi_active_subscriptions, subscriptions.size, subscriptions.size),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer

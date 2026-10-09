@@ -427,7 +427,14 @@
         <item quantity="many">%1$d سجلًا • يظهر آخر رصيد في الحسابات</item>
         <item quantity="other">%1$d سجل • يظهر آخر رصيد في الحسابات</item>
     </plurals>
-    <string name="flosi_active_subscriptions">%1$d اشتراكات نشطة</string>
+    <plurals name="flosi_active_subscriptions">
+        <item quantity="zero">لا توجد اشتراكات نشطة</item>
+        <item quantity="one">اشتراك نشط واحد</item>
+        <item quantity="two">اشتراكان نشطان</item>
+        <item quantity="few">%1$d اشتراكات نشطة</item>
+        <item quantity="many">%1$d اشتراكًا نشطًا</item>
+        <item quantity="other">%1$d اشتراك نشط</item>
+    </plurals>
     <plurals name="flosi_active_loans">
         <item quantity="zero">لا توجد قروض نشطة</item>
         <item quantity="one">قرض نشط واحد</item>
