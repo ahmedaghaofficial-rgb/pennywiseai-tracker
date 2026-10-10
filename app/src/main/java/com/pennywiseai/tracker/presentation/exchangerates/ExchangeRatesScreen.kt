@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.exchangerates
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -52,12 +54,12 @@ fun ExchangeRatesScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Exchange Rates",
+                title = stringResource(R.string.flosi_exchange_rates),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 actionContent = {
@@ -65,7 +67,7 @@ fun ExchangeRatesScreen(
                         onClick = { viewModel.refreshRates() },
                         enabled = !uiState.isRefreshing
                     ) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh rates")
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.flosi_full_refresh_rates))
                     }
                 },
                 hazeState = hazeState
@@ -93,13 +95,13 @@ fun ExchangeRatesScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "No exchange rates available",
+                            text = stringResource(R.string.flosi_full_no_exchange_rates_available),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(Spacing.sm))
                         Text(
-                            text = "Rates will appear when you have transactions in multiple currencies",
+                            text = stringResource(R.string.flosi_full_rates_will_appear_when_you_have_transactions_in_multiple_currenci),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -129,7 +131,7 @@ fun ExchangeRatesScreen(
                     uiState.lastUpdated?.let { lastUpdated ->
                         item {
                             Text(
-                                text = "Last updated: ${lastUpdated.format(DateTimeFormatter.ofPattern("MMM d, yyyy h:mm a"))}",
+                                text = stringResource(R.string.flosi_exchange_updated, lastUpdated.format(DateTimeFormatter.ofPattern("MMM d, yyyy h:mm a"))),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -161,7 +163,7 @@ fun ExchangeRatesScreen(
                     item {
                         Spacer(modifier = Modifier.height(Spacing.md))
                         Text(
-                            text = "Tap a rate to set a custom value. Custom rates are preserved across API refreshes.",
+                            text = stringResource(R.string.flosi_full_tap_a_rate_to_set_a_custom_value_custom_rates_are_preserved_acros),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -172,7 +174,7 @@ fun ExchangeRatesScreen(
                                 onClick = { viewModel.clearAllCustomRates() },
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text("Reset All to Auto")
+                                Text(stringResource(R.string.flosi_full_reset_all_to_auto))
                             }
                         }
 
@@ -247,7 +249,7 @@ private fun ExchangeRateCard(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = if (rate.isCustomRate) "Custom" else "API",
+                    text = if (rate.isCustomRate) stringResource(R.string.flosi_rates_custom) else "API",
                     style = MaterialTheme.typography.labelSmall,
                     color = if (rate.isCustomRate)
                         MaterialTheme.colorScheme.primary
@@ -289,11 +291,11 @@ private fun EditRateDialog(
                         rateText = it
                         isError = it.toBigDecimalOrNull() == null || (it.toBigDecimalOrNull() ?: BigDecimal.ZERO) <= BigDecimal.ZERO
                     },
-                    label = { Text("Exchange Rate") },
+                    label = { Text(stringResource(R.string.flosi_full_exchange_rate)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     isError = isError,
                     supportingText = if (isError) {
-                        { Text("Enter a valid positive number") }
+                        { Text(stringResource(R.string.flosi_full_enter_a_valid_positive_number)) }
                     } else null,
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
@@ -311,7 +313,7 @@ private fun EditRateDialog(
                         onClick = onResetToAuto,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Reset to Auto")
+                        Text(stringResource(R.string.flosi_full_reset_to_auto))
                     }
                 }
             }
@@ -326,12 +328,12 @@ private fun EditRateDialog(
                 },
                 enabled = !isError && rateText.isNotBlank()
             ) {
-                Text("Set Custom Rate")
+                Text(stringResource(R.string.flosi_full_set_custom_rate))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.flosi_cancel))
             }
         }
     )

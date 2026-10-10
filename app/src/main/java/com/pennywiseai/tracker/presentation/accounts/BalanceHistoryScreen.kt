@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.accounts
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,6 +26,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.components.CustomTitleTopAppBar
 import androidx.compose.foundation.text.KeyboardOptions
 import com.pennywiseai.tracker.data.database.entity.AccountBalanceEntity
@@ -60,12 +63,12 @@ fun BalanceHistoryScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Balance History",
+                title = stringResource(R.string.flosi_balance_history),
                 hasBackButton = true,
                 hasActionButton = false,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 }
             )
@@ -88,8 +91,8 @@ fun BalanceHistoryScreen(
                 if (balanceHistory.isEmpty()) {
                     PennyWiseEmptyState(
                         icon = Icons.Default.History,
-                        headline = "No Balance History",
-                        description = "Balance records will appear here as transactions are processed.",
+                        headline = stringResource(R.string.flosi_no_balance_history),
+                        description = stringResource(R.string.flosi_balance_records_will_appear_here_as_transactions_are_processed),
                         modifier = Modifier.weight(1f)
                     )
                 } else {
@@ -157,7 +160,7 @@ fun BalanceHistoryScreen(
                 
                 // Info text
                 Text(
-                    text = "${balanceHistory.size} record(s) • Latest balance is shown in accounts",
+                    text = pluralStringResource(R.plurals.flosi_balance_records_count, balanceHistory.size, balanceHistory.size),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = Spacing.sm)
@@ -169,8 +172,8 @@ fun BalanceHistoryScreen(
     showDeleteConfirmation?.let { balanceId ->
         AlertDialog(
             onDismissRequest = { showDeleteConfirmation = null },
-            title = { Text("Delete Balance Record") },
-            text = { Text("Are you sure you want to delete this balance record? This action cannot be undone.") },
+            title = { Text(stringResource(R.string.flosi_delete_balance_record)) },
+            text = { Text(stringResource(R.string.flosi_are_you_sure_you_want_to_delete_this_balance_record_th)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -178,12 +181,12 @@ fun BalanceHistoryScreen(
                         showDeleteConfirmation = null
                     }
                 ) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.flosi_delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirmation = null }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -267,7 +270,7 @@ private fun BalanceHistoryItem(
                                 shape = MaterialTheme.shapes.small
                             ) {
                                 Text(
-                                    text = "CURRENT",
+                                    text = stringResource(R.string.flosi_current),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onPrimary,
                                     modifier = Modifier.padding(horizontal = Spacing.sm, vertical = Spacing.xs)
@@ -277,12 +280,12 @@ private fun BalanceHistoryItem(
                         
                         // Source type badge
                         val sourceInfo: Triple<androidx.compose.ui.graphics.vector.ImageVector?, String, androidx.compose.ui.graphics.Color> = when (balance.sourceType) {
-                            "TRANSACTION" -> Triple(Icons.Default.SwapHoriz, "Transaction", MaterialTheme.colorScheme.tertiary)
-                            "SMS_BALANCE" -> Triple(Icons.AutoMirrored.Filled.Message, "Balance SMS", MaterialTheme.colorScheme.secondary)
-                            "CARD_LINK" -> Triple(Icons.Default.CreditCard, "Card Link", MaterialTheme.colorScheme.primary)
-                            "MANUAL" -> Triple(Icons.Default.Edit, "Manual", MaterialTheme.colorScheme.onSurfaceVariant)
+                            "TRANSACTION" -> Triple(Icons.Default.SwapHoriz, stringResource(R.string.flosi_transaction_tab), MaterialTheme.colorScheme.tertiary)
+                            "SMS_BALANCE" -> Triple(Icons.AutoMirrored.Filled.Message, stringResource(R.string.flosi_balance_sms), MaterialTheme.colorScheme.secondary)
+                            "CARD_LINK" -> Triple(Icons.Default.CreditCard, stringResource(R.string.flosi_card_link), MaterialTheme.colorScheme.primary)
+                            "MANUAL" -> Triple(Icons.Default.Edit, stringResource(R.string.flosi_manual), MaterialTheme.colorScheme.onSurfaceVariant)
                             else -> if (balance.transactionId != null)
-                                Triple(Icons.Default.SwapHoriz, "Transaction", MaterialTheme.colorScheme.tertiary)
+                                Triple(Icons.Default.SwapHoriz, stringResource(R.string.flosi_transaction_tab), MaterialTheme.colorScheme.tertiary)
                             else
                                 Triple(null, "", MaterialTheme.colorScheme.onSurfaceVariant)
                         }
@@ -323,7 +326,7 @@ private fun BalanceHistoryItem(
                         IconButton(onClick = onEditClick) {
                             Icon(
                                 Icons.Default.Edit,
-                                contentDescription = "Edit balance",
+                                contentDescription = stringResource(R.string.flosi_edit_balance),
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(Dimensions.Icon.medium)
                             )
@@ -331,7 +334,7 @@ private fun BalanceHistoryItem(
                         IconButton(onClick = onDeleteClick) {
                             Icon(
                                 Icons.Default.Delete,
-                                contentDescription = "Delete balance",
+                                contentDescription = stringResource(R.string.flosi_delete_balance),
                                 tint = MaterialTheme.colorScheme.error,
                                 modifier = Modifier.size(Dimensions.Icon.medium)
                             )
@@ -360,7 +363,7 @@ private fun BalanceHistoryItem(
                         ),
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
-                        label = { Text("New Balance") },
+                        label = { Text(stringResource(R.string.flosi_new_balance)) },
                         leadingIcon = {
                             Text(
                                 text = CurrencyFormatter.getCurrencySymbol(accountPrimaryCurrency),
@@ -389,7 +392,7 @@ private fun BalanceHistoryItem(
                         ) {
                             Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small))
                             Spacer(modifier = Modifier.width(Spacing.xs))
-                            Text("Save")
+                            Text(stringResource(R.string.flosi_save))
                         }
                         OutlinedButton(
                             onClick = onCancelEdit,
@@ -397,7 +400,7 @@ private fun BalanceHistoryItem(
                         ) {
                             Icon(Icons.Default.Close, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small))
                             Spacer(modifier = Modifier.width(Spacing.xs))
-                            Text("Cancel")
+                            Text(stringResource(R.string.flosi_cancel))
                         }
                     }
                 }
@@ -409,7 +412,7 @@ private fun BalanceHistoryItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Balance",
+                        text = stringResource(R.string.flosi_balance),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -458,13 +461,13 @@ private fun BalanceHistoryItem(
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
-                                        text = "SMS Source",
+                                        text = stringResource(R.string.flosi_sms_source),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     if (!isExpanded) {
                                         Text(
-                                            text = "(${smsSource.length} chars)",
+                                            text = stringResource(R.string.flosi_sms_char_count, smsSource.length),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -494,7 +497,7 @@ private fun BalanceHistoryItem(
                                     ) {
                                         Icon(
                                             Icons.Default.ContentCopy,
-                                            contentDescription = "Copy SMS text",
+                                            contentDescription = stringResource(R.string.flosi_copy_sms_text),
                                             modifier = Modifier.size(Dimensions.Icon.small),
                                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -503,7 +506,7 @@ private fun BalanceHistoryItem(
 
                                 Icon(
                                     imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                                    contentDescription = if (isExpanded) "Collapse SMS source" else "Expand SMS source",
+                                    contentDescription = stringResource(if (isExpanded) R.string.flosi_collapse_sms_source else R.string.flosi_expand_sms_source),
                                     modifier = Modifier.size(Dimensions.Icon.medium),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                 )

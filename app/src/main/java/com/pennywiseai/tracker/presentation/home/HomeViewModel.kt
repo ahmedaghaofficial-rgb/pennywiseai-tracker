@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.home
 
+import com.pennywiseai.tracker.BuildConfig
+
 import com.pennywiseai.tracker.data.preferences.HomeSection
 import com.pennywiseai.tracker.data.preferences.HomeSectionLayout
 import android.content.Context
@@ -1318,7 +1320,7 @@ class HomeViewModel @Inject constructor(
             }
         }
 
-        // Auto-select currency: prefer baseCurrency from preferences, then INR, then first available
+        // Auto-select currency: prefer baseCurrency from preferences, then the build default, then first available
         val currentSelectedCurrency = _uiState.value.selectedCurrency
         if (!availableCurrencies.contains(currentSelectedCurrency) && availableCurrencies.isNotEmpty()) {
             // Need to get baseCurrency asynchronously
@@ -1326,8 +1328,8 @@ class HomeViewModel @Inject constructor(
                 val baseCurrency = userPreferencesRepository.baseCurrency.first()
                 val selectedCurrency = if (availableCurrencies.contains(baseCurrency)) {
                     baseCurrency
-                } else if (availableCurrencies.contains("INR")) {
-                    "INR"
+                } else if (availableCurrencies.contains(BuildConfig.DEFAULT_CURRENCY)) {
+                    BuildConfig.DEFAULT_CURRENCY
                 } else {
                     availableCurrencies.first()
                 }
@@ -1665,7 +1667,7 @@ data class HomeUiState(
     val creditCards: List<AccountBalanceEntity> = emptyList(),
     val totalBalance: BigDecimal = BigDecimal.ZERO,
     val totalAvailableCredit: BigDecimal = BigDecimal.ZERO,
-    val selectedCurrency: String = "INR",
+    val selectedCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     val availableCurrencies: List<String> = emptyList(),
     val recentTransactionConvertedAmounts: Map<Long, BigDecimal> = emptyMap(),
     val spendingHistory: List<BigDecimal> = emptyList(),

@@ -1,6 +1,10 @@
 package com.pennywiseai.tracker.widget
 
 import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import com.pennywiseai.tracker.core.localization.localizedTransactionMerchant
+import com.pennywiseai.tracker.ui.icons.categoryNameResource
 import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
@@ -111,7 +115,8 @@ class RecentTransactionsWidgetUpdateWorker @AssistedInject constructor(
 
             val totalSpent = (grossSpent - refundTotal).coerceAtLeast(BigDecimal.ZERO)
 
-            val formatter = DateTimeFormatter.ofPattern("MMM d")
+            val localizedContext = AppLocaleController.wrap(applicationContext)
+            val formatter = DateTimeFormatter.ofPattern("MMM d", java.util.Locale.forLanguageTag(AppLocaleController.getLanguage(applicationContext).tag))
 
             val recentItems = allTransactions
                 .take(MAX_ITEMS)
@@ -125,13 +130,16 @@ class RecentTransactionsWidgetUpdateWorker @AssistedInject constructor(
                     }
                     val amount = converted ?: tx.amount
                     val itemCurrency = if (converted != null) targetCurrency else tx.currency
-                    val title = tx.merchantName.takeIf { it.isNotBlank() }
+                    val title = localizedTransactionMerchant(localizedContext, tx).takeIf { it.isNotBlank() }
                         ?: tx.description?.takeIf { it.isNotBlank() }
-                        ?: "Transaction"
+                        ?: localizedContext.getString(R.string.flosi_widget_fallback_transaction)
                     val dateText = tx.dateTime.toLocalDate().format(formatter)
                     val subtitle = tx.category
                         .takeIf { it.isNotBlank() }
-                        ?.let { "$it • $dateText" }
+                        ?.let { category ->
+                            val label = categoryNameResource(category)?.let { localizedContext.getString(it) } ?: category
+                            "$label • $dateText"
+                        }
                         ?: dateText
 
                     RecentTransactionItem(

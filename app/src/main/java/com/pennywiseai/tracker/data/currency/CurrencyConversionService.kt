@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.data.currency
 
+import com.pennywiseai.tracker.BuildConfig
 import com.pennywiseai.tracker.data.database.dao.ExchangeRateDao
 import com.pennywiseai.tracker.data.database.entity.ExchangeRateEntity
 import com.pennywiseai.tracker.core.TimeConstants
@@ -297,7 +298,7 @@ class CurrencyConversionService @Inject constructor(
      * Get the base currency for the app
      */
     private suspend fun getBaseCurrency(): String {
-        return userPreferencesRepository.baseCurrency.first() ?: "INR"
+        return userPreferencesRepository.baseCurrency.first() ?: BuildConfig.DEFAULT_CURRENCY
     }
 
     /**

@@ -1,8 +1,13 @@
 package com.pennywiseai.tracker.presentation.categories
 
+import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.database.entity.CategoryEntity
+import com.pennywiseai.tracker.ui.icons.categoryNameResource
 import com.pennywiseai.tracker.data.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -15,11 +20,13 @@ import kotlinx.coroutines.CoroutineScope
 
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val categoryRepository: CategoryRepository,
     // The hide/unhide write outlives this screen on purpose — see
     // [toggleCategoryHidden].
     @ApplicationScope private val applicationScope: CoroutineScope
 ) : ViewModel() {
+    private fun uiText(id: Int, vararg args: Any): String = AppLocaleController.wrap(context).getString(id, *args)
     
     // UI State
     private val _uiState = MutableStateFlow(CategoriesUiState())
@@ -54,7 +61,7 @@ class CategoriesViewModel @Inject constructor(
             _editingCategory.value = category
             _showAddEditDialog.value = true
         } else {
-            _snackbarMessage.value = "System categories cannot be edited"
+            _snackbarMessage.value = uiText(R.string.validation_system_category_edit)
         }
     }
     
@@ -85,11 +92,11 @@ class CategoriesViewModel @Inject constructor(
                             parentId = parentId
                         )
                     )
-                    _snackbarMessage.value = "Category updated successfully"
+                    _snackbarMessage.value = uiText(R.string.validation_category_updated)
                 } else {
                     // Check if category already exists
                     if (categoryRepository.categoryExists(name)) {
-                        _snackbarMessage.value = "Category '$name' already exists"
+                        _snackbarMessage.value = uiText(R.string.flosi_category_already_exists, name)
                         return@launch
                     }
                     
@@ -101,19 +108,19 @@ class CategoriesViewModel @Inject constructor(
                         icon = icon,
                         parentId = parentId
                     )
-                    _snackbarMessage.value = "Category created successfully"
+                    _snackbarMessage.value = uiText(R.string.validation_category_created)
                 }
                 
                 hideDialog()
             } catch (e: Exception) {
-                _snackbarMessage.value = "Error saving category: ${e.message}"
+                _snackbarMessage.value = uiText(R.string.flosi_category_save_error, e.message ?: "")
             }
         }
     }
     
     fun deleteCategory(category: CategoryEntity) {
         if (category.isSystem) {
-            _snackbarMessage.value = "System categories cannot be deleted"
+            _snackbarMessage.value = uiText(R.string.validation_system_category_delete)
             return
         }
         
@@ -121,12 +128,12 @@ class CategoriesViewModel @Inject constructor(
             try {
                 val deleted = categoryRepository.deleteCategory(category.id)
                 if (deleted) {
-                    _snackbarMessage.value = "Category deleted successfully"
+                    _snackbarMessage.value = uiText(R.string.validation_category_deleted)
                 } else {
-                    _snackbarMessage.value = "Cannot delete this category"
+                    _snackbarMessage.value = uiText(R.string.validation_cannot_delete_category)
                 }
             } catch (e: Exception) {
-                _snackbarMessage.value = "Error deleting category: ${e.message}"
+                _snackbarMessage.value = uiText(R.string.flosi_category_delete_error, e.message ?: "")
             }
         }
     }
@@ -165,11 +172,15 @@ class CategoriesViewModel @Inject constructor(
                 try {
                     val updated = categoryRepository.toggleCategoryHidden(categoryId)
                     if (updated != null) {
+                        val displayName = if (updated.isSystem) {
+                            categoryNameResource(updated.name)?.let { uiText(it) } ?: updated.name
+                        } else updated.name
                         _snackbarMessage.value =
-                            if (updated.isHidden) "${updated.name} hidden" else "${updated.name} shown"
+                            if (updated.isHidden) uiText(R.string.flosi_category_hidden, displayName)
+                            else uiText(R.string.flosi_category_shown, displayName)
                     }
                 } catch (e: Exception) {
-                    _snackbarMessage.value = "Error updating category: ${e.message}"
+                    _snackbarMessage.value = uiText(R.string.flosi_category_update_error, e.message ?: "")
                 }
             }
         }

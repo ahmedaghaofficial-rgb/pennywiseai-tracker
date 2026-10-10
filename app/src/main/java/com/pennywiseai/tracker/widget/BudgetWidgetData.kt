@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.widget
 
+import com.pennywiseai.tracker.BuildConfig
 import java.math.BigDecimal
 
 data class BudgetWidgetData(
@@ -12,5 +13,5 @@ data class BudgetWidgetData(
     val netSavings: BigDecimal = BigDecimal.ZERO,
     val savingsRate: Float = 0f,
     val savingsDelta: BigDecimal? = null,
-    val currency: String = "INR"
+    val currency: String = BuildConfig.DEFAULT_CURRENCY
 )

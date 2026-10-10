@@ -11,6 +11,8 @@ import androidx.work.*
 import com.pennywiseai.parser.core.ParsedTransaction
 import com.pennywiseai.parser.core.bank.*
 import com.pennywiseai.tracker.data.database.entity.AccountBalanceEntity
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import com.pennywiseai.tracker.data.database.entity.ProfileEntity
 import com.pennywiseai.tracker.data.database.entity.CardType
 import com.pennywiseai.tracker.data.database.entity.TransactionType
@@ -114,17 +116,17 @@ class OptimizedSmsReaderWorker @AssistedInject constructor(
 
         fun buildProgressNotification(context: Context, processed: Int, total: Int): android.app.Notification {
             val channelId = "sms_scan_channel"
+            val localizedContext = AppLocaleController.wrap(context)
             // SDK_INT is always >= 26 for this project; NotificationChannel is always available
             val nm = context.getSystemService(android.app.NotificationManager::class.java)
-            if (nm.getNotificationChannel(channelId) == null) {
-                nm.createNotificationChannel(
-                    android.app.NotificationChannel(channelId, "SMS Scan", android.app.NotificationManager.IMPORTANCE_LOW)
-                )
-            }
-            return androidx.core.app.NotificationCompat.Builder(context, channelId)
+            // Re-registering the same ID updates the channel name after a language switch.
+            nm.createNotificationChannel(
+                android.app.NotificationChannel(channelId, localizedContext.getString(R.string.flosi_sms_scan_channel), android.app.NotificationManager.IMPORTANCE_LOW)
+            )
+            return androidx.core.app.NotificationCompat.Builder(localizedContext, channelId)
                 .setSmallIcon(android.R.drawable.ic_popup_sync)
-                .setContentTitle("Scanning transactions…")
-                .setContentText(if (total > 0) "Processed $processed / $total" else "Reading SMS…")
+                .setContentTitle(localizedContext.getString(R.string.flosi_sms_scan_progress_title))
+                .setContentText(if (total > 0) localizedContext.getString(R.string.flosi_sms_scan_processed, processed, total) else localizedContext.getString(R.string.flosi_sms_scan_reading))
                 .setProgress(total, processed, total == 0)
                 .setOngoing(true)
                 .setSilent(true)

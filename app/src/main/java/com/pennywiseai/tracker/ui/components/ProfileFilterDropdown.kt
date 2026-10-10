@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components
 
+import androidx.compose.ui.res.stringResource
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.AccountBalance
@@ -12,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.data.database.entity.ProfileEntity
 
 @Composable
@@ -28,7 +30,7 @@ fun ProfileFilterDropdown(
     ) {
         // "All" option
         DropdownMenuItem(
-            text = { Text("All Accounts") },
+            text = { Text(stringResource(R.string.flosi_all_accounts)) },
             onClick = {
                 onProfileSelected(null)
                 onDismiss()
@@ -42,7 +44,7 @@ fun ProfileFilterDropdown(
         )
         profiles.forEach { profile ->
             DropdownMenuItem(
-                text = { Text(profile.name) },
+                text = { Text(localizedProfileName(profile)) },
                 onClick = {
                     onProfileSelected(profile.id)
                     onDismiss()
@@ -68,4 +70,11 @@ fun profileFilterIcon(profiles: List<ProfileEntity>, selectedProfileId: Long?): 
     if (selectedProfileId == null) return Icons.Outlined.AccountBalance
     val profile = profiles.find { it.id == selectedProfileId }
     return if (profile != null) profileIcon(profile) else Icons.Outlined.AccountBalance
+}
+
+@Composable
+fun localizedProfileName(profile: ProfileEntity): String = when (profile.id) {
+    ProfileEntity.PERSONAL_ID -> stringResource(R.string.flosi_personal)
+    ProfileEntity.BUSINESS_ID -> stringResource(R.string.flosi_business)
+    else -> profile.name
 }

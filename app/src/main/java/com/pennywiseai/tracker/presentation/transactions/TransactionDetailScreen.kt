@@ -1,8 +1,16 @@
 package com.pennywiseai.tracker.presentation.transactions
 
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
+
+import com.pennywiseai.tracker.BuildConfig
 import android.content.Intent
 import android.net.Uri
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.localizedTransactionMerchant
+import com.pennywiseai.tracker.core.localization.localizedTransactionDescription
 import com.pennywiseai.tracker.data.contacts.LocalMerchantDisplay
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -30,6 +38,7 @@ import com.pennywiseai.tracker.presentation.add.ReceiptPickerSection
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.automirrored.filled.TrendingDown
@@ -159,12 +168,13 @@ fun TransactionDetailScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val transactionUpdatedMessage = stringResource(R.string.flosi_transaction_updated)
     
     // Show success snackbar
     LaunchedEffect(saveSuccess) {
         if (saveSuccess) {
             scope.launch {
-                snackbarHostState.showSnackbar("Transaction updated successfully")
+                snackbarHostState.showSnackbar(transactionUpdatedMessage)
                 viewModel.clearSaveSuccess()
             }
         }
@@ -211,7 +221,7 @@ fun TransactionDetailScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = if (isEditMode) "Edit Transaction" else "Transaction Details",
+                title = stringResource(if (isEditMode) R.string.flosi_edit_transaction else R.string.flosi_transaction_details),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
@@ -224,7 +234,7 @@ fun TransactionDetailScreen(
                     }) {
                         Icon(
                             if (isEditMode) Icons.Default.Close else Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = if (isEditMode) "Cancel" else "Back"
+                            contentDescription = stringResource(if (isEditMode) R.string.flosi_cancel else R.string.flosi_back)
                         )
                     }
                 },
@@ -233,14 +243,14 @@ fun TransactionDetailScreen(
                         IconButton(onClick = { viewModel.enterEditMode() }) {
                             Icon(
                                 Icons.Default.Edit,
-                                contentDescription = "Edit"
+                                contentDescription = stringResource(R.string.flosi_edit)
                             )
                         }
                         Box {
                             IconButton(onClick = { showActionsMenu = true }) {
                                 Icon(
                                     Icons.Default.MoreVert,
-                                    contentDescription = "More actions"
+                                    contentDescription = stringResource(R.string.flosi_more_actions)
                                 )
                             }
                             DropdownMenu(
@@ -248,7 +258,7 @@ fun TransactionDetailScreen(
                                 onDismissRequest = { showActionsMenu = false }
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("Add to group") },
+                                    text = { Text(stringResource(R.string.flosi_add_to_group)) },
                                     leadingIcon = {
                                         Icon(Icons.Outlined.FolderOpen, contentDescription = null)
                                     },
@@ -258,7 +268,7 @@ fun TransactionDetailScreen(
                                     }
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Duplicate") },
+                                    text = { Text(stringResource(R.string.flosi_duplicate)) },
                                     leadingIcon = {
                                         Icon(Icons.Default.ContentCopy, contentDescription = null)
                                     },
@@ -268,7 +278,7 @@ fun TransactionDetailScreen(
                                     }
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Report issue") },
+                                    text = { Text(stringResource(R.string.flosi_report_issue)) },
                                     leadingIcon = {
                                         Icon(Icons.Default.BugReport, contentDescription = null)
                                     },
@@ -285,7 +295,7 @@ fun TransactionDetailScreen(
                                 HorizontalDivider()
                                 DropdownMenuItem(
                                     text = {
-                                        Text("Delete", color = MaterialTheme.colorScheme.error)
+                                        Text(stringResource(R.string.flosi_delete), color = MaterialTheme.colorScheme.error)
                                     },
                                     leadingIcon = {
                                         Icon(
@@ -313,7 +323,7 @@ fun TransactionDetailScreen(
                                     color = MaterialTheme.colorScheme.primary
                                 )
                             } else {
-                                Text("Save")
+                                Text(stringResource(R.string.flosi_save))
                             }
                         }
                     }
@@ -350,9 +360,9 @@ fun TransactionDetailScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.hideDeleteDialog() },
-            title = { Text("Delete Transaction") },
+            title = { Text(stringResource(R.string.flosi_delete_transaction)) },
             text = { 
-                Text("Are you sure you want to delete this transaction? This action cannot be undone.")
+                Text(stringResource(R.string.flosi_are_you_sure_you_want_to_delete_this_transaction_this))
             },
             confirmButton = {
                 TextButton(
@@ -367,7 +377,7 @@ fun TransactionDetailScreen(
                         )
                     } else {
                         Text(
-                            "Delete",
+                            stringResource(R.string.flosi_delete),
                             color = MaterialTheme.colorScheme.error
                         )
                     }
@@ -375,7 +385,7 @@ fun TransactionDetailScreen(
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.hideDeleteDialog() }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -399,7 +409,7 @@ fun TransactionDetailScreen(
         val inferredDirection = if (txType == TransactionType.INCOME) LoanDirection.BORROWED else LoanDirection.LENT
         MarkAsLoanBottomSheet(
             transactionAmount = transaction?.amount ?: BigDecimal.ZERO,
-            transactionCurrency = transaction?.currency ?: "INR",
+            transactionCurrency = transaction?.currency ?: BuildConfig.DEFAULT_CURRENCY,
             direction = inferredDirection,
             recentPersonNames = recentPersonNames,
             onDismiss = { viewModel.hideMarkAsLoanSheet() },
@@ -413,21 +423,20 @@ fun TransactionDetailScreen(
     if (showUnmarkLoanConfirm) {
         AlertDialog(
             onDismissRequest = { showUnmarkLoanConfirm = false },
-            title = { Text("Unmark as loan?") },
+            title = { Text(stringResource(R.string.flosi_unmark_as_loan)) },
             text = {
                 Text(
-                    "This removes the loan link from this transaction. If no other " +
-                        "transactions are linked, the loan is deleted too."
+                    stringResource(R.string.flosi_unlink_loan_warning)
                 )
             },
             confirmButton = {
                 TextButton(onClick = {
                     showUnmarkLoanConfirm = false
                     viewModel.unlinkLoan()
-                }) { Text("Unmark") }
+                }) { Text(stringResource(R.string.flosi_unmark)) }
             },
             dismissButton = {
-                TextButton(onClick = { showUnmarkLoanConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { showUnmarkLoanConfirm = false }) { Text(stringResource(R.string.flosi_cancel)) }
             }
         )
     }
@@ -445,7 +454,7 @@ fun TransactionDetailScreen(
             ) {
                 AsyncImage(
                     model = receiptUri,
-                    contentDescription = "Receipt full screen",
+                    contentDescription = stringResource(R.string.flosi_receipt_full_screen),
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(Spacing.md),
@@ -462,7 +471,7 @@ fun TransactionDetailScreen(
                         contentColor = Color.White
                     )
                 ) {
-                    Icon(Icons.Default.Close, contentDescription = "Close")
+                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.flosi_close))
                 }
             }
         }
@@ -553,6 +562,7 @@ private fun TransactionReceipt(
     onUnmarkLoanClick: () -> Unit,
     accountProfileId: Long? = null
 ) {
+    val context = LocalContext.current
     val isDark = isSystemInDarkTheme()
     val typeColor = when (transaction.transactionType) {
         TransactionType.INCOME -> if (isDark) income_dark else income_light
@@ -614,10 +624,10 @@ private fun TransactionReceipt(
                 // Edit field below renders so users can correct mis-detections.
                 val merchantDisplay = LocalMerchantDisplay.current
                 val currentAlias by viewModel.currentMerchantAlias.collectAsStateWithLifecycle()
+                val localizedMerchant = localizedTransactionMerchant(context, transaction)
                 Text(
-                    text = currentAlias
-                        ?: merchantDisplay(transaction.merchantName)
-                        ?: transaction.merchantName,
+                    text = if (localizedMerchant != transaction.merchantName) localizedMerchant
+                        else currentAlias ?: merchantDisplay(transaction.merchantName) ?: transaction.merchantName,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center
@@ -675,7 +685,7 @@ private fun TransactionReceipt(
                             label = {
                                 Text(
                                     text = if (loan.direction == LoanDirection.LENT)
-                                        "Lent to ${loan.personName}" else "Borrowed from ${loan.personName}",
+                                        stringResource(R.string.flosi_lent_to_person, loan.personName) else stringResource(R.string.flosi_borrowed_from_person, loan.personName),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold
                                 )
@@ -700,7 +710,7 @@ private fun TransactionReceipt(
                         IconButton(onClick = onUnmarkLoanClick) {
                             Icon(
                                 Icons.Default.Close,
-                                contentDescription = "Unmark as loan",
+                                contentDescription = stringResource(R.string.flosi_unmark_as_loan),
                                 modifier = Modifier.size(Dimensions.Icon.small),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -711,7 +721,7 @@ private fun TransactionReceipt(
                         onClick = { viewModel.showMarkAsLoanSheet() },
                         label = {
                             Text(
-                                text = "Mark as loan",
+                                text = stringResource(R.string.flosi_mark_as_loan),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         },
@@ -779,12 +789,12 @@ private fun TransactionReceipt(
                 )
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Exclude from analytics",
+                        text = stringResource(R.string.flosi_exclude_from_analytics),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = "Kept in history & balance, ignored in spending stats",
+                        text = stringResource(R.string.flosi_kept_in_history_balance_ignored_in_spending_stats),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -803,7 +813,7 @@ private fun TransactionReceipt(
             // Date & Time
             DetailInfoRow(
                 icon = Icons.Default.CalendarToday,
-                label = "Date & Time",
+                label = stringResource(R.string.flosi_date_time),
                 value = transaction.dateTime.format(
                     DateTimeFormatter.ofPattern("EEE, MMM d, yyyy \u00b7 h:mm a")
                 )
@@ -813,13 +823,13 @@ private fun TransactionReceipt(
 
             // Category
             val categoryValue = if (hasSplits && splits.isNotEmpty()) {
-                "Split (${splits.size} categories)"
+                stringResource(R.string.flosi_split_categories, splits.size)
             } else {
-                transaction.category
+                localizedCategoryName(transaction.category)
             }
             DetailInfoRow(
                 icon = Icons.Default.Category,
-                label = "Category",
+                label = stringResource(R.string.flosi_category),
                 value = categoryValue
             )
 
@@ -828,7 +838,7 @@ private fun TransactionReceipt(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 DetailInfoRow(
                     icon = Icons.Default.AccountBalance,
-                    label = "Bank",
+                    label = stringResource(R.string.flosi_bank),
                     value = it
                 )
             }
@@ -838,8 +848,8 @@ private fun TransactionReceipt(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 DetailInfoRow(
                     icon = Icons.Default.Description,
-                    label = "Description",
-                    value = it
+                    label = stringResource(R.string.flosi_description),
+                    value = localizedTransactionDescription(context, transaction) ?: it
                 )
             }
 
@@ -849,7 +859,7 @@ private fun TransactionReceipt(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 DetailInfoRow(
                     icon = Icons.Default.Sell,
-                    label = if (detailTags.size == 1) "Tag" else "Tags",
+                    label = stringResource(if (detailTags.size == 1) R.string.flosi_tag else R.string.flosi_tags),
                     value = detailTags.joinToString(", ")
                 )
             }
@@ -859,8 +869,8 @@ private fun TransactionReceipt(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 DetailInfoRow(
                     icon = Icons.Default.Repeat,
-                    label = "Status",
-                    value = "Recurring"
+                    label = stringResource(R.string.flosi_status),
+                    value = stringResource(R.string.flosi_recurring)
                 )
             }
 
@@ -870,8 +880,8 @@ private fun TransactionReceipt(
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
             DetailInfoRow(
                 icon = if (isEffectivelyBusiness) Icons.Default.Business else Icons.Default.Person,
-                label = "Classification",
-                value = if (isEffectivelyBusiness) "Business" else "Personal"
+                label = stringResource(R.string.flosi_classification),
+                value = stringResource(if (isEffectivelyBusiness) R.string.flosi_business else R.string.flosi_personal)
             )
 
             // Account info
@@ -893,7 +903,7 @@ private fun TransactionReceipt(
                         } else it
                         DetailInfoRow(
                             icon = Icons.Default.AccountBalanceWallet,
-                            label = "Account",
+                            label = stringResource(R.string.flosi_account),
                             value = masked
                         )
                     }
@@ -905,7 +915,7 @@ private fun TransactionReceipt(
                     } else from
                     DetailInfoRow(
                         icon = Icons.Default.Output,
-                        label = "From",
+                        label = stringResource(R.string.flosi_from),
                         value = masked
                     )
                 }
@@ -916,7 +926,7 @@ private fun TransactionReceipt(
                     } else to
                     DetailInfoRow(
                         icon = Icons.Default.Input,
-                        label = "To",
+                        label = stringResource(R.string.flosi_to),
                         value = masked
                     )
                 }
@@ -927,7 +937,7 @@ private fun TransactionReceipt(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 DetailInfoRow(
                     icon = Icons.Default.AccountBalanceWallet,
-                    label = "Balance",
+                    label = stringResource(R.string.flosi_balance),
                     value = CurrencyFormatter.formatCurrency(it, viewModel.primaryCurrency.value)
                 )
             }
@@ -939,9 +949,8 @@ private fun TransactionReceipt(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 DetailInfoRow(
                     icon = Icons.Default.Warning,
-                    label = "Balance mismatch",
-                    value = "Off by ${CurrencyFormatter.formatCurrency(d.delta.abs(), d.currency)} · expected " +
-                        CurrencyFormatter.formatCurrency(d.expected, d.currency)
+                    label = stringResource(R.string.flosi_balance_mismatch),
+                    value = stringResource(R.string.flosi_balance_mismatch_detail, CurrencyFormatter.formatCurrency(d.delta.abs(), d.currency), CurrencyFormatter.formatCurrency(d.expected, d.currency))
                 )
                 val adding by viewModel.isAddingAdjustment.collectAsStateWithLifecycle()
                 TextButton(
@@ -950,8 +959,7 @@ private fun TransactionReceipt(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        if (d.delta.signum() < 0) "Add ${CurrencyFormatter.formatCurrency(d.delta.abs(), d.currency)} untracked expense"
-                        else "Add ${CurrencyFormatter.formatCurrency(d.delta.abs(), d.currency)} untracked income"
+                        stringResource(if (d.delta.signum() < 0) R.string.flosi_add_untracked_expense else R.string.flosi_add_untracked_income, CurrencyFormatter.formatCurrency(d.delta.abs(), d.currency))
                     )
                 }
             }
@@ -962,7 +970,7 @@ private fun TransactionReceipt(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 DetailInfoRow(
                     icon = Icons.Default.Tag,
-                    label = "Reference",
+                    label = stringResource(R.string.flosi_reference),
                     value = it
                 )
             }
@@ -991,13 +999,13 @@ private fun TransactionReceipt(
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "Receipt",
+                            text = stringResource(R.string.flosi_receipt),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Text(
-                            text = "Tap to view",
+                            text = stringResource(R.string.flosi_tap_to_view),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -1005,7 +1013,7 @@ private fun TransactionReceipt(
                     Spacer(modifier = Modifier.height(Spacing.sm))
                     AsyncImage(
                         model = uri,
-                        contentDescription = "Receipt",
+                        contentDescription = stringResource(R.string.flosi_receipt),
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(max = 200.dp)
@@ -1098,7 +1106,7 @@ private fun TransferFlowRow(
         }
 
         Icon(
-            Icons.Default.ArrowForward,
+            Icons.AutoMirrored.Filled.ArrowForward,
             contentDescription = null,
             modifier = Modifier.size(Dimensions.Icon.small),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -1148,7 +1156,7 @@ private fun ExpandableSmsSection(smsBody: String) {
                         modifier = Modifier.size(Dimensions.Icon.small)
                     )
                     Text(
-                        text = if (expanded) "Hide SMS" else "Show original SMS",
+                        text = stringResource(if (expanded) R.string.flosi_hide_sms else R.string.flosi_show_original_sms),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -1206,7 +1214,7 @@ private fun EditableTransactionHeader(
             TextField(
                 value = transaction.amount.stripTrailingZeros().toPlainString(),
                 onValueChange = { viewModel.updateAmount(it) },
-                label = { Text("Amount", fontWeight = FontWeight.SemiBold) },
+                label = { Text(stringResource(R.string.flosi_amount_6), fontWeight = FontWeight.SemiBold) },
                 textStyle = MaterialTheme.typography.headlineSmall,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 singleLine = true,
@@ -1222,9 +1230,9 @@ private fun EditableTransactionHeader(
             verticalArrangement = Arrangement.spacedBy(1.5.dp)
         ) {
             TextField(
-                value = transaction.merchantName,
+                value = localizedTransactionMerchant(LocalContext.current, transaction),
                 onValueChange = { viewModel.updateMerchantName(it) },
-                label = { Text("Merchant", fontWeight = FontWeight.SemiBold) },
+                label = { Text(stringResource(R.string.flosi_merchant), fontWeight = FontWeight.SemiBold) },
                 leadingIcon = {
                     BrandIcon(
                         merchantName = transaction.merchantName,
@@ -1246,8 +1254,8 @@ private fun EditableTransactionHeader(
             TextField(
                 value = merchantAlias,
                 onValueChange = { viewModel.updateMerchantAlias(it) },
-                label = { Text("Display alias (Optional)", fontWeight = FontWeight.SemiBold) },
-                placeholder = { Text("Show a friendlier name instead") },
+                label = { Text(stringResource(R.string.flosi_display_alias_optional), fontWeight = FontWeight.SemiBold) },
+                placeholder = { Text(stringResource(R.string.flosi_show_a_friendlier_name_instead)) },
                 leadingIcon = {
                     Icon(
                         Icons.Default.Badge,
@@ -1262,9 +1270,9 @@ private fun EditableTransactionHeader(
             )
 
             TextField(
-                value = transaction.description ?: "",
+                value = localizedTransactionDescription(LocalContext.current, transaction) ?: "",
                 onValueChange = { viewModel.updateDescription(it) },
-                label = { Text("Description (Optional)", fontWeight = FontWeight.SemiBold) },
+                label = { Text(stringResource(R.string.flosi_description_optional), fontWeight = FontWeight.SemiBold) },
                 leadingIcon = {
                     Icon(
                         Icons.Default.Description,
@@ -1299,7 +1307,7 @@ private fun EditableTransactionHeader(
                     onCheckedChange = { viewModel.toggleApplyTagsToAllFromMerchant() }
                 )
                 Text(
-                    text = "Apply tags to all future from ${transaction.merchantName}",
+                    text = stringResource(R.string.flosi_apply_tags_future, transaction.merchantName),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -1379,16 +1387,16 @@ private fun EditableExtractedInfoCard(
                     accountNumber = transaction.fromAccount,
                     onAccountNumberChange = { viewModel.updateFromAccount(it) },
                     viewModel = viewModel,
-                    label = "From Account",
-                    placeholder = "Select or enter source account",
+                    label = stringResource(R.string.flosi_from_account_12),
+                    placeholder = stringResource(R.string.flosi_select_or_enter_source_account),
                     excludeAccount = transaction.toAccount
                 )
                 AccountNumberField(
                     accountNumber = transaction.toAccount,
                     onAccountNumberChange = { viewModel.updateToAccount(it) },
                     viewModel = viewModel,
-                    label = "To Account",
-                    placeholder = "Select or enter destination account",
+                    label = stringResource(R.string.flosi_to_account_10),
+                    placeholder = stringResource(R.string.flosi_select_or_enter_destination_account),
                     excludeAccount = transaction.fromAccount
                 )
             } else {
@@ -1422,7 +1430,7 @@ private fun EditableExtractedInfoCard(
                     modifier = Modifier.size(Dimensions.Icon.small)
                 )
                 Spacer(modifier = Modifier.width(Spacing.xs))
-                Text("Split into categories")
+                Text(stringResource(R.string.flosi_split_into_categories))
             }
         }
 
@@ -1437,7 +1445,7 @@ private fun EditableExtractedInfoCard(
                     onCheckedChange = { viewModel.toggleApplyToAllFromMerchant() }
                 )
                 Text(
-                    text = "Apply category to all from ${transaction.merchantName}",
+                    text = stringResource(R.string.flosi_apply_category_all, transaction.merchantName),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -1454,7 +1462,7 @@ private fun EditableExtractedInfoCard(
                         onCheckedChange = { viewModel.toggleUpdateExistingTransactions() }
                     )
                     Text(
-                        text = "Update $existingTransactionCount existing ${if (existingTransactionCount == 1) "transaction" else "transactions"}",
+                        text = pluralStringResource(R.plurals.flosi_update_existing_count, existingTransactionCount, existingTransactionCount),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -1471,7 +1479,7 @@ private fun EditableExtractedInfoCard(
         val effectiveProfileId = transaction.profileId ?: accountDefault
         val isEffectivelyBusiness = effectiveProfileId == ProfileEntity.BUSINESS_ID
         Text(
-            text = "Classification",
+            text = stringResource(R.string.flosi_classification),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -1487,7 +1495,7 @@ private fun EditableExtractedInfoCard(
                 },
                 shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2)
             ) {
-                Text("Personal")
+                Text(stringResource(R.string.flosi_personal))
             }
             SegmentedButton(
                 selected = isEffectivelyBusiness,
@@ -1497,7 +1505,7 @@ private fun EditableExtractedInfoCard(
                 },
                 shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2)
             ) {
-                Text("Business")
+                Text(stringResource(R.string.flosi_business))
             }
         }
 
@@ -1511,7 +1519,7 @@ private fun EditableExtractedInfoCard(
                 onCheckedChange = { viewModel.updateRecurringStatus(it) }
             )
             Text(
-                text = "Recurring Transaction",
+                text = stringResource(R.string.flosi_recurring_transaction),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -1542,7 +1550,7 @@ private fun EditableExtractedInfoCard(
                     modifier = Modifier.size(Dimensions.Icon.small)
                 )
                 Text(
-                    text = "Bank: $it (read-only)",
+                    text = stringResource(R.string.flosi_bank_read_only, it),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -1577,7 +1585,7 @@ private fun BudgetImpactSection(viewModel: TransactionDetailViewModel) {
         verticalArrangement = Arrangement.spacedBy(Spacing.xs)
     ) {
         Text(
-            text = "Budget impact",
+            text = stringResource(R.string.flosi_budget_impact),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -1587,19 +1595,19 @@ private fun BudgetImpactSection(viewModel: TransactionDetailViewModel) {
                 selected = budgetImpactType == null,
                 onClick = { viewModel.updateBudgetImpactType(null) },
                 shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3),
-                label = { Text("None", style = MaterialTheme.typography.labelSmall) }
+                label = { Text(stringResource(R.string.flosi_none), style = MaterialTheme.typography.labelSmall) }
             )
             SegmentedButton(
                 selected = budgetImpactType == BudgetImpactType.DEDUCT_SPENT,
                 onClick = { viewModel.updateBudgetImpactType(BudgetImpactType.DEDUCT_SPENT) },
                 shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3),
-                label = { Text("Refund", style = MaterialTheme.typography.labelSmall) }
+                label = { Text(stringResource(R.string.flosi_refund), style = MaterialTheme.typography.labelSmall) }
             )
             SegmentedButton(
                 selected = budgetImpactType == BudgetImpactType.ADD_TO_LIMIT,
                 onClick = { viewModel.updateBudgetImpactType(BudgetImpactType.ADD_TO_LIMIT) },
                 shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3),
-                label = { Text("Extra budget", style = MaterialTheme.typography.labelSmall) }
+                label = { Text(stringResource(R.string.flosi_extra_budget), style = MaterialTheme.typography.labelSmall) }
             )
         }
 
@@ -1610,10 +1618,10 @@ private fun BudgetImpactSection(viewModel: TransactionDetailViewModel) {
                 onExpandedChange = { expanded = it }
             ) {
                 OutlinedTextField(
-                    value = budgetCategory ?: "Select category",
+                    value = budgetCategory ?: stringResource(R.string.flosi_select_category),
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Budget category") },
+                    label = { Text(stringResource(R.string.flosi_budget_category)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -1626,7 +1634,7 @@ private fun BudgetImpactSection(viewModel: TransactionDetailViewModel) {
                 ) {
                     if (activeBudgetCategories.isEmpty()) {
                         DropdownMenuItem(
-                            text = { Text("No budget categories found") },
+                            text = { Text(stringResource(R.string.flosi_no_budget_categories_found)) },
                             onClick = { expanded = false },
                             enabled = false
                         )
@@ -1667,9 +1675,9 @@ private fun CategoryDropdown(
         onExpandedChange = { expanded = it }
     ) {
         TextField(
-            value = selectedCategory,
+            value = localizedCategoryName(selectedCategory),
             onValueChange = { },
-            label = { Text("Category", fontWeight = FontWeight.SemiBold) },
+            label = { Text(stringResource(R.string.flosi_category), fontWeight = FontWeight.SemiBold) },
             leadingIcon = {
                 if (selectedCategoryEntity != null) {
                     CategoryChip(
@@ -1718,7 +1726,7 @@ private fun CategoryDropdown(
 
             // Create a new category without leaving the edit flow (#584)
             DropdownMenuItem(
-                text = { Text("Add category") },
+                text = { Text(stringResource(R.string.flosi_add_category)) },
                 leadingIcon = {
                     Icon(
                         Icons.Default.Add,
@@ -1824,7 +1832,7 @@ private fun DateTimeField(
             ) {
                 val hour = if (dateTime.hour % 12 == 0) 12 else dateTime.hour % 12
                 val minute = dateTime.minute
-                val amPm = if (dateTime.hour < 12) "AM" else "PM"
+                val amPm = dateTime.format(DateTimeFormatter.ofPattern("a"))
 
                 Box(
                     modifier = Modifier
@@ -1891,12 +1899,12 @@ private fun DateTimeField(
                     }
                     showDatePicker = false
                 }) {
-                    Text("OK")
+                    Text(stringResource(R.string.flosi_ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         ) {
@@ -1912,7 +1920,7 @@ private fun DateTimeField(
         )
         AlertDialog(
             onDismissRequest = { showTimePicker = false },
-            title = { Text("Select Time") },
+            title = { Text(stringResource(R.string.flosi_select_time)) },
             text = {
                 TimePicker(state = timePickerState)
             },
@@ -1922,12 +1930,12 @@ private fun DateTimeField(
                         .withMinute(timePickerState.minute))
                     showTimePicker = false
                 }) {
-                    Text("OK")
+                    Text(stringResource(R.string.flosi_ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showTimePicker = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -2002,8 +2010,8 @@ private fun AccountNumberField(
     accountNumber: String?,
     onAccountNumberChange: (String?) -> Unit,
     viewModel: TransactionDetailViewModel,
-    label: String = "Account (Optional)",
-    placeholder: String = "Select or enter account number",
+    label: String? = null,
+    placeholder: String? = null,
     excludeAccount: String? = null,
     // Fired alongside onAccountNumberChange when a real account is picked from
     // the dropdown, so the transaction's bankName follows the selected account
@@ -2035,7 +2043,7 @@ private fun AccountNumberField(
                     onAccountNumberChange(newValue.ifEmpty { null })
                 }
             },
-            label = { Text(label, fontWeight = FontWeight.SemiBold) },
+            label = { Text(label ?: stringResource(R.string.flosi_account_optional), fontWeight = FontWeight.SemiBold) },
             leadingIcon = {
                 Icon(
                     if (availableAccounts.any { it.displayName == selectedAccount && it.isCreditCard }) {
@@ -2061,7 +2069,7 @@ private fun AccountNumberField(
                         ) {
                             Icon(
                                 Icons.Default.Clear,
-                                contentDescription = "Clear",
+                                contentDescription = stringResource(R.string.flosi_clear),
                                 modifier = Modifier.size(Dimensions.Icon.medium)
                             )
                         }
@@ -2073,7 +2081,7 @@ private fun AccountNumberField(
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryEditable),
             singleLine = true,
-            placeholder = { Text(placeholder) }
+            placeholder = { Text(placeholder ?: stringResource(R.string.flosi_select_or_enter_account)) }
         )
         
         if (filteredAccounts.isNotEmpty()) {
@@ -2142,7 +2150,7 @@ private fun MarkAsLoanBottomSheet(
     val loanColor = if (isDark) loan_dark else loan_light
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    val directionLabel = if (direction == LoanDirection.LENT) "Lent" else "Borrowed"
+    val directionLabel = stringResource(if (direction == LoanDirection.LENT) R.string.flosi_lent else R.string.flosi_borrowed)
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -2168,7 +2176,7 @@ private fun MarkAsLoanBottomSheet(
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = if (direction == LoanDirection.LENT) "Who did you pay for?" else "Who paid for you?",
+                text = stringResource(if (direction == LoanDirection.LENT) R.string.flosi_who_paid_for else R.string.flosi_who_paid_you),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -2230,14 +2238,14 @@ private fun MarkAsLoanBottomSheet(
                         modifier = Modifier.size(Dimensions.Icon.small)
                     )
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text("New person")
+                    Text(stringResource(R.string.flosi_new_person))
                 }
             } else {
                 // Text field for new person name
                 TextField(
                     value = personName,
                     onValueChange = { personName = it },
-                    label = { Text("Person's name") },
+                    label = { Text(stringResource(R.string.flosi_person_s_name)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = editFullShape,
@@ -2251,7 +2259,7 @@ private fun MarkAsLoanBottomSheet(
                             modifier = Modifier.size(Dimensions.Icon.small)
                         )
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Pick existing")
+                        Text(stringResource(R.string.flosi_pick_existing))
                     }
                 }
             }
@@ -2261,13 +2269,13 @@ private fun MarkAsLoanBottomSheet(
             TextField(
                 value = loanAmountInput,
                 onValueChange = { loanAmountInput = it },
-                label = { Text("Loan amount") },
+                label = { Text(stringResource(R.string.flosi_loan_amount)) },
                 supportingText = {
                     Text(
                         if (parsedLoanAmount != null && parsedLoanAmount < transactionAmount) {
-                            "Only this portion counts toward the loan total."
+                            stringResource(R.string.flosi_loan_portion_hint)
                         } else {
-                            "Max ${CurrencyFormatter.formatCurrency(transactionAmount, transactionCurrency)}"
+                            stringResource(R.string.flosi_max_amount, CurrencyFormatter.formatCurrency(transactionAmount, transactionCurrency))
                         }
                     )
                 },
@@ -2283,7 +2291,7 @@ private fun MarkAsLoanBottomSheet(
             TextField(
                 value = note,
                 onValueChange = { note = it },
-                label = { Text("Note (optional)") },
+                label = { Text(stringResource(R.string.flosi_note_optional)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 shape = editFullShape,
@@ -2312,7 +2320,7 @@ private fun MarkAsLoanBottomSheet(
                     modifier = Modifier.size(Dimensions.Icon.small)
                 )
                 Spacer(modifier = Modifier.width(Spacing.xs))
-                Text("Confirm")
+                Text(stringResource(R.string.flosi_confirm))
             }
         }
     }
@@ -2339,7 +2347,7 @@ private fun GroupBottomSheet(
                 .padding(bottom = Dimensions.Padding.content)
         ) {
             Text(
-                text = "Transaction Group",
+                text = stringResource(R.string.flosi_transaction_group),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = Spacing.md)
@@ -2354,7 +2362,7 @@ private fun GroupBottomSheet(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Current: ${currentGroup.name}",
+                        text = stringResource(R.string.flosi_current_group, currentGroup.name),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -2362,7 +2370,7 @@ private fun GroupBottomSheet(
                         onRemoveFromGroup()
                         onDismiss()
                     }) {
-                        Text("Remove", color = MaterialTheme.colorScheme.error)
+                        Text(stringResource(R.string.flosi_remove), color = MaterialTheme.colorScheme.error)
                     }
                 }
                 HorizontalDivider(modifier = Modifier.padding(bottom = Spacing.md))
@@ -2371,7 +2379,7 @@ private fun GroupBottomSheet(
             val otherGroups = availableGroups.filter { it.id != currentGroup?.id }
             if (otherGroups.isNotEmpty()) {
                 Text(
-                    text = if (currentGroup != null) "Move to group" else "Add to group",
+                    text = stringResource(if (currentGroup != null) R.string.flosi_move_to_group else R.string.flosi_add_to_group),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = Spacing.sm)
@@ -2404,7 +2412,7 @@ private fun GroupBottomSheet(
                 OutlinedTextField(
                     value = newGroupName,
                     onValueChange = { newGroupName = it },
-                    label = { Text("Group name") },
+                    label = { Text(stringResource(R.string.flosi_group_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     trailingIcon = {
@@ -2416,7 +2424,7 @@ private fun GroupBottomSheet(
                             },
                             enabled = newGroupName.isNotBlank()
                         ) {
-                            Icon(Icons.Default.Check, contentDescription = "Create")
+                            Icon(Icons.Default.Check, contentDescription = stringResource(R.string.flosi_create))
                         }
                     }
                 )
@@ -2431,7 +2439,7 @@ private fun GroupBottomSheet(
                         modifier = Modifier.size(Dimensions.Icon.small)
                     )
                     Spacer(modifier = Modifier.width(Spacing.xs))
-                    Text("Create new group")
+                    Text(stringResource(R.string.flosi_create_new_group))
                 }
             }
         }

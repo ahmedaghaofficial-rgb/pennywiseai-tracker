@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.recurring
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.database.entity.CategoryEntity
@@ -54,7 +55,7 @@ class RecurringTransactionsViewModel @Inject constructor(
 
     val baseCurrency: StateFlow<String> =
         userPreferencesRepository.baseCurrency
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "INR")
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), BuildConfig.DEFAULT_CURRENCY)
 
     /**
      * Insert a new template ([id] == 0) or update an existing one. The next due
@@ -151,7 +152,7 @@ data class RecurringFormState(
     val id: Long = 0L,
     val merchantName: String = "",
     val amount: String = "",
-    val currency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
     val category: String = "Others",
     val transactionType: TransactionType = TransactionType.EXPENSE,
     val frequency: RecurringFrequency = RecurringFrequency.MONTHLY,

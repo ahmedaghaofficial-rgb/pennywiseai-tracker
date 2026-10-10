@@ -7,6 +7,7 @@ import com.pennywiseai.tracker.domain.model.BudgetCycle
 import com.pennywiseai.tracker.utils.DateRangeUtils
 import java.time.LocalDate
 import java.time.YearMonth
+import java.util.Locale
 
 enum class TimePeriod(val label: String) {
     THIS_MONTH("This Month"),
@@ -102,11 +103,12 @@ fun getCycleAwareDateRange(
 fun TimePeriod.chipLabel(
     cycleStartDay: Int,
     customRangeLabel: String?,
-    today: LocalDate = LocalDate.now()
+    today: LocalDate = LocalDate.now(),
+    locale: Locale = Locale.getDefault()
 ): String = when {
     this == TimePeriod.CUSTOM && customRangeLabel != null -> customRangeLabel
     followsBudgetCycle && cycleStartDay != 1 ->
-        DateRangeUtils.formatDateRange(getCycleAwareDateRange(this, cycleStartDay, today)) ?: label
+        DateRangeUtils.formatDateRange(getCycleAwareDateRange(this, cycleStartDay, today), locale = locale) ?: label
     else -> label
 }
 

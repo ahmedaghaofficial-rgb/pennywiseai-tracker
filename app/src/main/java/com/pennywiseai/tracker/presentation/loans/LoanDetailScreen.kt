@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.presentation.loans
 
+import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.R
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -66,41 +69,41 @@ fun LoanDetailScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = loan?.personName ?: "Loan",
+                title = loan?.personName ?: stringResource(R.string.flosi_loan),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 actionContent = {
                     if (loan != null) {
                         var showMenu by remember { mutableStateOf(false) }
                         IconButton(onClick = { showMenu = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More")
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.flosi_more))
                         }
                         DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
                             if (loan.status == LoanStatus.ACTIVE) {
                                 DropdownMenuItem(
-                                    text = { Text("Set expected return") },
+                                    text = { Text(stringResource(R.string.flosi_set_expected_return)) },
                                     onClick = { showMenu = false; viewModel.showEditAmountDialog() },
                                     leadingIcon = { Icon(Icons.Default.Edit, null) }
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Settle") },
+                                    text = { Text(stringResource(R.string.flosi_settle)) },
                                     onClick = { showMenu = false; viewModel.showSettleDialog() },
                                     leadingIcon = { Icon(Icons.Default.CheckCircle, null) }
                                 )
                             } else {
                                 DropdownMenuItem(
-                                    text = { Text("Reopen") },
+                                    text = { Text(stringResource(R.string.flosi_reopen)) },
                                     onClick = { showMenu = false; viewModel.reopenLoan() },
                                     leadingIcon = { Icon(Icons.Default.Refresh, null) }
                                 )
                             }
                             DropdownMenuItem(
-                                text = { Text("Delete", color = MaterialTheme.colorScheme.error) },
+                                text = { Text(stringResource(R.string.flosi_delete), color = MaterialTheme.colorScheme.error) },
                                 onClick = { showMenu = false; viewModel.showDeleteDialog() },
                                 leadingIcon = { Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error) }
                             )
@@ -116,7 +119,7 @@ fun LoanDetailScreen(
                     onClick = { viewModel.showRecordPayment() },
                     containerColor = if (isSystemInDarkTheme()) loan_dark else loan_light
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Record Payment")
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.flosi_record_payment))
                 }
             }
         }
@@ -194,7 +197,7 @@ fun LoanDetailScreen(
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Text(
-                                    if (loan.direction == LoanDirection.LENT) "Lent" else "Borrowed",
+                                    stringResource(if (loan.direction == LoanDirection.LENT) R.string.flosi_lent else R.string.flosi_borrowed),
                                     style = MaterialTheme.typography.labelMedium,
                                     color = directionColor
                                 )
@@ -210,8 +213,8 @@ fun LoanDetailScreen(
                                 MaterialTheme.colorScheme.onSurfaceVariant else directionColor
                         )
                         Text(
-                            text = if (loan.status == LoanStatus.SETTLED) "Settled"
-                            else "remaining of ${CurrencyFormatter.formatCurrency(loan.originalAmount, loan.currency)}",
+                            text = if (loan.status == LoanStatus.SETTLED) stringResource(R.string.flosi_settled)
+                            else stringResource(R.string.flosi_remaining_of_amount, CurrencyFormatter.formatCurrency(loan.originalAmount, loan.currency)),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -240,7 +243,7 @@ fun LoanDetailScreen(
                                 trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                             )
                             Text(
-                                "${(progress * 100).toInt()}% repaid",
+                                stringResource(R.string.flosi_percent_repaid, (progress * 100).toInt()),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -253,7 +256,7 @@ fun LoanDetailScreen(
             if (uiState.linkedTransactions.isNotEmpty()) {
                 item {
                     Text(
-                        "History",
+                        stringResource(R.string.flosi_history),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -279,16 +282,16 @@ fun LoanDetailScreen(
     if (uiState.showSettleDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.hideSettleDialog() },
-            title = { Text("Settle Loan") },
-            text = { Text("Mark this loan as settled? Any remaining balance will be forgiven.") },
+            title = { Text(stringResource(R.string.flosi_settle_loan)) },
+            text = { Text(stringResource(R.string.flosi_settle_loan_warning)) },
             confirmButton = {
                 TextButton(onClick = { viewModel.settleLoan() }) {
-                    Text("Settle")
+                    Text(stringResource(R.string.flosi_settle))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.hideSettleDialog() }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -299,7 +302,7 @@ fun LoanDetailScreen(
         var editAmount by remember { mutableStateOf(loan.originalAmount.toPlainString()) }
         AlertDialog(
             onDismissRequest = { viewModel.hideEditAmountDialog() },
-            title = { Text("Expected Return") },
+            title = { Text(stringResource(R.string.flosi_expected_return)) },
             text = {
                 TextField(
                     value = editAmount,
@@ -308,7 +311,7 @@ fun LoanDetailScreen(
                             editAmount = value
                         }
                     },
-                    label = { Text("Amount expected back") },
+                    label = { Text(stringResource(R.string.flosi_amount_expected_back)) },
                     prefix = { Text(CurrencyFormatter.getCurrencySymbol(loan.currency)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -328,12 +331,12 @@ fun LoanDetailScreen(
                     },
                     enabled = editAmount.toBigDecimalOrNull()?.let { it > java.math.BigDecimal.ZERO } == true
                 ) {
-                    Text("Save")
+                    Text(stringResource(R.string.flosi_save))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.hideEditAmountDialog() }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -343,16 +346,16 @@ fun LoanDetailScreen(
     if (uiState.showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.hideDeleteDialog() },
-            title = { Text("Delete Loan") },
-            text = { Text("Delete this loan? Linked transactions will be unlinked but not deleted.") },
+            title = { Text(stringResource(R.string.flosi_delete_loan)) },
+            text = { Text(stringResource(R.string.flosi_delete_loan_warning)) },
             confirmButton = {
                 TextButton(onClick = { viewModel.deleteLoan() }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.flosi_delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.hideDeleteDialog() }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -414,7 +417,7 @@ private fun LoanTransactionItem(
                     if (isOriginal) {
                         SuggestionChip(
                             onClick = {},
-                            label = { Text("Original", style = MaterialTheme.typography.labelSmall) },
+                            label = { Text(stringResource(R.string.flosi_original), style = MaterialTheme.typography.labelSmall) },
                             modifier = Modifier.height(24.dp),
                             border = null as androidx.compose.foundation.BorderStroke?,
                             colors = SuggestionChipDefaults.suggestionChipColors(
@@ -472,12 +475,12 @@ private fun RecordPaymentBottomSheet(
             verticalArrangement = Arrangement.spacedBy(Spacing.md)
         ) {
             Text(
-                "Record payment from $personName",
+                stringResource(R.string.flosi_record_payment_from, personName),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                "${CurrencyFormatter.formatCurrency(remainingAmount, currency)} remaining",
+                stringResource(R.string.flosi_remaining_amount, CurrencyFormatter.formatCurrency(remainingAmount, currency)),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -485,7 +488,7 @@ private fun RecordPaymentBottomSheet(
             // Link existing transactions
             if (recentUnlinkedTransactions.isNotEmpty()) {
                 Text(
-                    "Link existing transaction",
+                    stringResource(R.string.flosi_link_existing_transaction),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -521,7 +524,7 @@ private fun RecordPaymentBottomSheet(
 
             // Manual entry
             Text(
-                if (recentUnlinkedTransactions.isNotEmpty()) "Or enter manually" else "Enter amount",
+                stringResource(if (recentUnlinkedTransactions.isNotEmpty()) R.string.flosi_or_enter_manually else R.string.flosi_enter_amount),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -537,7 +540,7 @@ private fun RecordPaymentBottomSheet(
                             manualAmount = value
                         }
                     },
-                    label = { Text("Amount") },
+                    label = { Text(stringResource(R.string.flosi_amount_6)) },
                     prefix = { Text(CurrencyFormatter.getCurrencySymbol(currency)) },
                     singleLine = true,
                     modifier = Modifier.weight(1f),
@@ -558,7 +561,7 @@ private fun RecordPaymentBottomSheet(
                     shape = RoundedCornerShape(Dimensions.CornerRadius.medium),
                     colors = ButtonDefaults.buttonColors(containerColor = loanColor)
                 ) {
-                    Text("Add")
+                    Text(stringResource(R.string.flosi_add_new))
                 }
             }
         }

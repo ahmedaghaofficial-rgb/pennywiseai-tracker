@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.ui.components
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
+import com.pennywiseai.tracker.R
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -42,9 +46,9 @@ fun <T> ExpandableList(
             ) {
                 Text(
                     text = if (isExpanded) {
-                        "View Less"
+                        stringResource(R.string.flosi_show_less)
                     } else {
-                        "View All (${items.size - visibleItemCount} more)"
+                        pluralStringResource(R.plurals.flosi_view_more_count, items.size - visibleItemCount, items.size - visibleItemCount)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,

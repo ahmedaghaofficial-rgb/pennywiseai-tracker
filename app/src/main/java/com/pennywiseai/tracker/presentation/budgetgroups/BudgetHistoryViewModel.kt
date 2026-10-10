@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.budgetgroups
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,8 +35,8 @@ data class BudgetHistoryUiState(
     val displayedCapDate: java.time.LocalDate = java.time.LocalDate.now(),
     val displayedIsLive: Boolean = false,
     val totalSpent: BigDecimal = BigDecimal.ZERO,
-    val currency: String = "INR",
-    val baseCurrency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
+    val baseCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     val budgetAmount: BigDecimal = BigDecimal.ZERO,
     /**
      * The per-window category breakdown currently shown in the bottom

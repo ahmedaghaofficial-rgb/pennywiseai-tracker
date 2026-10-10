@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.ui
 
+import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.R
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -625,7 +628,7 @@ fun MainScreen(
                 SpotlightTutorial(
                     isVisible = true,
                     targetPosition = spotlightState.fabPosition,
-                    message = "Tap here to scan your SMS messages for transactions",
+                    message = stringResource(R.string.flosi_tutorial_scan),
                     onDismiss = {
                         spotlightViewModel.dismissTutorial()
                     },

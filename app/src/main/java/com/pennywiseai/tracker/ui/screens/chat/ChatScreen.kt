@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.ui.screens.chat
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -129,11 +133,11 @@ fun ChatScreen(
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = if (isDownloading) "Downloading Model..." else "AI Model Required",
+                                    text = if (isDownloading) stringResource(R.string.flosi_chat_model_downloading) else stringResource(R.string.flosi_chat_model_required),
                                     style = MaterialTheme.typography.headlineSmall
                                 )
                                 Text(
-                                    text = if (isDownloading) "${downloadedMB} MB / ${totalMB} MB" else "Download the AI model to start chatting",
+                                    text = if (isDownloading) "${downloadedMB} MB / ${totalMB} MB" else stringResource(R.string.flosi_chat_model_prompt),
                                     style = MaterialTheme.typography.bodyMedium,
                                     textAlign = TextAlign.Center,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -154,7 +158,7 @@ fun ChatScreen(
                                             modifier = Modifier.size(Dimensions.Icon.small)
                                         )
                                         Spacer(modifier = Modifier.width(Spacing.xs))
-                                        Text("Cancel")
+                                        Text(stringResource(R.string.flosi_cancel))
                                     }
                                 } else {
                                     Button(onClick = { viewModel.startModelDownload() }) {
@@ -164,11 +168,11 @@ fun ChatScreen(
                                             modifier = Modifier.size(Dimensions.Icon.small)
                                         )
                                         Spacer(modifier = Modifier.width(Spacing.xs))
-                                        Text("Download (${totalMB} MB)")
+                                        Text(stringResource(R.string.flosi_chat_download_size, totalMB))
                                     }
                                 }
                                 TextButton(onClick = onNavigateToSettings) {
-                                    Text("Settings")
+                                    Text(stringResource(R.string.flosi_settings))
                                 }
                             }
                         }
@@ -215,7 +219,7 @@ fun ChatScreen(
                                 ) {
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(
-                                            text = "Downloading Model...",
+                                            text = stringResource(R.string.flosi_full_downloading_model),
                                             style = MaterialTheme.typography.titleSmall,
                                             fontWeight = FontWeight.Bold
                                         )
@@ -228,7 +232,7 @@ fun ChatScreen(
                                         onClick = { viewModel.cancelDownload() },
                                         modifier = Modifier.padding(start = Spacing.sm)
                                     ) {
-                                        Text("Cancel")
+                                        Text(stringResource(R.string.flosi_cancel))
                                     }
                                 }
                                 LinearProgressIndicator(
@@ -250,14 +254,14 @@ fun ChatScreen(
                             ) {
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
-                                        text = "Model Required",
+                                        text = stringResource(R.string.flosi_full_model_required),
                                         style = MaterialTheme.typography.titleSmall,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
                                         // 1.6 GB via the system Download Manager; some phones (Samsung
                                         // with Data saver) won't start it on mobile data.
-                                        text = "1.6 GB · use Wi-Fi",
+                                        text = stringResource(R.string.flosi_full_1_6_gb_use_wi_fi),
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
@@ -271,7 +275,7 @@ fun ChatScreen(
                                         modifier = Modifier.size(Dimensions.Icon.small)
                                     )
                                     Spacer(modifier = Modifier.width(Spacing.xs))
-                                    Text("Download")
+                                    Text(stringResource(R.string.flosi_download))
                                 }
                             }
                         }
@@ -293,11 +297,11 @@ fun ChatScreen(
                         ) {
                             CircularProgressIndicator()
                             Text(
-                                text = "Initializing AI Model...",
+                                text = stringResource(R.string.flosi_full_initializing_ai_model),
                                 style = MaterialTheme.typography.bodyLarge
                             )
                             Text(
-                                text = "This may take a few seconds",
+                                text = stringResource(R.string.flosi_full_this_may_take_a_few_seconds),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -360,7 +364,7 @@ fun ChatScreen(
                                             modifier = Modifier.size(Dimensions.Icon.small)
                                         )
                                         Spacer(modifier = Modifier.width(Spacing.xs))
-                                        Text("Clear Chat")
+                                        Text(stringResource(R.string.flosi_full_clear_chat))
                                     }
                                 }
                             }
@@ -429,7 +433,7 @@ fun ChatScreen(
                                     // One status line per request, picked when the wait starts,
                                     // so a tool call's silent few seconds don't look like a hang.
                                     val status = remember(uiState.isLoading) { THINKING_LINES.random() }
-                                    TypingIndicator(status = status)
+                                    TypingIndicator(status = stringResource(status))
                                 }
                             }
                         }
@@ -463,7 +467,7 @@ fun ChatScreen(
                                     IconButton(onClick = { viewModel.clearError() }) {
                                         Icon(
                                             Icons.Default.Close,
-                                            contentDescription = "Dismiss",
+                                            contentDescription = stringResource(R.string.flosi_dismiss),
                                             tint = MaterialTheme.colorScheme.onErrorContainer
                                         )
                                     }
@@ -489,7 +493,7 @@ fun ChatScreen(
                                     modifier = Modifier
                                         .weight(1f)
                                         .focusRequester(focusRequester),
-                                    placeholder = { Text("Ask, or tell me what you spent…") },
+                                    placeholder = { Text(stringResource(R.string.flosi_full_ask_or_tell_me_what_you_spent)) },
                                     enabled = !uiState.isLoading,
                                     maxLines = 3,
                                     shape = MaterialTheme.shapes.extraLarge
@@ -515,7 +519,7 @@ fun ChatScreen(
                                     } else {
                                         Icon(
                                             Icons.AutoMirrored.Filled.Send,
-                                            contentDescription = "Send"
+                                            contentDescription = stringResource(R.string.flosi_full_send)
                                         )
                                     }
                                 }
@@ -555,9 +559,9 @@ fun TokenLimitWarning(
     }
     
     val message = when {
-        usagePercent >= 95 -> "Chat memory almost full! Clear chat to continue."
-        usagePercent >= 90 -> "Chat memory is ${usagePercent}% full. Consider clearing soon."
-        else -> "Chat memory is ${usagePercent}% full."
+        usagePercent >= 95 -> stringResource(R.string.flosi_chat_memory_full)
+        usagePercent >= 90 -> stringResource(R.string.flosi_chat_memory_warning, usagePercent)
+        else -> stringResource(R.string.flosi_chat_memory_usage, usagePercent)
     }
     
     Surface(
@@ -596,7 +600,7 @@ fun TokenLimitWarning(
                         contentColor = contentColor
                     )
                 ) {
-                    Text("Clear", fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.flosi_clear), fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -644,7 +648,7 @@ fun DeveloperInfoCard(
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
-                        text = "Qwen 2.5 1.5B • ${chatStats.messageCount} messages",
+                        text = pluralStringResource(R.plurals.flosi_chat_messages, chatStats.messageCount, chatStats.messageCount),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -655,14 +659,14 @@ fun DeveloperInfoCard(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${TokenUtils.formatNumber(chatStats.estimatedTokens)} tokens",
+                        text = pluralStringResource(R.plurals.flosi_chat_tokens, chatStats.estimatedTokens, TokenUtils.formatNumber(chatStats.estimatedTokens)),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = usageColor
                     )
                     Icon(
                         if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                        contentDescription = if (isExpanded) "Collapse" else "Expand",
+                        contentDescription = if (isExpanded) stringResource(R.string.flosi_collapse) else stringResource(R.string.flosi_expand),
                         modifier = Modifier.size(Dimensions.Icon.small),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -692,7 +696,7 @@ fun DeveloperInfoCard(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "Context Usage",
+                            text = stringResource(R.string.flosi_full_context_usage),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -720,13 +724,13 @@ fun DeveloperInfoCard(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "${TokenUtils.formatNumber(chatStats.estimatedTokens)} / ${TokenUtils.formatNumber(chatStats.maxTokens)} tokens",
+                            text = stringResource(R.string.flosi_chat_token_progress, TokenUtils.formatNumber(chatStats.estimatedTokens), TokenUtils.formatNumber(chatStats.maxTokens)),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         if (chatStats.systemPromptTokens > 0) {
                             Text(
-                                text = "System: ${TokenUtils.formatNumber(chatStats.systemPromptTokens)}",
+                                text = stringResource(R.string.flosi_chat_system_tokens, TokenUtils.formatNumber(chatStats.systemPromptTokens)),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -738,11 +742,9 @@ fun DeveloperInfoCard(
 }
 
 private val THINKING_LINES = listOf(
-    "Reading that…",
-    "Working it out…",
-    "Checking your transactions…",
-    "Crunching the numbers…",
-    "One moment…"
+    R.string.flosi_chat_thinking_1, R.string.flosi_chat_thinking_2,
+    R.string.flosi_chat_thinking_3, R.string.flosi_chat_thinking_4,
+    R.string.flosi_chat_thinking_5
 )
 
 @Composable
@@ -868,10 +870,10 @@ private fun ChatEmptyState(
     onPromptClick: (String) -> Unit
 ) {
     val examplePrompts = listOf(
-        "coffee 120 at Starbucks",
-        "got 50000 salary today",
-        "How much on groceries this month?",
-        "How much have I spent this month?"
+        stringResource(R.string.flosi_chat_prompt_coffee),
+        stringResource(R.string.flosi_chat_prompt_salary),
+        stringResource(R.string.flosi_chat_prompt_groceries),
+        stringResource(R.string.flosi_chat_prompt_spent)
     )
 
     Column(
@@ -889,13 +891,13 @@ private fun ChatEmptyState(
         )
 
         Text(
-            text = "Add a spend or ask about it",
+            text = stringResource(R.string.flosi_full_add_a_spend_or_ask_about_it),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
 
         Text(
-            text = "Try one of these prompts",
+            text = stringResource(R.string.flosi_full_try_one_of_these_prompts),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -940,16 +942,16 @@ private fun PendingActionCard(
     val (title, headline, detail, button) = when (action) {
         is com.pennywiseai.tracker.data.model.PendingChatAction.Add -> {
             val d = action.draft
-            listOf(if (d.type == income) "Add income?" else "Add expense?", "${fmt(d.amount)} · ${d.merchant}", "${d.category} · ${d.accountLabel} · today", "Add")
+            listOf(if (d.type == income) stringResource(R.string.flosi_chat_type_add_income) else stringResource(R.string.flosi_chat_type_add_expense), "${fmt(d.amount)} · ${d.merchant}", stringResource(R.string.flosi_chat_new_today, localizedCategoryName(d.category), d.accountLabel), stringResource(R.string.flosi_full_add))
         }
         is com.pennywiseai.tracker.data.model.PendingChatAction.Delete -> {
             val t = action.transaction
-            listOf("Delete this transaction?", "${own(t)} · ${t.merchantName}", "${t.category} · ${t.dateTime.toLocalDate()}", "Delete")
+            listOf(stringResource(R.string.flosi_chat_type_delete), "${own(t)} · ${t.merchantName}", "${localizedCategoryName(t.category)} · ${t.dateTime.toLocalDate()}", stringResource(R.string.flosi_delete))
         }
         is com.pennywiseai.tracker.data.model.PendingChatAction.Update -> {
             val t = action.transaction
-            val changes = listOfNotNull(action.newMerchant?.let { "merchant → $it" }, action.newCategory?.let { "category → $it" }).joinToString(", ")
-            listOf("Update this transaction?", "${own(t)} · ${t.merchantName}", "${t.category} · ${t.dateTime.toLocalDate()}\n$changes", "Update")
+            val changes = listOfNotNull(action.newMerchant?.let { stringResource(R.string.flosi_chat_merchant_change, it) }, action.newCategory?.let { stringResource(R.string.flosi_chat_category_change, localizedCategoryName(it)) }).joinToString(", ")
+            listOf(stringResource(R.string.flosi_chat_type_update), "${own(t)} · ${t.merchantName}", "${localizedCategoryName(t.category)} · ${t.dateTime.toLocalDate()}\n$changes", stringResource(R.string.flosi_update))
         }
     }
     val isDelete = action is com.pennywiseai.tracker.data.model.PendingChatAction.Delete
@@ -965,7 +967,7 @@ private fun PendingActionCard(
             Text(text = headline, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, color = fg)
             Text(text = detail, style = MaterialTheme.typography.bodySmall, color = fg)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
-                OutlinedButton(onClick = onDismiss, enabled = enabled, modifier = Modifier.weight(1f)) { Text("Cancel") }
+                OutlinedButton(onClick = onDismiss, enabled = enabled, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.flosi_cancel)) }
                 Button(
                     onClick = onConfirm,
                     enabled = enabled,

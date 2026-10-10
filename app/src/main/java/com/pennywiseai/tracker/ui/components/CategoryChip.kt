@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.components
 
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -45,7 +47,7 @@ fun CategoryChip(
         // Category name
         if (showText) {
             Text(
-                text = category.name,
+                text = localizedCategoryName(category.name),
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

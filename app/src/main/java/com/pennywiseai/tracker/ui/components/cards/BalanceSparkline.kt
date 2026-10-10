@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import com.pennywiseai.tracker.BuildConfig
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +23,7 @@ fun BalanceSparkline(
     data: List<BigDecimal>,
     lineColor: Color,
     modifier: Modifier = Modifier,
-    currency: String = "INR",
+    currency: String = BuildConfig.DEFAULT_CURRENCY,
     isBalanceHidden: Boolean = false,
     comparisonData: List<BigDecimal>? = null,
     comparisonLineColor: Color = Color.Gray

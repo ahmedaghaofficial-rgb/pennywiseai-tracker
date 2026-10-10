@@ -1,5 +1,9 @@
 package com.pennywiseai.tracker.presentation.share
 
+import android.content.Context
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pennywiseai.tracker.data.preferences.UserPreferencesRepository
@@ -43,16 +47,18 @@ data class ShareCardData(
     val periodLabel: String = "",
 )
 
-private val MONTH_LABEL: DateTimeFormatter =
-    DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH)
-
 @HiltViewModel
 class ShareCardViewModel @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val transactionRepository: TransactionRepository,
     private val subscriptionRepository: SubscriptionRepository,
     private val accountBalanceRepository: AccountBalanceRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
 ) : ViewModel() {
+
+    private fun monthLabel(date: LocalDate): String = date.format(
+        DateTimeFormatter.ofPattern("MMMM yyyy", Locale.forLanguageTag(AppLocaleController.getLanguage(context).tag))
+    ).uppercase()
 
     private val _config = MutableStateFlow(ShareCardConfig())
     val config: StateFlow<ShareCardConfig> = _config.asStateFlow()
@@ -185,10 +191,10 @@ class ShareCardViewModel @Inject constructor(
                 subscriptionCount = subscriptions.size,
                 periodLabel = when (period) {
                     SharePeriod.THIS_MONTH ->
-                        now.format(MONTH_LABEL).uppercase()
+                        monthLabel(now)
                     SharePeriod.LAST_MONTH ->
-                        now.minusMonths(1).format(MONTH_LABEL).uppercase()
-                    SharePeriod.ALL_TIME -> "ALL TIME"
+                        monthLabel(now.minusMonths(1))
+                    SharePeriod.ALL_TIME -> AppLocaleController.wrap(context).getString(R.string.flosi_share_all_time)
                 },
             )
         }.onStart<ShareCardData?> { emit(null) }

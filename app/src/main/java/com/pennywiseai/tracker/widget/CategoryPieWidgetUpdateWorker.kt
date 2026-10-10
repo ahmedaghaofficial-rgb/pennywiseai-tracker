@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.widget
 
 import android.content.Context
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import androidx.compose.ui.graphics.toArgb
 import androidx.glance.appwidget.updateAll
 import androidx.hilt.work.HiltWorker
@@ -208,7 +209,7 @@ class CategoryPieWidgetUpdateWorker @AssistedInject constructor(
                 applicationContext,
                 CategoryPieWidgetData(
                     monthLabel = cycleStart.format(
-                        DateTimeFormatter.ofPattern("MMM", Locale.ENGLISH)
+                        DateTimeFormatter.ofPattern("MMM", Locale.forLanguageTag(AppLocaleController.getLanguage(applicationContext).tag))
                     ).uppercase() + " · " + currency,
                     currency = currency,
                     totalFormatted = CurrencyFormatter.formatCurrency(total, currency),

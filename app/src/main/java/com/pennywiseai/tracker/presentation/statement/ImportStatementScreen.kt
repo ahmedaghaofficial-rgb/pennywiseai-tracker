@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.statement
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
@@ -71,7 +73,7 @@ fun ImportStatementScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Import Statement",
+                title = stringResource(R.string.flosi_import_statement),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
@@ -94,7 +96,7 @@ fun ImportStatementScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.flosi_back),
                                 modifier = Modifier.size(Dimensions.Icon.small)
                             )
                         }
@@ -170,14 +172,14 @@ private fun IdleContent(onSelectPdf: () -> Unit) {
     Spacer(modifier = Modifier.height(Spacing.md))
 
     Text(
-        text = "Import Statement",
+        text = stringResource(R.string.flosi_import_statement),
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.onBackground
     )
 
     Text(
-        text = "Import transactions from Google Pay, PhonePe, Paytm, or slice PDF statements. Duplicates are automatically detected and skipped.",
+        text = stringResource(R.string.flosi_full_import_transactions_from_google_pay_phonepe_paytm_or_slice_pdf_st),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         textAlign = TextAlign.Center,
@@ -199,7 +201,7 @@ private fun IdleContent(onSelectPdf: () -> Unit) {
             modifier = Modifier.size(Dimensions.Icon.medium)
         )
         Spacer(modifier = Modifier.width(Spacing.sm))
-        Text("Select PDF Statement")
+        Text(stringResource(R.string.flosi_full_select_pdf_statement))
     }
 }
 
@@ -215,13 +217,13 @@ private fun LoadingContent() {
     Spacer(modifier = Modifier.height(Spacing.md))
 
     Text(
-        text = "Importing transactions...",
+        text = stringResource(R.string.flosi_importing_transactions),
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
 
     Text(
-        text = "Parsing PDF and checking for duplicates",
+        text = stringResource(R.string.flosi_full_parsing_pdf_and_checking_for_duplicates),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
@@ -247,7 +249,7 @@ private fun SuccessContent(
     Spacer(modifier = Modifier.height(Spacing.md))
 
     Text(
-        text = "Import Complete",
+        text = stringResource(R.string.flosi_full_import_complete),
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.onBackground
@@ -266,21 +268,21 @@ private fun SuccessContent(
             verticalArrangement = Arrangement.spacedBy(Spacing.sm)
         ) {
             ResultRow(
-                label = "Transactions imported",
+                label = stringResource(R.string.flosi_statement_imported),
                 value = "${result.imported}",
                 isHighlighted = true
             )
 
             if (result.enriched > 0) {
                 ResultRow(
-                    label = "Transactions enriched",
+                    label = stringResource(R.string.flosi_statement_enriched),
                     value = "${result.enriched}",
                     isHighlighted = true
                 )
             }
 
             ResultRow(
-                label = "Total parsed from PDF",
+                label = stringResource(R.string.flosi_statement_total),
                 value = "${result.totalParsed}"
             )
 
@@ -288,7 +290,7 @@ private fun SuccessContent(
                 HorizontalDivider(modifier = Modifier.padding(vertical = Spacing.xs))
 
                 Text(
-                    text = "Duplicates skipped: ${result.skippedDuplicates}",
+                    text = stringResource(R.string.flosi_import_count, result.skippedDuplicates),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -296,21 +298,21 @@ private fun SuccessContent(
 
                 if (result.skippedByHash > 0) {
                     ResultRow(
-                        label = "Exact re-imports",
+                        label = stringResource(R.string.flosi_statement_exact),
                         value = "${result.skippedByHash}",
                         indent = true
                     )
                 }
                 if (result.skippedByReference > 0) {
                     ResultRow(
-                        label = "By UPI reference",
+                        label = stringResource(R.string.flosi_statement_reference),
                         value = "${result.skippedByReference}",
                         indent = true
                     )
                 }
                 if (result.skippedByAmountDate > 0) {
                     ResultRow(
-                        label = "By amount & date",
+                        label = stringResource(R.string.flosi_statement_amount),
                         value = "${result.skippedByAmountDate}",
                         indent = true
                     )
@@ -339,7 +341,7 @@ private fun SuccessContent(
             modifier = Modifier.size(Dimensions.Icon.medium)
         )
         Spacer(modifier = Modifier.width(Spacing.sm))
-        Text("Import Another")
+        Text(stringResource(R.string.flosi_full_import_another))
     }
 
     OutlinedButton(
@@ -349,7 +351,7 @@ private fun SuccessContent(
             .height(Dimensions.Component.buttonHeight),
         shape = RoundedCornerShape(Dimensions.CornerRadius.large)
     ) {
-        Text("Done")
+        Text(stringResource(R.string.flosi_done))
     }
 }
 
@@ -399,7 +401,7 @@ private fun ErrorContent(
     Spacer(modifier = Modifier.height(Spacing.md))
 
     Text(
-        text = "Import Failed",
+        text = stringResource(R.string.flosi_full_import_failed),
         style = MaterialTheme.typography.headlineSmall,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.onBackground
@@ -428,6 +430,6 @@ private fun ErrorContent(
             modifier = Modifier.size(Dimensions.Icon.medium)
         )
         Spacer(modifier = Modifier.width(Spacing.sm))
-        Text("Try Again")
+        Text(stringResource(R.string.flosi_full_try_again))
     }
 }

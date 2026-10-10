@@ -42,7 +42,7 @@ object AppLocaleController {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .edit()
             .putString(KEY_LANGUAGE, language.tag)
-            .apply()
+            .commit() // The next Activity may attach immediately after a language change.
     }
 
     fun wrap(context: Context): Context {

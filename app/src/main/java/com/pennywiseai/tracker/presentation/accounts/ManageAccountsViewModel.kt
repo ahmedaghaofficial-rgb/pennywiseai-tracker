@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.accounts
 
+import com.pennywiseai.tracker.BuildConfig
+
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +14,8 @@ import com.pennywiseai.tracker.data.repository.AccountBalanceRepository
 import com.pennywiseai.tracker.data.repository.CardRepository
 import com.pennywiseai.tracker.domain.model.toDatabaseString
 import dagger.hilt.android.lifecycle.HiltViewModel
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -41,7 +45,7 @@ data class AccountFormState(
     val balance: String = "",
     val creditLimit: String = "",
     val accountType: AccountType = AccountType.SAVINGS,
-    val currency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
     val isValid: Boolean = false,
     val errorMessage: String? = null
 )
@@ -70,6 +74,7 @@ class ManageAccountsViewModel @Inject constructor(
     private val userPreferencesRepository: com.pennywiseai.tracker.data.preferences.UserPreferencesRepository,
     entitlementGate: com.pennywiseai.tracker.billing.EntitlementGate,
 ) : ViewModel() {
+    private fun uiText(id: Int, vararg args: Any): String = AppLocaleController.wrap(context).getString(id, *args)
 
     /**
      * Drives the Merge-accounts action — Pro-only gate. Free users still
@@ -90,7 +95,7 @@ class ManageAccountsViewModel @Inject constructor(
     val pendingProfileReassign: StateFlow<PendingProfileReassign?> = _pendingProfileReassign.asStateFlow()
     
     /** User's base currency — the default for a new manual account. */
-    private var baseCurrency: String = "INR"
+    private var baseCurrency: String = BuildConfig.DEFAULT_CURRENCY
 
     init {
         loadAccounts()
@@ -215,7 +220,7 @@ class ManageAccountsViewModel @Inject constructor(
             )
             
             if (existingAccount != null) {
-                _formState.update { it.copy(errorMessage = "Account already exists") }
+                _formState.update { it.copy(errorMessage = uiText(R.string.flosi_account_already_exists)) }
                 return@launch
             }
             
@@ -277,7 +282,7 @@ class ManageAccountsViewModel @Inject constructor(
                     // stored INR default. See [CurrencyFormatter.resolveAccountCurrency].
                     currency = CurrencyFormatter.resolveAccountCurrency(
                         sourceType = latestBalance?.sourceType,
-                        storedCurrency = latestBalance?.currency ?: "INR",
+                        storedCurrency = latestBalance?.currency ?: BuildConfig.DEFAULT_CURRENCY,
                         bankName = bankName
                     ),
                     accountType = latestBalance?.accountType,
@@ -307,7 +312,7 @@ class ManageAccountsViewModel @Inject constructor(
                     // MANUAL doesn't flip an SMS-tracked non-INR card to stored INR.
                     currency = CurrencyFormatter.resolveAccountCurrency(
                         sourceType = latestBalance?.sourceType,
-                        storedCurrency = latestBalance?.currency ?: "INR",
+                        storedCurrency = latestBalance?.currency ?: BuildConfig.DEFAULT_CURRENCY,
                         bankName = bankName
                     ),
                     accountType = latestBalance?.accountType,
@@ -407,21 +412,22 @@ class ManageAccountsViewModel @Inject constructor(
                             balance = card.lastBalance!!,
                             timestamp = card.lastBalanceDate ?: LocalDateTime.now(),
                             smsSource = card.lastBalanceSource,
-                            sourceType = "CARD_LINK"
+                            sourceType = "CARD_LINK",
+                            currency = card.currency
                         )
                         android.util.Log.d("ManageAccountsViewModel", "Balance copied to account. Insert ID: $insertedId")
                         
                         // Show success message with balance
-                        val message = "Card linked successfully. Balance updated to ${CurrencyFormatter.formatCurrency(card.lastBalance, card.currency)}"
+                        val message = uiText(R.string.flosi_card_linked_balance, CurrencyFormatter.formatCurrency(card.lastBalance, card.currency))
                         _uiState.update { it.copy(successMessage = message) }
                     } catch (e: Exception) {
                         android.util.Log.e("ManageAccountsViewModel", "Failed to copy balance: ${e.message}", e)
                         // Still show success for linking, but note the balance issue
-                        _uiState.update { it.copy(successMessage = "Card linked successfully (balance update failed)") }
+                        _uiState.update { it.copy(successMessage = uiText(R.string.flosi_card_linked_balance_failed)) }
                     }
                 } else {
                     // No balance to copy, just show link success
-                    _uiState.update { it.copy(successMessage = "Card linked successfully") }
+                    _uiState.update { it.copy(successMessage = uiText(R.string.flosi_card_linked)) }
                 }
                 
                 // Clear message after delay
@@ -433,7 +439,7 @@ class ManageAccountsViewModel @Inject constructor(
             } catch (e: Exception) {
                 android.util.Log.e("ManageAccountsViewModel", "Failed to link card", e)
                 _uiState.update { 
-                    it.copy(errorMessage = "Failed to link card: ${e.message}")
+                    it.copy(errorMessage = uiText(R.string.flosi_card_link_failed, e.message ?: ""))
                 }
             }
         }
@@ -451,7 +457,7 @@ class ManageAccountsViewModel @Inject constructor(
             try {
                 android.util.Log.d("ManageAccountsViewModel", "Deleting card with ID: $cardId")
                 cardRepository.deleteCard(cardId)
-                _uiState.update { it.copy(successMessage = "Card deleted successfully") }
+                _uiState.update { it.copy(successMessage = uiText(R.string.flosi_card_deleted)) }
                 
                 // Clear message after delay
                 delay(2000)
@@ -461,7 +467,7 @@ class ManageAccountsViewModel @Inject constructor(
             } catch (e: Exception) {
                 android.util.Log.e("ManageAccountsViewModel", "Failed to delete card", e)
                 _uiState.update { 
-                    it.copy(errorMessage = "Failed to delete card: ${e.message}")
+                    it.copy(errorMessage = uiText(R.string.flosi_card_delete_failed, e.message ?: ""))
                 }
             }
         }
@@ -498,7 +504,7 @@ class ManageAccountsViewModel @Inject constructor(
                     // dialog opening and Save. Surface it so the user isn't
                     // left wondering why nothing happened.
                     _uiState.update {
-                        it.copy(errorMessage = "Card no longer exists — it may have been deleted.")
+                        it.copy(errorMessage = uiText(R.string.flosi_card_missing))
                     }
                     return@launch
                 }
@@ -511,14 +517,14 @@ class ManageAccountsViewModel @Inject constructor(
                         nickname = nickname?.trim()?.takeIf { it.isNotEmpty() }
                     )
                 )
-                _uiState.update { it.copy(successMessage = "Card updated") }
+                _uiState.update { it.copy(successMessage = uiText(R.string.flosi_card_updated)) }
                 delay(2000)
                 _uiState.update { it.copy(successMessage = null) }
                 loadCards()
             } catch (e: Exception) {
                 android.util.Log.e("ManageAccountsViewModel", "Failed to update card", e)
                 _uiState.update {
-                    it.copy(errorMessage = "Failed to update card: ${e.message}")
+                    it.copy(errorMessage = uiText(R.string.flosi_card_update_failed, e.message ?: ""))
                 }
             }
         }
@@ -545,7 +551,7 @@ class ManageAccountsViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         hiddenAccounts = hidden,
-                        successMessage = "Account deleted successfully ($deletedCount balance records removed)"
+                        successMessage = uiText(R.string.flosi_account_deleted_records, deletedCount)
                     )
                 }
 
@@ -556,7 +562,7 @@ class ManageAccountsViewModel @Inject constructor(
                 loadCards() // Reload cards to update UI
             } catch (e: Exception) {
                 _uiState.update {
-                    it.copy(errorMessage = "Failed to delete account: ${e.message}")
+                    it.copy(errorMessage = uiText(R.string.flosi_account_delete_failed, e.message ?: ""))
                 }
             }
         }
@@ -588,18 +594,18 @@ class ManageAccountsViewModel @Inject constructor(
                 val sameAccount = source.bankName.equals(target.bankName, ignoreCase = true) &&
                     source.accountLast4 == target.accountLast4
                 if (sameAccount) {
-                    _uiState.update { it.copy(errorMessage = "Source and target are the same account") }
+                    _uiState.update { it.copy(errorMessage = uiText(R.string.flosi_merge_same_account)) }
                     return@launch
                 }
                 if (!source.currency.equals(target.currency, ignoreCase = true)) {
                     _uiState.update {
-                        it.copy(errorMessage = "Currencies don't match (${source.currency} vs ${target.currency})")
+                        it.copy(errorMessage = uiText(R.string.flosi_merge_currency_mismatch, source.currency, target.currency))
                     }
                     return@launch
                 }
                 if (source.isCreditCard != target.isCreditCard) {
                     _uiState.update {
-                        it.copy(errorMessage = "Can't merge a credit card with a regular account")
+                        it.copy(errorMessage = uiText(R.string.flosi_merge_card_account))
                     }
                     return@launch
                 }
@@ -655,7 +661,7 @@ class ManageAccountsViewModel @Inject constructor(
                     userPreferencesRepository.claimSupportNudge()
                 _uiState.update {
                     it.copy(
-                        successMessage = "Merged $moved transactions into ${AccountBalanceEntity.accountLabel(target.bankName, target.accountLast4)}",
+                        successMessage = uiText(R.string.flosi_merged_transactions, moved, AccountBalanceEntity.accountLabel(target.bankName, target.accountLast4)),
                         showSupportNudge = it.showSupportNudge || nudge
                     )
                 }
@@ -663,7 +669,7 @@ class ManageAccountsViewModel @Inject constructor(
                 delay(3000)
                 _uiState.update { it.copy(successMessage = null) }
             } catch (e: Exception) {
-                _uiState.update { it.copy(errorMessage = "Merge failed: ${e.message}") }
+                _uiState.update { it.copy(errorMessage = uiText(R.string.flosi_merge_failed, e.message ?: "")) }
             }
         }
     }
@@ -694,7 +700,7 @@ class ManageAccountsViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 android.util.Log.e("ManageAccountsViewModel", "Failed to set account profile", e)
-                _uiState.update { it.copy(errorMessage = "Failed to update account profile: ${e.message}") }
+                _uiState.update { it.copy(errorMessage = uiText(R.string.flosi_account_profile_failed, e.message ?: "")) }
             }
         }
     }
@@ -710,7 +716,7 @@ class ManageAccountsViewModel @Inject constructor(
                 accountBalanceRepository.setAccountAlias(bankName, accountLast4, normalized)
             } catch (e: Exception) {
                 android.util.Log.e("ManageAccountsViewModel", "Failed to set account alias", e)
-                _uiState.update { it.copy(errorMessage = "Failed to rename account: ${e.message}") }
+                _uiState.update { it.copy(errorMessage = uiText(R.string.flosi_account_rename_failed, e.message ?: "")) }
             }
         }
     }
@@ -722,7 +728,7 @@ class ManageAccountsViewModel @Inject constructor(
                 accountBalanceRepository.setLowBalanceThreshold(bankName, accountLast4, threshold)
             } catch (e: Exception) {
                 android.util.Log.e("ManageAccountsViewModel", "Failed to set low-balance threshold", e)
-                _uiState.update { it.copy(errorMessage = "Failed to set alert: ${e.message}") }
+                _uiState.update { it.copy(errorMessage = uiText(R.string.flosi_account_alert_failed, e.message ?: "")) }
             }
         }
     }
@@ -734,7 +740,7 @@ class ManageAccountsViewModel @Inject constructor(
                 transactionRepository.setProfileForAccountTransactions(p.bankName, p.accountLast4, p.profileId)
             } catch (e: Exception) {
                 android.util.Log.e("ManageAccountsViewModel", "Failed to reassign account transactions", e)
-                _uiState.update { it.copy(errorMessage = "Failed to move transactions: ${e.message}") }
+                _uiState.update { it.copy(errorMessage = uiText(R.string.flosi_account_move_failed, e.message ?: "")) }
             } finally {
                 // Always clear the prompt so the dialog can't get stuck open if
                 // the update throws.
@@ -778,7 +784,7 @@ class ManageAccountsViewModel @Inject constructor(
                 val latestBalance = accountBalanceRepository.getLatestBalance(newBankName, accountLast4)
                 val resolvedCurrency = newCurrency ?: CurrencyFormatter.resolveAccountCurrency(
                     sourceType = latestBalance?.sourceType,
-                    storedCurrency = latestBalance?.currency ?: "INR",
+                    storedCurrency = latestBalance?.currency ?: BuildConfig.DEFAULT_CURRENCY,
                     bankName = newBankName
                 )
 
@@ -816,7 +822,7 @@ class ManageAccountsViewModel @Inject constructor(
                 }
 
                 _uiState.update {
-                    it.copy(successMessage = "Account updated successfully")
+                    it.copy(successMessage = uiText(R.string.flosi_account_updated))
                 }
 
                 // Clear message after delay
@@ -825,7 +831,7 @@ class ManageAccountsViewModel @Inject constructor(
 
             } catch (e: Exception) {
                 _uiState.update {
-                    it.copy(errorMessage = "Failed to update account: ${e.message}")
+                    it.copy(errorMessage = uiText(R.string.flosi_account_update_failed, e.message ?: ""))
                 }
             }
         }

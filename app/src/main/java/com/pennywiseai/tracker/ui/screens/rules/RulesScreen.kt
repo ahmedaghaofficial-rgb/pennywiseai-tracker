@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.ui.screens.rules
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
@@ -29,6 +32,7 @@ import com.pennywiseai.tracker.domain.usecase.DryRunResult
 import com.pennywiseai.tracker.ui.components.CustomTitleTopAppBar
 import com.pennywiseai.tracker.ui.components.cards.PennyWiseCardV2
 import com.pennywiseai.tracker.ui.components.cards.SectionHeaderV2
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.hazeSource
 import com.pennywiseai.tracker.ui.theme.Dimensions
@@ -80,14 +84,14 @@ fun RulesScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Smart Rules",
+                title = stringResource(R.string.flosi_smart_rules),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Navigate back"
+                            contentDescription = stringResource(R.string.flosi_full_navigate_back)
                         )
                     }
                 },
@@ -96,7 +100,7 @@ fun RulesScreen(
                         IconButton(onClick = { showOverflowMenu = true }) {
                             Icon(
                                 Icons.Default.MoreVert,
-                                contentDescription = "More options"
+                                contentDescription = stringResource(R.string.flosi_more_options)
                             )
                         }
                         DropdownMenu(
@@ -104,7 +108,7 @@ fun RulesScreen(
                             onDismissRequest = { showOverflowMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Export rules") },
+                                text = { Text(stringResource(R.string.flosi_full_export_rules)) },
                                 leadingIcon = { Icon(Icons.Default.Upload, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
@@ -118,7 +122,7 @@ fun RulesScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Import rules") },
+                                text = { Text(stringResource(R.string.flosi_full_import_rules)) },
                                 leadingIcon = { Icon(Icons.Default.Download, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
@@ -129,7 +133,7 @@ fun RulesScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Reset to defaults") },
+                                text = { Text(stringResource(R.string.flosi_full_reset_to_defaults)) },
                                 leadingIcon = { Icon(Icons.Default.Refresh, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
@@ -150,7 +154,7 @@ fun RulesScreen(
                 },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Create Rule")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.flosi_full_create_rule))
             }
         }
     ) { paddingValues ->
@@ -158,11 +162,11 @@ fun RulesScreen(
         sharingMessage?.let { message ->
             AlertDialog(
                 onDismissRequest = { viewModel.clearSharingMessage() },
-                title = { Text("Smart Rules") },
+                title = { Text(stringResource(R.string.flosi_smart_rules)) },
                 text = { Text(message) },
                 confirmButton = {
                     TextButton(onClick = { viewModel.clearSharingMessage() }) {
-                        Text("OK")
+                        Text(stringResource(R.string.flosi_ok))
                     }
                 }
             )
@@ -171,8 +175,8 @@ fun RulesScreen(
         if (showResetDialog) {
             AlertDialog(
                 onDismissRequest = { showResetDialog = false },
-                title = { Text("Reset Rules") },
-                text = { Text("Reset all rules to default settings? Your custom settings will be lost.") },
+                title = { Text(stringResource(R.string.flosi_full_reset_rules)) },
+                text = { Text(stringResource(R.string.flosi_full_reset_all_rules_to_default_settings_your_custom_settings_will_be)) },
                 confirmButton = {
                     TextButton(
                         onClick = {
@@ -180,12 +184,12 @@ fun RulesScreen(
                             showResetDialog = false
                         }
                     ) {
-                        Text("Reset")
+                        Text(stringResource(R.string.flosi_full_reset))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showResetDialog = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.flosi_cancel))
                     }
                 }
             )
@@ -238,13 +242,13 @@ fun RulesScreen(
                             )
                             Column {
                                 Text(
-                                    text = "Automatic Categorization",
+                                    text = stringResource(R.string.flosi_full_automatic_categorization),
                                     style = MaterialTheme.typography.titleSmall,
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                                 Text(
-                                    text = "Enable rules to automatically categorize your transactions based on patterns",
+                                    text = stringResource(R.string.flosi_full_enable_rules_to_automatically_categorize_your_transactions_based),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
@@ -255,30 +259,11 @@ fun RulesScreen(
 
                 // Group rules by category for better organization
                 item {
-                    val groupedRules = rules.groupBy { rule ->
-                        when {
-                            rule.name.contains("Food", ignoreCase = true) ||
-                            rule.name.contains("Fuel", ignoreCase = true) -> "Daily Expenses"
-
-                            rule.name.contains("Salary", ignoreCase = true) ||
-                            rule.name.contains("Cashback", ignoreCase = true) -> "Income & Cashback"
-
-                            rule.name.contains("Rent", ignoreCase = true) ||
-                            rule.name.contains("EMI", ignoreCase = true) ||
-                            rule.name.contains("Subscription", ignoreCase = true) -> "Recurring Payments"
-
-                            rule.name.contains("Investment", ignoreCase = true) ||
-                            rule.name.contains("Transfer", ignoreCase = true) -> "Banking & Investments"
-
-                            rule.name.contains("Healthcare", ignoreCase = true) -> "Healthcare"
-
-                            else -> "Other"
-                        }
-                    }
+                    val groupedRules = rules.groupBy(::ruleGroup)
 
                     groupedRules.forEach { (category, categoryRules) ->
                         if (categoryRules.isNotEmpty()) {
-                            SectionHeaderV2(title = category)
+                            SectionHeaderV2(title = stringResource(when (category) { RuleGroup.DAILY -> R.string.flosi_rule_group_daily; RuleGroup.INCOME -> R.string.flosi_rule_group_income; RuleGroup.RECURRING -> R.string.flosi_rule_group_recurring; RuleGroup.BANKING -> R.string.flosi_rule_group_banking; RuleGroup.HEALTH -> R.string.flosi_rule_group_health; RuleGroup.OTHER -> R.string.flosi_rule_group_other }))
 
                             categoryRules.forEach { rule ->
                                 RuleCard(
@@ -309,7 +294,7 @@ fun RulesScreen(
                 item {
                     Spacer(modifier = Modifier.height(Spacing.lg))
                     Text(
-                        text = "Rules are applied automatically to new transactions. Higher priority rules run first.",
+                        text = stringResource(R.string.flosi_full_rules_are_applied_automatically_to_new_transactions_higher_priori),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = Spacing.md)
@@ -352,6 +337,12 @@ fun RulesScreen(
 }
 
 @Composable
+private fun displayRuleName(rule: com.pennywiseai.tracker.domain.model.rule.TransactionRule): String =
+    if (rule.isSystemTemplate && rule.name == "Small Payments to Food")
+        stringResource(R.string.flosi_rule_template_name)
+    else rule.name
+
+@Composable
 private fun RuleCard(
     rule: com.pennywiseai.tracker.domain.model.rule.TransactionRule,
     onToggle: (Boolean) -> Unit,
@@ -376,14 +367,14 @@ private fun RuleCard(
                 verticalArrangement = Arrangement.spacedBy(Spacing.xs)
             ) {
                 Text(
-                    text = rule.name,
+                    text = displayRuleName(rule),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium
                 )
 
                 rule.description?.let { description ->
                     Text(
-                        text = description,
+                        text = if (rule.isSystemTemplate && description == "Categorize small expense payments (under 200) as Food & Dining") stringResource(R.string.flosi_rule_template_desc) else description,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -391,16 +382,16 @@ private fun RuleCard(
 
                 // Show simple condition summary
                 val conditionSummary = when {
-                    rule.name.contains("Small Payments", ignoreCase = true) -> "Amount < 200"
-                    rule.name.contains("UPI Cashback", ignoreCase = true) -> "Amount < 10 from NPCI"
-                    rule.name.contains("Salary", ignoreCase = true) -> "Credits with salary keywords"
-                    rule.name.contains("Rent", ignoreCase = true) -> "Payments with rent keywords"
-                    rule.name.contains("EMI", ignoreCase = true) -> "EMI/loan keywords"
-                    rule.name.contains("Investment", ignoreCase = true) -> "Mutual funds, stocks keywords"
-                    rule.name.contains("Subscription", ignoreCase = true) -> "Netflix, Spotify, etc."
-                    rule.name.contains("Fuel", ignoreCase = true) -> "Petrol pump transactions"
-                    rule.name.contains("Healthcare", ignoreCase = true) -> "Hospital, pharmacy keywords"
-                    rule.name.contains("Transfer", ignoreCase = true) -> "Self transfers, contra"
+                    rule.name.contains("Small Payments", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_small)
+                    rule.name.contains("UPI Cashback", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_cashback)
+                    rule.name.contains("Salary", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_salary)
+                    rule.name.contains("Rent", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_rent)
+                    rule.name.contains("EMI", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_emi)
+                    rule.name.contains("Investment", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_investment)
+                    rule.name.contains("Subscription", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_subscription)
+                    rule.name.contains("Fuel", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_fuel)
+                    rule.name.contains("Healthcare", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_health)
+                    rule.name.contains("Transfer", ignoreCase = true) -> stringResource(R.string.flosi_rule_summary_transfer)
                     else -> null
                 }
 
@@ -429,7 +420,7 @@ private fun RuleCard(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer
                     ) {
                         Text(
-                            text = "Priority: ${rule.priority}",
+                            text = stringResource(R.string.flosi_rule_priority, rule.priority),
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -448,7 +439,7 @@ private fun RuleCard(
                         ) {
                             Icon(
                                 Icons.Default.MoreVert,
-                                contentDescription = "More actions"
+                                contentDescription = stringResource(R.string.flosi_more_actions)
                             )
                         }
 
@@ -458,7 +449,7 @@ private fun RuleCard(
                         ) {
                             // Edit rule
                             DropdownMenuItem(
-                                text = { Text("Edit Rule") },
+                                text = { Text(stringResource(R.string.flosi_full_edit_rule)) },
                                 leadingIcon = {
                                     Icon(Icons.Default.Edit, contentDescription = null)
                                 },
@@ -470,7 +461,7 @@ private fun RuleCard(
 
                             // Duplicate rule (opens the editor prefilled as a new rule)
                             DropdownMenuItem(
-                                text = { Text("Duplicate Rule") },
+                                text = { Text(stringResource(R.string.flosi_full_duplicate_rule)) },
                                 leadingIcon = {
                                     Icon(Icons.Default.ContentCopy, contentDescription = null)
                                 },
@@ -482,7 +473,7 @@ private fun RuleCard(
 
                             // Apply to past transactions
                             DropdownMenuItem(
-                                text = { Text("Apply to Past Transactions") },
+                                text = { Text(stringResource(R.string.flosi_full_apply_to_past_transactions)) },
                                 leadingIcon = {
                                     Icon(Icons.Default.History, contentDescription = null)
                                 },
@@ -495,7 +486,7 @@ private fun RuleCard(
                             // Only show delete for custom rules
                             if (!rule.isSystemTemplate) {
                                 DropdownMenuItem(
-                                    text = { Text("Delete Rule") },
+                                    text = { Text(stringResource(R.string.flosi_full_delete_rule)) },
                                     leadingIcon = {
                                         Icon(
                                             Icons.Default.Delete,
@@ -524,8 +515,8 @@ private fun RuleCard(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Rule") },
-            text = { Text("Delete \"${rule.name}\"? This action cannot be undone.") },
+            title = { Text(stringResource(R.string.flosi_full_delete_rule)) },
+            text = { Text(stringResource(R.string.flosi_rule_delete, displayRuleName(rule))) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -536,12 +527,12 @@ private fun RuleCard(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.flosi_delete))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -561,11 +552,11 @@ private fun BatchApplyDialog(
     onApplyToUncategorized: () -> Unit
 ) {
     val title = when {
-        progress != null -> "Applying Rule..."
-        isLoading && dryRunResult == null -> "Previewing..."
-        dryRunResult != null && result == null -> "Preview: ${rule.name}"
-        result != null -> "Apply Rule to Past Transactions"
-        else -> "Apply Rule to Past Transactions"
+        progress != null -> stringResource(R.string.flosi_rule_applying)
+        isLoading && dryRunResult == null -> stringResource(R.string.flosi_rule_previewing)
+        dryRunResult != null && result == null -> stringResource(R.string.flosi_rule_preview_name, displayRuleName(rule))
+        result != null -> stringResource(R.string.flosi_rule_apply_past)
+        else -> stringResource(R.string.flosi_rule_apply_past)
     }
 
     AlertDialog(
@@ -587,7 +578,7 @@ private fun BatchApplyDialog(
                             verticalArrangement = Arrangement.spacedBy(Spacing.sm)
                         ) {
                             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                            Text("Scanning transactions...", style = MaterialTheme.typography.bodySmall)
+                            Text(stringResource(R.string.flosi_full_scanning_transactions), style = MaterialTheme.typography.bodySmall)
                         }
                     }
 
@@ -595,24 +586,24 @@ private fun BatchApplyDialog(
                     dryRunResult != null && result == null && progress == null -> {
                         if (dryRunResult.totalMatched == 0) {
                             Text(
-                                text = "No transactions match this rule (scanned ${dryRunResult.totalScanned}).",
+                                text = stringResource(R.string.flosi_rule_no_match, dryRunResult.totalScanned),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         } else {
                             Text(
-                                text = "Scanned ${dryRunResult.totalScanned} transactions:",
+                                text = stringResource(R.string.flosi_rule_scanned, dryRunResult.totalScanned),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = "${dryRunResult.totalWouldUpdate} would be updated",
+                                text = pluralStringResource(R.plurals.flosi_rule_would_update, dryRunResult.totalWouldUpdate, dryRunResult.totalWouldUpdate),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Medium
                             )
                             if (dryRunResult.totalWouldBlock > 0) {
                                 Text(
-                                    text = "${dryRunResult.totalWouldBlock} would be blocked",
+                                    text = pluralStringResource(R.plurals.flosi_rule_would_block, dryRunResult.totalWouldBlock, dryRunResult.totalWouldBlock),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.error,
                                     fontWeight = FontWeight.Medium
@@ -622,7 +613,7 @@ private fun BatchApplyDialog(
                             if (dryRunResult.samples.isNotEmpty()) {
                                 HorizontalDivider(modifier = Modifier.padding(vertical = Spacing.xs))
                                 Text(
-                                    text = "Sample changes:",
+                                    text = stringResource(R.string.flosi_full_sample_changes),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.Medium
                                 )
@@ -645,7 +636,7 @@ private fun BatchApplyDialog(
                                             )
                                             if (diff.isBlock) {
                                                 Text(
-                                                    text = "Would be blocked",
+                                                    text = stringResource(R.string.flosi_full_would_be_blocked),
                                                     style = MaterialTheme.typography.bodySmall,
                                                     color = MaterialTheme.colorScheme.error
                                                 )
@@ -653,31 +644,31 @@ private fun BatchApplyDialog(
                                                 val mod = diff.modified
                                                 if (orig.category != mod.category) {
                                                     Text(
-                                                        text = "Category: ${orig.category} \u2192 ${mod.category}",
+                                                        text = stringResource(R.string.flosi_rule_diff_category, localizedCategoryName(orig.category), localizedCategoryName(mod.category)),
                                                         style = MaterialTheme.typography.bodySmall
                                                     )
                                                 }
                                                 if (orig.merchantName != mod.merchantName) {
                                                     Text(
-                                                        text = "Merchant: ${orig.merchantName} \u2192 ${mod.merchantName}",
+                                                        text = stringResource(R.string.flosi_rule_diff_merchant, orig.merchantName, mod.merchantName),
                                                         style = MaterialTheme.typography.bodySmall
                                                     )
                                                 }
                                                 if (orig.transactionType != mod.transactionType) {
                                                     Text(
-                                                        text = "Type: ${orig.transactionType} \u2192 ${mod.transactionType}",
+                                                        text = stringResource(R.string.flosi_rule_diff_type, localizedRuleTransactionTypeLabel(orig.transactionType.name), localizedRuleTransactionTypeLabel(mod.transactionType.name)),
                                                         style = MaterialTheme.typography.bodySmall
                                                     )
                                                 }
                                                 if (orig.description != mod.description) {
                                                     Text(
-                                                        text = "Description: ${orig.description ?: "(none)"} \u2192 ${mod.description ?: "(none)"}",
+                                                        text = stringResource(R.string.flosi_rule_diff_description, orig.description ?: stringResource(R.string.flosi_rule_none), mod.description ?: stringResource(R.string.flosi_rule_none)),
                                                         style = MaterialTheme.typography.bodySmall
                                                     )
                                                 }
                                                 if (diff.tagChanges.isNotEmpty()) {
                                                     Text(
-                                                        text = "Tags: ${diff.tagChanges.joinToString(", ")}",
+                                                        text = stringResource(R.string.flosi_rule_diff_tags, diff.tagChanges.joinToString(", ")),
                                                         style = MaterialTheme.typography.bodySmall
                                                     )
                                                 }
@@ -687,7 +678,7 @@ private fun BatchApplyDialog(
                                 }
                                 if (dryRunResult.totalMatched > 5) {
                                     Text(
-                                        text = "...and ${dryRunResult.totalMatched - 5} more",
+                                        text = pluralStringResource(R.plurals.flosi_rule_more, dryRunResult.totalMatched - 5, dryRunResult.totalMatched - 5),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -699,11 +690,11 @@ private fun BatchApplyDialog(
                     // Initial state — show options with preview button
                     progress == null && result == null -> {
                         Text(
-                            text = "Apply \"${rule.name}\" to existing transactions?",
+                            text = stringResource(R.string.flosi_rule_confirm_apply, displayRuleName(rule)),
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
-                            text = "Use Preview to see what would change before applying.",
+                            text = stringResource(R.string.flosi_full_use_preview_to_see_what_would_change_before_applying),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -717,7 +708,7 @@ private fun BatchApplyDialog(
                         ) {
                             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                             Text(
-                                text = "Processing ${progress.first} of ${progress.second} transactions",
+                                text = stringResource(R.string.flosi_rule_processing, progress.first, progress.second),
                                 style = MaterialTheme.typography.bodySmall
                             )
                         }
@@ -741,7 +732,7 @@ private fun BatchApplyDialog(
                                         MaterialTheme.colorScheme.error
                                 )
                                 Text(
-                                    text = "Completed",
+                                    text = stringResource(R.string.flosi_full_completed),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Medium
                                 )
@@ -750,18 +741,18 @@ private fun BatchApplyDialog(
                             HorizontalDivider(modifier = Modifier.padding(vertical = Spacing.sm))
 
                             Text(
-                                text = "Transactions processed: ${result.totalProcessed}",
+                                text = pluralStringResource(R.plurals.flosi_rule_processed, result.totalProcessed, result.totalProcessed),
                                 style = MaterialTheme.typography.bodySmall
                             )
                             Text(
-                                text = "Transactions updated: ${result.totalUpdated}",
+                                text = pluralStringResource(R.plurals.flosi_rule_updated, result.totalUpdated, result.totalUpdated),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Medium
                             )
                             if (result.totalDeleted > 0) {
                                 Text(
-                                    text = "Transactions blocked: ${result.totalDeleted}",
+                                    text = pluralStringResource(R.plurals.flosi_rule_blocked, result.totalDeleted, result.totalDeleted),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.tertiary,
                                     fontWeight = FontWeight.Medium
@@ -769,7 +760,7 @@ private fun BatchApplyDialog(
                             }
                             if (result.errors.isNotEmpty()) {
                                 Text(
-                                    text = "Errors: ${result.errors.size}",
+                                    text = pluralStringResource(R.plurals.flosi_rule_errors, result.errors.size, result.errors.size),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.error
                                 )
@@ -790,10 +781,10 @@ private fun BatchApplyDialog(
                         horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        TextButton(onClick = onDismiss) { Text("Cancel") }
+                        TextButton(onClick = onDismiss) { Text(stringResource(R.string.flosi_cancel)) }
                         if (dryRunResult.totalMatched > 0) {
-                            TextButton(onClick = onApplyToUncategorized) { Text("Uncategorized") }
-                            TextButton(onClick = onApplyToAll) { Text("Apply All") }
+                            TextButton(onClick = onApplyToUncategorized) { Text(stringResource(R.string.category_uncategorized)) }
+                            TextButton(onClick = onApplyToAll) { Text(stringResource(R.string.flosi_full_apply_all)) }
                         }
                     }
                 }
@@ -804,18 +795,18 @@ private fun BatchApplyDialog(
                         horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        TextButton(onClick = onDismiss) { Text("Cancel") }
+                        TextButton(onClick = onDismiss) { Text(stringResource(R.string.flosi_cancel)) }
                         OutlinedButton(onClick = onPreview) {
                             Icon(Icons.Default.Preview, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small))
                             Spacer(modifier = Modifier.width(Spacing.xs))
-                            Text("Preview")
+                            Text(stringResource(R.string.flosi_preview))
                         }
                     }
                 }
 
                 // Done — close button
                 result != null -> {
-                    TextButton(onClick = onDismiss) { Text("Close") }
+                    TextButton(onClick = onDismiss) { Text(stringResource(R.string.flosi_close)) }
                 }
             }
         }

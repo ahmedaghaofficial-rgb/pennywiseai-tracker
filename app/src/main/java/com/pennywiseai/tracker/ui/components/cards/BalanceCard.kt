@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -49,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import android.view.HapticFeedbackConstants
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.theme.Dimensions
 import com.pennywiseai.tracker.ui.theme.PennyWiseText
 import dev.chrisbanes.haze.HazeDefaults
@@ -118,7 +121,7 @@ fun BalanceCard(
     val containerColor = MaterialTheme.colorScheme.surfaceContainerLow
 
     val absPercent = kotlin.math.abs(monthlyChangePercent)
-    val changeText = if (isPositive) "$absPercent% more vs last month" else "$absPercent% less vs last month"
+    val changeText = stringResource(if (isPositive) R.string.flosi_more_vs_last_month else R.string.flosi_less_vs_last_month, absPercent)
 
     Box(modifier = modifier.fillMaxWidth()) {
         PennyWiseCardV2(
@@ -191,16 +194,16 @@ fun BalanceCard(
                             ) {
                                 Text(
                                     text = if (isBalanceHidden) {
-                                        "Balance: ••••••"
+                                        stringResource(R.string.flosi_balance_masked)
                                     } else {
-                                        "Balance: ${CurrencyFormatter.formatCurrency(totalBalance, currency)}${if (isApproximate) "*" else ""}"
+                                        stringResource(R.string.flosi_balance_amount, CurrencyFormatter.formatCurrency(totalBalance, currency) + if (isApproximate) "*" else "")
                                     },
                                     style = PennyWiseText.amountSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 if (accountBalances.size > 1) {
                                     Text(
-                                        text = " · ${accountBalances.size} accounts",
+                                        text = " · " + pluralStringResource(R.plurals.flosi_account_count, accountBalances.size, accountBalances.size),
                                         style = MaterialTheme.typography.bodySmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -219,7 +222,7 @@ fun BalanceCard(
                                 view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
                                 onToggleBalanceVisibility()
                             },
-                            supportingText = if (isBalanceHidden) "Last month: ••••" else "Last month: ${CurrencyFormatter.formatCurrency(lastMonthSpending, currency)}"
+                            supportingText = stringResource(R.string.flosi_last_month_amount, if (isBalanceHidden) "••••" else CurrencyFormatter.formatCurrency(lastMonthSpending, currency))
                         )
 
                         Spacer(modifier = Modifier.height(Spacing.sm))
@@ -261,7 +264,7 @@ fun BalanceCard(
                                     )
                                     Spacer(modifier = Modifier.width(Spacing.xs))
                                     Text(
-                                        text = "This month",
+                                        text = stringResource(R.string.flosi_this_month),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                                     )
@@ -277,7 +280,7 @@ fun BalanceCard(
                                     )
                                     Spacer(modifier = Modifier.width(Spacing.xs))
                                     Text(
-                                        text = "Last month",
+                                        text = stringResource(R.string.flosi_last_month),
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                                     )
@@ -293,7 +296,7 @@ fun BalanceCard(
 
                         // "This month" section label
                         Text(
-                            text = "This month",
+                            text = stringResource(R.string.flosi_this_month),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                             fontWeight = FontWeight.Medium
@@ -319,24 +322,24 @@ fun BalanceCard(
                             }
 
                             SummaryItem(
-                                label = "Income",
+                                label = stringResource(R.string.flosi_income),
                                 value = if (isBalanceHidden) "••••" else CurrencyFormatter.formatCurrency(currentMonthIncome, currency),
                                 accentColor = incomeColor
                             )
                             SummaryItem(
-                                label = "Expenses",
+                                label = stringResource(R.string.flosi_expenses),
                                 value = if (isBalanceHidden) "••••" else CurrencyFormatter.formatCurrency(currentMonthExpenses, currency),
                                 accentColor = expenseColor
                             )
                             if (currentMonthLent > BigDecimal.ZERO) {
                                 SummaryItem(
-                                    label = "Lent",
+                                    label = stringResource(R.string.flosi_lent),
                                     value = if (isBalanceHidden) "••••" else CurrencyFormatter.formatCurrency(currentMonthLent, currency),
                                     accentColor = MaterialTheme.colorScheme.tertiary
                                 )
                             }
                             SummaryItem(
-                                label = "Saved",
+                                label = stringResource(R.string.flosi_saved),
                                 value = if (isBalanceHidden) "••••" else CurrencyFormatter.formatCurrency(currentMonthTotal, currency),
                                 accentColor = netColor
                             )
@@ -351,7 +354,7 @@ fun BalanceCard(
                             Spacer(modifier = Modifier.height(Spacing.md))
 
                             Text(
-                                text = "Accounts",
+                                text = stringResource(R.string.flosi_accounts),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                                 fontWeight = FontWeight.Medium
@@ -395,7 +398,7 @@ fun BalanceCard(
                             if (creditCards.isNotEmpty()) {
                                 Spacer(modifier = Modifier.height(Spacing.sm))
                                 Text(
-                                    text = "Credit Cards",
+                                    text = stringResource(R.string.flosi_credit_cards),
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                                     fontWeight = FontWeight.Medium
@@ -442,7 +445,7 @@ fun BalanceCard(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Total",
+                                    text = stringResource(R.string.flosi_total_5),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.Bold
@@ -461,7 +464,7 @@ fun BalanceCard(
                             if (isApproximate) {
                                 Spacer(modifier = Modifier.height(Spacing.xs))
                                 Text(
-                                    text = "* Some balances could not be converted and are shown in original currency (total sum is approximate).",
+                                    text = stringResource(R.string.flosi_approximate_balance_hint),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.error,
                                     modifier = Modifier.fillMaxWidth()
@@ -476,7 +479,7 @@ fun BalanceCard(
                 // Chevron indicator
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    contentDescription = stringResource(if (isExpanded) R.string.flosi_collapse else R.string.flosi_expand),
                     tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                     modifier = Modifier
                         .size(Dimensions.Icon.small)
@@ -496,7 +499,7 @@ private fun SpendingAmountHeader(
     supportingText: String? = null
 ) {
     Text(
-        text = "Spent this month",
+        text = stringResource(R.string.flosi_spent_this_month),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
         fontWeight = FontWeight.Medium
@@ -518,7 +521,7 @@ private fun SpendingAmountHeader(
         ) {
             Icon(
                 imageVector = if (isBalanceHidden) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                contentDescription = if (isBalanceHidden) "Show balance" else "Hide balance",
+                contentDescription = stringResource(if (isBalanceHidden) R.string.flosi_show_balance else R.string.flosi_hide_balance),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(Dimensions.Icon.medium)
             )
@@ -599,7 +602,7 @@ private fun CurrencyChip(
             )
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "Change currency",
+                contentDescription = stringResource(R.string.flosi_change_currency),
                 tint = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.size(Dimensions.Icon.small)
             )

@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.ui.screens.analytics
 
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -17,6 +19,8 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 import com.pennywiseai.tracker.ui.effects.overScrollVertical
 import com.pennywiseai.tracker.ui.effects.rememberOverscrollFlingBehavior
 import androidx.compose.foundation.shape.CircleShape
@@ -36,6 +40,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.platform.LocalContext
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import java.util.Locale
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pennywiseai.tracker.data.contacts.LocalMerchantDisplay
@@ -110,12 +117,14 @@ fun AnalyticsScreen(
 
     // Cache expensive operations
     val timePeriods = remember { TimePeriod.values().toList() }
-    val customRangeLabel = remember(customDateRange) {
-        DateRangeUtils.formatDateRange(customDateRange)
+    val appLocale = Locale.forLanguageTag(AppLocaleController.getLanguage(LocalContext.current).tag)
+    val customRangeLabel = remember(customDateRange, appLocale) {
+        DateRangeUtils.formatDateRange(customDateRange, locale = appLocale)
     }
-    val periodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel) {
-        selectedPeriod.chipLabel(budgetCycleStartDay, customRangeLabel)
+    val rawPeriodChipLabel = remember(selectedPeriod, budgetCycleStartDay, customRangeLabel, appLocale) {
+        selectedPeriod.chipLabel(budgetCycleStartDay, customRangeLabel, locale = appLocale)
     }
+    val periodChipLabel = if (rawPeriodChipLabel == selectedPeriod.label) localizedAnalyticsPeriodLabel(selectedPeriod) else rawPeriodChipLabel
     // Carry the custom range through drill-down navigation so the Transactions
     // screen (and its CSV export) shows exactly the slice being viewed here.
     val navStartEpochDay = if (selectedPeriod == TimePeriod.CUSTOM) customDateRange?.first?.toEpochDay() else null
@@ -144,7 +153,7 @@ fun AnalyticsScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Analytics",
+                title = stringResource(R.string.flosi_analytics),
                 hazeState = hazeState
             )
         }
@@ -269,7 +278,7 @@ fun AnalyticsScreen(
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     SectionHeaderV2(
-                        title = "Trends",
+                        title = stringResource(R.string.flosi_full_trends),
                         action = {
                             Button(
                                 onClick = { showChartTypeSelector = !showChartTypeSelector },
@@ -291,9 +300,9 @@ fun AnalyticsScreen(
                                 Spacer(modifier = Modifier.width(Spacing.xs))
                                 Text(
                                     text = when (chartType) {
-                                        ChartType.LINE -> "Line"
-                                        ChartType.BAR -> "Bar"
-                                        ChartType.HEATMAP -> "Heatmap"
+                                        ChartType.LINE -> stringResource(R.string.flosi_chart_line)
+                                        ChartType.BAR -> stringResource(R.string.flosi_chart_bar)
+                                        ChartType.HEATMAP -> stringResource(R.string.flosi_chart_heatmap)
                                     },
                                     style = MaterialTheme.typography.labelMedium
                                 )
@@ -342,9 +351,9 @@ fun AnalyticsScreen(
                                         )
                                         Text(
                                             text = when (type) {
-                                                ChartType.LINE -> "Line Chart"
-                                                ChartType.BAR -> "Bar Chart"
-                                                ChartType.HEATMAP -> "Heatmap"
+                                                ChartType.LINE -> stringResource(R.string.flosi_chart_line_full)
+                                                ChartType.BAR -> stringResource(R.string.flosi_chart_bar_full)
+                                                ChartType.HEATMAP -> stringResource(R.string.flosi_chart_heatmap)
                                             },
                                             style = MaterialTheme.typography.bodyMedium,
                                             color = if (chartType == type)
@@ -395,7 +404,7 @@ fun AnalyticsScreen(
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     SectionHeaderV2(
-                        title = "Top Categories",
+                        title = stringResource(R.string.flosi_full_top_categories),
                         action = {
                             IconButton(onClick = {
                                 categoryViewType = if (categoryViewType == CategoryViewType.CHART) {
@@ -408,7 +417,7 @@ fun AnalyticsScreen(
                                     imageVector = if (categoryViewType == CategoryViewType.CHART)
                                         Icons.AutoMirrored.Filled.List
                                     else Icons.Default.PieChart,
-                                    contentDescription = "Toggle View",
+                                    contentDescription = stringResource(R.string.flosi_full_toggle_view),
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                             }
@@ -453,7 +462,7 @@ fun AnalyticsScreen(
                     // netted in full off the total, but a category bar can't go negative (#704).
                     if (uiState.refundNettedFromTotal > BigDecimal.ZERO) {
                         Text(
-                            text = "Total is net of ${CurrencyFormatter.formatCurrency(uiState.refundNettedFromTotal, selectedCurrency)} in refunds. Category bars can't go below zero, so they may add up to more than the total shown.",
+                            text = stringResource(R.string.flosi_analytics_refunds, CurrencyFormatter.formatCurrency(uiState.refundNettedFromTotal, selectedCurrency)),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(horizontal = Spacing.sm)
@@ -468,7 +477,7 @@ fun AnalyticsScreen(
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                     SectionHeaderV2(
-                        title = "Top Tags",
+                        title = stringResource(R.string.flosi_full_top_tags),
                         action = {
                             // View-toggle only makes sense once the breakdown is
                             // unlocked; free users get no toggle over the locked card.
@@ -484,7 +493,7 @@ fun AnalyticsScreen(
                                         imageVector = if (tagViewType == CategoryViewType.CHART)
                                             Icons.AutoMirrored.Filled.List
                                         else Icons.Default.PieChart,
-                                        contentDescription = "Toggle View",
+                                        contentDescription = stringResource(R.string.flosi_full_toggle_view),
                                         tint = MaterialTheme.colorScheme.primary
                                     )
                                 }
@@ -540,7 +549,7 @@ fun AnalyticsScreen(
         if (uiState.topMerchants.isNotEmpty()) {
             item {
                 SectionHeaderV2(
-                    title = "Top Merchants"
+                    title = stringResource(R.string.flosi_full_top_merchants)
                 )
             }
 
@@ -567,7 +576,7 @@ fun AnalyticsScreen(
         if (uiState.accountBreakdown.isNotEmpty()) {
             item {
                 SectionHeaderV2(
-                    title = "By Account"
+                    title = stringResource(R.string.flosi_full_by_account)
                 )
             }
 
@@ -631,12 +640,12 @@ private fun TagBreakdownLockedCard(onClick: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(Spacing.xs)
             ) {
                 Text(
-                    text = "See your Top Tags with Pro",
+                    text = stringResource(R.string.flosi_full_see_your_top_tags_with_pro),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Unlock a spending breakdown across all your tags. Tagging and filtering stay free.",
+                    text = stringResource(R.string.flosi_full_unlock_a_spending_breakdown_across_all_your_tags_tagging_and_filt),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -702,7 +711,7 @@ private fun AnalyticsFilterBar(
             item {
                 AssistChip(
                     onClick = onResetFilters,
-                    label = { Text("Clear") },
+                    label = { Text(stringResource(R.string.flosi_clear)) },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Close,
@@ -720,13 +729,13 @@ private fun AnalyticsFilterBar(
 
         if (profiles.isNotEmpty()) {
             item {
-                val selectedProfileLabel = profiles.find { it.id == selectedProfileId }?.name
+                val selectedProfileLabel = profiles.find { it.id == selectedProfileId }?.let { localizedProfileName(it) }
                 Box {
                     ExpressiveFilterChip(
                         colors = analyticsFilterChipColors(),
                         border = analyticsFilterChipBorder(selected = selectedProfileId != null),
                         selected = selectedProfileId != null,
-                        text = selectedProfileLabel ?: "All Accounts",
+                        text = selectedProfileLabel ?: stringResource(R.string.flosi_all_accounts),
                         icon = profileFilterIcon(profiles, selectedProfileId),
                         onClick = onProfileClick
                     )
@@ -762,7 +771,7 @@ private fun AnalyticsFilterBar(
                 ) {
                     timePeriods.forEach { period ->
                         DropdownMenuItem(
-                            text = { Text(period.label) },
+                            text = { Text(localizedAnalyticsPeriodLabel(period)) },
                             leadingIcon = {
                                 if (selectedPeriod == period) {
                                     Icon(Icons.Default.Check, contentDescription = null)
@@ -795,7 +804,7 @@ private fun AnalyticsFilterBar(
                 ) {
                     TransactionTypeFilter.values().forEach { typeFilter ->
                         DropdownMenuItem(
-                            text = { Text(typeFilter.label) },
+                            text = { Text(typeFilter.shortLabel()) },
                             leadingIcon = {
                                 if (transactionTypeFilter == typeFilter) {
                                     Icon(Icons.Default.Check, contentDescription = null)
@@ -819,7 +828,7 @@ private fun AnalyticsFilterBar(
                             selected = selectedCurrency != availableCurrencies.firstOrNull()
                         ),
                         selected = selectedCurrency != availableCurrencies.firstOrNull(),
-                        text = selectedCurrency.ifBlank { "Currency" },
+                        text = selectedCurrency.ifBlank { stringResource(R.string.flosi_currency) },
                         icon = Icons.Default.CurrencyExchange,
                         onClick = onCurrencyClick
                     )
@@ -852,7 +861,7 @@ private fun AnalyticsFilterBar(
                         colors = analyticsFilterChipColors(),
                         border = analyticsFilterChipBorder(selected = categoryFilter != null),
                         selected = categoryFilter != null,
-                        text = categoryFilter ?: "Category",
+                        text = categoryFilter?.let { localizedCategoryName(it) } ?: stringResource(R.string.flosi_category),
                         icon = Icons.Default.Category,
                         onClick = onCategoryClick
                     )
@@ -863,7 +872,7 @@ private fun AnalyticsFilterBar(
                         shape = MaterialTheme.shapes.large
                     ) {
                         DropdownMenuItem(
-                            text = { Text("All categories") },
+                            text = { Text(stringResource(R.string.flosi_all_categories)) },
                             leadingIcon = {
                                 if (categoryFilter == null) {
                                     Icon(Icons.Default.Check, contentDescription = null)
@@ -878,7 +887,7 @@ private fun AnalyticsFilterBar(
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        category,
+                                        localizedCategoryName(category),
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
                                     )
@@ -910,7 +919,7 @@ private fun AnalyticsFilterBar(
                         colors = analyticsFilterChipColors(),
                         border = analyticsFilterChipBorder(selected = accountFilter != null),
                         selected = accountFilter != null,
-                        text = selectedAccountLabel ?: "Account",
+                        text = selectedAccountLabel ?: stringResource(R.string.flosi_account),
                         icon = Icons.Default.AccountBalanceWallet,
                         onClick = onAccountClick
                     )
@@ -921,7 +930,7 @@ private fun AnalyticsFilterBar(
                         shape = MaterialTheme.shapes.large
                     ) {
                         DropdownMenuItem(
-                            text = { Text("All accounts") },
+                            text = { Text(stringResource(R.string.flosi_all_accounts)) },
                             leadingIcon = {
                                 if (accountFilter == null) {
                                     Icon(Icons.Default.Check, contentDescription = null)
@@ -1000,8 +1009,8 @@ private fun CategoryListItem(
                 )
             }
         },
-        title = category.name,
-        subtitle = "${category.transactionCount} transactions",
+        title = localizedCategoryName(category.name),
+        subtitle = pluralStringResource(R.plurals.flosi_analytics_transactions, category.transactionCount, category.transactionCount),
         amount = CurrencyFormatter.formatCurrency(category.amount, currency),
         trailingContent = {
             Text(
@@ -1019,13 +1028,10 @@ private fun MerchantListItem(
     currency: String,
     onClick: () -> Unit = {}
 ) {
-    val subtitle = buildString {
-        append("${merchant.transactionCount} ")
-        append(if (merchant.transactionCount == 1) "transaction" else "transactions")
-        if (merchant.isSubscription) {
-            append(" • Subscription")
-        }
-    }
+    val countLabel = pluralStringResource(R.plurals.flosi_analytics_transactions, merchant.transactionCount, merchant.transactionCount)
+    val subtitle = if (merchant.isSubscription) {
+        "$countLabel • ${stringResource(R.string.flosi_analytics_subscription)}"
+    } else countLabel
 
     // Brand icon stays keyed on the raw merchant; only the label uses the alias (#583).
     val merchantDisplay = LocalMerchantDisplay.current
@@ -1068,8 +1074,7 @@ private fun AccountBreakdownListItem(
             }
         },
         title = account.label,
-        subtitle = "${account.transactionCount} " +
-            if (account.transactionCount == 1) "transaction" else "transactions",
+        subtitle = pluralStringResource(R.plurals.flosi_analytics_transactions, account.transactionCount, account.transactionCount),
         amount = CurrencyFormatter.formatCurrency(account.amount, currency),
         trailingContent = {
             Text(
@@ -1093,10 +1098,19 @@ private fun EmptyAnalyticsState(
     ) {
         PennyWiseEmptyState(
             icon = Icons.AutoMirrored.Filled.ShowChart,
-            headline = "Not enough data yet",
-            description = "Your spending insights will appear here after your first week of tracking",
-            actionLabel = "Scan SMS",
+            headline = stringResource(R.string.flosi_analytics_insufficient),
+            description = stringResource(R.string.flosi_analytics_empty_desc),
+            actionLabel = stringResource(R.string.flosi_scan_sms),
             onAction = onScanSmsClick
         )
     }
 }
+
+@Composable
+private fun localizedAnalyticsPeriodLabel(period: TimePeriod): String = stringResource(when (period) {
+    TimePeriod.THIS_MONTH -> R.string.flosi_this_month_period
+    TimePeriod.LAST_MONTH -> R.string.flosi_last_month_period
+    TimePeriod.CURRENT_FY -> R.string.flosi_current_fy
+    TimePeriod.ALL -> R.string.flosi_all_time
+    TimePeriod.CUSTOM -> R.string.flosi_custom_range
+})

@@ -1,5 +1,8 @@
 package com.pennywiseai.tracker.ui.screens.unrecognized
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -76,12 +79,12 @@ fun UnrecognizedSmsScreen(
             CustomTitleTopAppBar(
                 scrollBehaviorSmall = scrollBehaviorSmall,
                 scrollBehaviorLarge = scrollBehaviorLarge,
-                title = "Unrecognized SMS",
+                title = stringResource(R.string.flosi_unrecognized_sms),
                 hasBackButton = true,
                 hasActionButton = true,
                 navigationContent = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.flosi_back))
                     }
                 },
                 hazeState = hazeState
@@ -133,15 +136,14 @@ fun UnrecognizedSmsScreen(
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = "Unrecognized Bank Messages",
+                                    text = stringResource(R.string.flosi_full_unrecognized_bank_messages),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
 
                             Text(
-                                text = "These messages from potential banks couldn't be automatically parsed. " +
-                                        "Help improve ${com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME} by reporting them so we can add support for more banks.",
+                                text = stringResource(R.string.flosi_unrecognized_intro, com.pennywiseai.tracker.BuildConfig.APP_DISPLAY_NAME),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -155,7 +157,7 @@ fun UnrecognizedSmsScreen(
                                 FilterChip(
                                     selected = showReported,
                                     onClick = { viewModel.toggleShowReported() },
-                                    label = { Text("Show Reported") },
+                                    label = { Text(stringResource(R.string.flosi_full_show_reported)) },
                                     leadingIcon = if (showReported) {
                                         { Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(Dimensions.Icon.small)) }
                                     } else null
@@ -172,14 +174,14 @@ fun UnrecognizedSmsScreen(
                                             Badge(
                                                 containerColor = MaterialTheme.colorScheme.primary
                                             ) {
-                                                Text("$unreportedCount new")
+                                                Text(pluralStringResource(R.plurals.flosi_unrecognized_new, unreportedCount, unreportedCount))
                                             }
                                         }
                                         if (reportedCount > 0) {
                                             Badge(
                                                 containerColor = MaterialTheme.colorScheme.surfaceVariant
                                             ) {
-                                                Text("$reportedCount reported")
+                                                Text(pluralStringResource(R.plurals.flosi_unrecognized_reported, reportedCount, reportedCount))
                                             }
                                         }
                                     }
@@ -200,8 +202,8 @@ fun UnrecognizedSmsScreen(
                 item {
                     PennyWiseEmptyState(
                         icon = Icons.Outlined.MarkEmailRead,
-                        headline = "All messages recognized",
-                        description = "No unrecognized bank messages found"
+                        headline = stringResource(R.string.flosi_unrecognized_all),
+                        description = stringResource(R.string.flosi_unrecognized_empty_desc)
                     )
                 }
             } else {
@@ -244,9 +246,9 @@ fun UnrecognizedSmsScreen(
                 showDeleteConfirmation = false
                 selectedMessage = null
             },
-            title = { Text("Delete Message") },
+            title = { Text(stringResource(R.string.flosi_full_delete_message)) },
             text = {
-                Text("Are you sure you want to delete this unrecognized message? This action cannot be undone.")
+                Text(stringResource(R.string.flosi_full_are_you_sure_you_want_to_delete_this_unrecognized_message_this_ac))
             },
             confirmButton = {
                 TextButton(
@@ -259,7 +261,7 @@ fun UnrecognizedSmsScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.flosi_delete))
                 }
             },
             dismissButton = {
@@ -269,7 +271,7 @@ fun UnrecognizedSmsScreen(
                         selectedMessage = null
                     }
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.flosi_cancel))
                 }
             }
         )
@@ -316,7 +318,7 @@ private fun UnrecognizedSmsItem(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant
                     ) {
                         Text(
-                            "Reported",
+                            stringResource(R.string.flosi_full_reported),
                             style = MaterialTheme.typography.labelSmall
                         )
                     }
@@ -344,11 +346,11 @@ private fun UnrecognizedSmsItem(
                     ) {
                         Icon(
                             Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.flosi_delete),
                             modifier = Modifier.size(Dimensions.Icon.small)
                         )
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Delete")
+                        Text(stringResource(R.string.flosi_delete))
                     }
 
                     Spacer(modifier = Modifier.width(Spacing.sm))
@@ -358,11 +360,11 @@ private fun UnrecognizedSmsItem(
                     ) {
                         Icon(
                             Icons.Default.BugReport,
-                            contentDescription = "Report",
+                            contentDescription = stringResource(R.string.flosi_full_report),
                             modifier = Modifier.size(Dimensions.Icon.small)
                         )
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Report")
+                        Text(stringResource(R.string.flosi_full_report))
                     }
                 } else {
                     TextButton(
@@ -373,11 +375,11 @@ private fun UnrecognizedSmsItem(
                     ) {
                         Icon(
                             Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.flosi_delete),
                             modifier = Modifier.size(Dimensions.Icon.small)
                         )
                         Spacer(modifier = Modifier.width(Spacing.xs))
-                        Text("Delete")
+                        Text(stringResource(R.string.flosi_delete))
                     }
                 }
             }

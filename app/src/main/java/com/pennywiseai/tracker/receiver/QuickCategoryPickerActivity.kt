@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.receiver
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationManagerCompat
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import com.pennywiseai.tracker.data.database.entity.CategoryEntity
 import com.pennywiseai.tracker.data.database.entity.TransactionEntity
 import com.pennywiseai.tracker.data.repository.CategoryRepository
@@ -42,6 +44,10 @@ import kotlinx.coroutines.launch
  */
 @AndroidEntryPoint
 class QuickCategoryPickerActivity : ComponentActivity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLocaleController.wrap(newBase))
+    }
 
     @Inject lateinit var transactionRepository: TransactionRepository
     @Inject lateinit var categoryRepository: CategoryRepository

@@ -1,5 +1,10 @@
 package com.pennywiseai.tracker.ui.viewmodel
 
+import android.content.Context
+import androidx.biometric.BiometricPrompt
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.AppLocaleController
+import dagger.hilt.android.qualifiers.ApplicationContext
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppLockViewModel @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val appLockRepository: AppLockRepository,
     private val biometricAuthManager: BiometricAuthManager
 ) : ViewModel() {
@@ -81,15 +87,15 @@ class AppLockViewModel @Inject constructor(
     /**
      * Called when authentication fails
      */
-    fun onAuthenticationError(errorMessage: String) {
-        _uiState.update { it.copy(authenticationError = errorMessage) }
+    fun onAuthenticationError(errorCode: Int) {
+        _uiState.update { it.copy(authenticationError = AppLocaleController.wrap(context).getString(biometricAuthErrorResource(errorCode))) }
     }
 
     /**
      * Called when authentication fails (wrong fingerprint, etc.)
      */
     fun onAuthenticationFailed() {
-        _uiState.update { it.copy(authenticationError = "Authentication failed. Please try again.") }
+        _uiState.update { it.copy(authenticationError = AppLocaleController.wrap(context).getString(R.string.flosi_auth_failed)) }
     }
 
     /**
@@ -142,10 +148,14 @@ class AppLockViewModel @Inject constructor(
      * This must be called with a FragmentActivity from the UI layer
      */
     fun triggerAuthentication(activity: FragmentActivity) {
+        val localizedContext = AppLocaleController.wrap(context)
         biometricAuthManager.authenticate(
             activity = activity,
+            title = localizedContext.getString(R.string.flosi_biometric_prompt_title),
+            subtitle = localizedContext.getString(R.string.flosi_full_authenticate_to_access_your_expense_data),
+            description = localizedContext.getString(R.string.flosi_biometric_prompt_description),
             onSuccess = { onAuthenticationSuccess() },
-            onError = { error -> onAuthenticationError(error) },
+            onError = { code -> onAuthenticationError(code) },
             onFailed = { onAuthenticationFailed() }
         )
     }
@@ -160,3 +170,13 @@ data class AppLockUiState(
     val authenticationError: String? = null,
     val authenticationSucceeded: Boolean = false
 )
+
+internal fun biometricAuthErrorResource(code: Int): Int = when (code) {
+    BiometricPrompt.ERROR_LOCKOUT -> R.string.flosi_biometric_lockout_temporary
+    BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> R.string.flosi_biometric_lockout_permanent
+    BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL -> R.string.flosi_biometric_device_credential_missing
+    BiometricPrompt.ERROR_NO_BIOMETRICS -> R.string.flosi_biometric_none_enrolled
+    BiometricPrompt.ERROR_HW_UNAVAILABLE -> R.string.flosi_biometric_hardware_unavailable
+    BiometricPrompt.ERROR_HW_NOT_PRESENT -> R.string.flosi_biometric_no_hardware
+    else -> R.string.flosi_auth_failed
+}

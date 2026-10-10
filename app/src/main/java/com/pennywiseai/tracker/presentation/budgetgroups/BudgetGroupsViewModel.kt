@@ -1,5 +1,6 @@
 package com.pennywiseai.tracker.presentation.budgetgroups
 
+import com.pennywiseai.tracker.BuildConfig
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -49,8 +50,8 @@ data class BudgetGroupsUiState(
     val hasGroups: Boolean = false,
     val selectedYear: Int = LocalDate.now().year,
     val selectedMonth: Int = LocalDate.now().monthValue,
-    val currency: String = "INR",
-    val baseCurrency: String = "INR",
+    val currency: String = BuildConfig.DEFAULT_CURRENCY,
+    val baseCurrency: String = BuildConfig.DEFAULT_CURRENCY,
     val isUnifiedMode: Boolean = false,
     /**
      * True when the list is filtered to budgets whose window overlaps

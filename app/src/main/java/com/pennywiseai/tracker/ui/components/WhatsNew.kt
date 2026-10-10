@@ -1,6 +1,7 @@
 package com.pennywiseai.tracker.ui.components
 
 import android.content.Context
+import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -8,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import com.pennywiseai.tracker.R
 import com.pennywiseai.tracker.ui.theme.Spacing
 
 /**
@@ -113,7 +115,7 @@ fun WhatsNewDialog(
         },
         confirmButton = {
             Button(onClick = onDismiss) {
-                Text("Got it")
+                Text(stringResource(R.string.flosi_got_it))
             }
         }
     )

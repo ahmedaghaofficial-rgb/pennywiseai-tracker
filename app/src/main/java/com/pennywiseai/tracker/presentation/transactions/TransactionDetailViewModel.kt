@@ -1,5 +1,10 @@
 package com.pennywiseai.tracker.presentation.transactions
 
+import com.pennywiseai.tracker.BuildConfig
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.BALANCE_ADJUSTMENT_STORAGE_NAME
+import com.pennywiseai.tracker.core.localization.storedBalanceAdjustmentDescription
+import com.pennywiseai.tracker.core.localization.AppLocaleController
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import android.net.Uri
@@ -64,11 +69,12 @@ class TransactionDetailViewModel @Inject constructor(
     private val detectBalanceDiscrepancy: com.pennywiseai.tracker.domain.usecase.DetectBalanceDiscrepancyUseCase,
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context
 ) : ViewModel() {
+    private fun uiText(id: Int, vararg args: Any): String = AppLocaleController.wrap(context).getString(id, *args)
     
     private val _transaction = MutableStateFlow<TransactionEntity?>(null)
     val transaction: StateFlow<TransactionEntity?> = _transaction.asStateFlow()
 
-    private val _primaryCurrency = MutableStateFlow("INR")
+    private val _primaryCurrency = MutableStateFlow(BuildConfig.DEFAULT_CURRENCY)
     val primaryCurrency: StateFlow<String> = _primaryCurrency.asStateFlow()
 
     private val _convertedAmount = MutableStateFlow<BigDecimal?>(null)
@@ -343,12 +349,11 @@ class TransactionDetailViewModel @Inject constructor(
                 transactionRepository.insertTransaction(
                     TransactionEntity(
                         amount = delta.abs(),
-                        merchantName = "Balance adjustment",
+                        merchantName = BALANCE_ADJUSTMENT_STORAGE_NAME,
                         category = "Others",
                         transactionType = if (delta.signum() < 0) TransactionType.EXPENSE else TransactionType.INCOME,
                         dateTime = at,
-                        description = "Untracked amount so the app matches the bank's reported balance of " +
-                            CurrencyFormatter.formatCurrency(d.reported, d.currency),
+                        description = storedBalanceAdjustmentDescription(CurrencyFormatter.formatCurrency(d.reported, d.currency)),
                         smsBody = null,
                         bankName = tx.bankName,
                         smsSender = null,
@@ -360,7 +365,7 @@ class TransactionDetailViewModel @Inject constructor(
                 )
                 _balanceDiscrepancy.value = detectBalanceDiscrepancy.execute(tx)
             } catch (e: Exception) {
-                _errorMessage.value = "Couldn't add the adjustment: ${e.message}"
+                _errorMessage.value = uiText(R.string.flosi_adjustment_failed, e.message ?: "")
             } finally {
                 _isAddingAdjustment.value = false
             }
@@ -408,7 +413,7 @@ class TransactionDetailViewModel @Inject constructor(
             if (!bankName.isNullOrEmpty()) {
                 com.pennywiseai.tracker.utils.CurrencyFormatter.getBankBaseCurrency(bankName)
             } else {
-                transaction.currency.takeIf { it.isNotEmpty() } ?: "INR"
+                transaction.currency.takeIf { it.isNotEmpty() } ?: BuildConfig.DEFAULT_CURRENCY
             }
         }
         _primaryCurrency.value = primaryCurrency
@@ -509,8 +514,10 @@ class TransactionDetailViewModel @Inject constructor(
             ruleRepository.insertRule(
                 TransactionRule(
                     id = ruleId,
-                    name = "Tags for $merchantName",
-                    description = "Created from a transaction: tag everything from $merchantName",
+                    name = com.pennywiseai.tracker.core.localization.AppLocaleController.wrap(context)
+                        .getString(com.pennywiseai.tracker.R.string.flosi_rule_tags_for, merchantName),
+                    description = com.pennywiseai.tracker.core.localization.AppLocaleController.wrap(context)
+                        .getString(com.pennywiseai.tracker.R.string.flosi_rule_created_from, merchantName),
                     conditions = listOf(RuleCondition(TransactionField.MERCHANT, ConditionOperator.EQUALS, merchantName)),
                     actions = tags.map { RuleAction(TransactionField.TAGS, ActionType.ADD_TAG, it) }
                 )
@@ -553,7 +560,7 @@ class TransactionDetailViewModel @Inject constructor(
             }
             _errorMessage.value = null
         } else if (amountStr.isNotEmpty()) {
-            _errorMessage.value = "Amount must be a positive number"
+            _errorMessage.value = uiText(R.string.flosi_positive_amount_required)
         }
     }
     
@@ -607,9 +614,8 @@ class TransactionDetailViewModel @Inject constructor(
                     // A category with this name already exists but for the other
                     // type; selecting it would filter it out of the picker and
                     // blank the chip. Surface it instead of silently misbehaving.
-                    val existingType = if (existing.isIncome) "income" else "expense"
-                    _errorMessage.value =
-                        "A category named \"$trimmed\" already exists as $existingType"
+                    val existingType = uiText(if (existing.isIncome) R.string.flosi_income else R.string.flosi_expense)
+                    _errorMessage.value = uiText(R.string.flosi_category_exists_as_type, trimmed, existingType)
                     onResult(false)
                     return@launch
                 }
@@ -619,7 +625,7 @@ class TransactionDetailViewModel @Inject constructor(
                 updateCategory(trimmed)
                 onResult(true)
             } catch (e: Exception) {
-                _errorMessage.value = "Couldn't create category: ${e.message}"
+                _errorMessage.value = uiText(R.string.flosi_create_category_failed, e.message ?: "")
                 onResult(false)
             }
         }
@@ -732,7 +738,7 @@ class TransactionDetailViewModel @Inject constructor(
 
         // Splits are for spends: account expenses and credit-card purchases (#750).
         if (transaction.transactionType !in SPLITTABLE_TYPES) {
-            _errorMessage.value = "Splits are only available for expenses and card purchases"
+            _errorMessage.value = uiText(R.string.flosi_splits_expenses_only)
             return
         }
 
@@ -778,13 +784,13 @@ class TransactionDetailViewModel @Inject constructor(
 
         // Minimum 2 splits required
         if (currentSplits.size < 2) {
-            _errorMessage.value = "At least 2 splits are required"
+            _errorMessage.value = uiText(R.string.flosi_two_splits_required)
             return false
         }
 
         // All splits must have positive amounts
         if (currentSplits.any { it.amount <= BigDecimal.ZERO }) {
-            _errorMessage.value = "All split amounts must be positive"
+            _errorMessage.value = uiText(R.string.flosi_positive_splits)
             return false
         }
 
@@ -794,7 +800,7 @@ class TransactionDetailViewModel @Inject constructor(
         val tolerance = BigDecimal("0.01")
 
         if (difference > tolerance) {
-            _errorMessage.value = "Split amounts must equal the transaction total"
+            _errorMessage.value = uiText(R.string.flosi_split_total_mismatch)
             return false
         }
 
@@ -814,12 +820,12 @@ class TransactionDetailViewModel @Inject constructor(
 
         // Validate before saving
         if (toSave.merchantName.isBlank()) {
-            _errorMessage.value = "Merchant name is required"
+            _errorMessage.value = uiText(R.string.flosi_merchant_required)
             return
         }
 
         if (toSave.amount <= BigDecimal.ZERO) {
-            _errorMessage.value = "Amount must be positive"
+            _errorMessage.value = uiText(R.string.flosi_positive_amount_required)
             return
         }
 
@@ -835,7 +841,7 @@ class TransactionDetailViewModel @Inject constructor(
             toSave.fromAccount != null &&
             toSave.toAccount != null &&
             toSave.fromAccount == toSave.toAccount) {
-            _errorMessage.value = "Source and destination accounts must be different"
+            _errorMessage.value = uiText(R.string.flosi_different_transfer_accounts)
             return
         }
 
@@ -980,7 +986,7 @@ class TransactionDetailViewModel @Inject constructor(
                     try {
                         upsertMerchantTagRule(normalizedTransaction.merchantName, _editableTags.value)
                     } catch (e: Exception) {
-                        ruleError = "Saved, but couldn't create the tag rule: ${e.message}"
+                        ruleError = uiText(R.string.flosi_tag_rule_failed, e.message ?: "")
                     }
                 }
 
@@ -1036,7 +1042,7 @@ class TransactionDetailViewModel @Inject constructor(
                 _budgetImpactType.value = normalizedTransaction.budgetImpactType
                 _budgetCategory.value = normalizedTransaction.budgetCategory
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to save changes: ${e.message}"
+                _errorMessage.value = uiText(R.string.flosi_save_changes_failed, e.message ?: "")
             } finally {
                 _isSaving.value = false
             }
@@ -1053,7 +1059,7 @@ class TransactionDetailViewModel @Inject constructor(
     
     private fun validateMerchantName(name: String) {
         if (name.isBlank()) {
-            _errorMessage.value = "Merchant name is required"
+            _errorMessage.value = uiText(R.string.flosi_merchant_required)
         } else {
             _errorMessage.value = null
         }
@@ -1106,7 +1112,7 @@ class TransactionDetailViewModel @Inject constructor(
                     _deleteSuccess.value = true
                     com.pennywiseai.tracker.widget.WidgetRefresher.refreshTransactionWidgets(context)
                 } catch (e: Exception) {
-                    _errorMessage.value = "Failed to delete transaction"
+                    _errorMessage.value = uiText(R.string.flosi_delete_transaction_failed)
                 } finally {
                     _isDeleting.value = false
                 }
@@ -1226,7 +1232,7 @@ class TransactionDetailViewModel @Inject constructor(
                 _loan.value = loanRepository.getLoanById(loanId)
                 _showMarkAsLoanSheet.value = false
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to create loan: ${e.message}"
+                _errorMessage.value = uiText(R.string.flosi_create_loan_failed, e.message ?: "")
             }
         }
     }
@@ -1240,7 +1246,7 @@ class TransactionDetailViewModel @Inject constructor(
                 _transaction.value = transactionRepository.getTransactionById(txn.id)
                 _loan.value = null
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to unlink loan: ${e.message}"
+                _errorMessage.value = uiText(R.string.flosi_unlink_loan_failed, e.message ?: "")
             }
         }
     }

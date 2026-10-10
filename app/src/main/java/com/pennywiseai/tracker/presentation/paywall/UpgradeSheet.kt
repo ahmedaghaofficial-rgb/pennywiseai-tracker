@@ -1,5 +1,7 @@
 package com.pennywiseai.tracker.presentation.paywall
 
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -224,9 +226,9 @@ private fun BrandHeader(isMember: Boolean) {
             )
             Text(
                 text = if (isMember) {
-                    "All Pro capabilities active"
+                    stringResource(R.string.flosi_pro_capabilities_active)
                 } else {
-                    "One tap to unlock everything"
+                    stringResource(R.string.flosi_pro_unlock)
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -319,7 +321,7 @@ private fun SupportNote() {
             modifier = Modifier.size(Dimensions.Icon.medium),
         )
         Text(
-            text = "Built by a solo dev — your upgrade funds what's next. Thank you.",
+            text = stringResource(R.string.flosi_full_built_by_a_solo_dev_your_upgrade_funds_what_s_next_thank_you),
             style = MaterialTheme.typography.bodySmall,
             color = Color(0xFF3A2B00),
         )
@@ -330,11 +332,7 @@ private fun SupportNote() {
 // Plan segment — 3 tabs in a pill, single source of truth for cadence.
 // ─────────────────────────────────────────────────────────────────────────
 
-private enum class PlanTier(val displayName: String) {
-    Monthly("Monthly"),
-    Annual("Annual"),
-    Lifetime("Lifetime"),
-}
+private enum class PlanTier { Monthly, Annual, Lifetime }
 
 @Composable
 private fun PlanSegment(
@@ -403,7 +401,7 @@ private fun SegmentTab(
     ) {
         Box(contentAlignment = Alignment.Center) {
             Text(
-                text = tier.displayName,
+                text = stringResource(when (tier) { PlanTier.Monthly -> R.string.flosi_pro_monthly; PlanTier.Annual -> R.string.flosi_pro_annual; PlanTier.Lifetime -> R.string.flosi_pro_lifetime }),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                 color = content,
@@ -564,7 +562,7 @@ private fun CtaButton(
                 )
             } else {
                 Text(
-                    text = selectedPlan?.ctaLabel() ?: "Select a plan",
+                    text = selectedPlan?.ctaLabel() ?: stringResource(R.string.flosi_pro_select),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -593,10 +591,10 @@ private fun CtaButton(
 // ─────────────────────────────────────────────────────────────────────────
 
 private val PRO_FEATURES = listOf(
-    "Unlimited custom rules",
-    "Unlimited PDF statement imports",
-    "Unlimited CSV export",
-    "Merge duplicate accounts",
+    R.string.flosi_pro_rules,
+    R.string.flosi_pro_pdf,
+    R.string.flosi_pro_csv,
+    R.string.flosi_pro_merge,
 )
 
 @Composable
@@ -607,7 +605,7 @@ private fun IncludesBlock() {
             .padding(horizontal = Dimensions.Padding.content),
     ) {
         Text(
-            text = "Includes",
+            text = stringResource(R.string.flosi_full_includes),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.primary,
@@ -627,7 +625,7 @@ private fun IncludesBlock() {
                 )
                 Spacer(Modifier.width(Spacing.sm))
                 Text(
-                    text = feature,
+                    text = stringResource(feature),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -654,13 +652,13 @@ private fun TrustRow(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Cancel anytime",
+                text = stringResource(R.string.flosi_full_cancel_anytime),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Dot()
             Text(
-                text = "On-device data",
+                text = stringResource(R.string.flosi_full_on_device_data),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -670,7 +668,7 @@ private fun TrustRow(
                 contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
             ) {
                 Text(
-                    text = "Restore",
+                    text = stringResource(R.string.flosi_full_restore),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Medium,
@@ -684,7 +682,7 @@ private fun TrustRow(
             contentPadding = PaddingValues(horizontal = Spacing.xs, vertical = Spacing.none),
         ) {
             Text(
-                text = "Have a license key?",
+                text = stringResource(R.string.flosi_full_have_a_license_key),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium,
@@ -693,7 +691,7 @@ private fun TrustRow(
         if (liveCatalogEmpty) {
             Spacer(Modifier.height(Spacing.xs))
             Text(
-                text = "Prices shown are indicative · Play Store confirms at checkout",
+                text = stringResource(R.string.flosi_full_prices_shown_are_indicative_play_store_confirms_at_checkout),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -778,10 +776,10 @@ private fun CelebrationContent(onContinue: () -> Unit) {
             modifier = Modifier.graphicsLayer { alpha = contentAlpha },
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            EyebrowChip(text = "WELCOME", isAccent = true)
+            EyebrowChip(text = stringResource(R.string.flosi_full_welcome), isAccent = true)
             Spacer(Modifier.height(Spacing.md))
             Text(
-                text = "You're a Pro member",
+                text = stringResource(R.string.flosi_full_you_re_a_pro_member),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -789,7 +787,7 @@ private fun CelebrationContent(onContinue: () -> Unit) {
             )
             Spacer(Modifier.height(Spacing.xs))
             Text(
-                text = "Thank you for backing PennyWise — every feature on the list is now yours.",
+                text = stringResource(R.string.flosi_full_thank_you_for_backing_pennywise_every_feature_on_the_list_is_now),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -813,7 +811,7 @@ private fun CelebrationContent(onContinue: () -> Unit) {
                         )
                         Spacer(Modifier.width(Spacing.sm))
                         Text(
-                            text = feature,
+                            text = stringResource(feature),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -834,7 +832,7 @@ private fun CelebrationContent(onContinue: () -> Unit) {
                 ),
             ) {
                 Text(
-                    text = "Continue",
+                    text = stringResource(R.string.flosi_continue),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -863,10 +861,10 @@ private fun MemberCard(licenseProductName: String?) {
             ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            EyebrowChip(text = "ACTIVE", isAccent = true)
+            EyebrowChip(text = stringResource(R.string.flosi_full_active), isAccent = true)
             Spacer(Modifier.height(Spacing.md))
             Text(
-                text = "All Pro features unlocked",
+                text = stringResource(R.string.flosi_full_all_pro_features_unlocked),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -875,7 +873,7 @@ private fun MemberCard(licenseProductName: String?) {
             if (licenseProductName != null) {
                 Spacer(Modifier.height(Spacing.xs))
                 Text(
-                    text = "Via license key · $licenseProductName",
+                    text = stringResource(R.string.flosi_pro_via_license, licenseProductName),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -905,7 +903,7 @@ private fun ManageRow(
             // another phone. Play subscribers get the Play manage link instead.
             TextButton(onClick = onRemoveLicense) {
                 Text(
-                    text = "Remove license key",
+                    text = stringResource(R.string.flosi_full_remove_license_key),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Medium,
@@ -926,7 +924,7 @@ private fun ManageRow(
             },
         ) {
             Text(
-                text = "Manage subscription",
+                text = stringResource(R.string.flosi_full_manage_subscription),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium,
@@ -934,7 +932,7 @@ private fun ManageRow(
         }
         TextButton(onClick = onRestore) {
             Text(
-                text = "Restore",
+                text = stringResource(R.string.flosi_full_restore),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Medium,
@@ -1004,10 +1002,11 @@ private fun List<ProProduct>.productForTier(tier: PlanTier): ProProduct? = when 
     PlanTier.Lifetime -> find { it.type == ProProduct.ProductType.LIFETIME }
 }
 
+@Composable
 private fun ProProduct.eyebrowText(): String = when (type) {
-    ProProduct.ProductType.LIFETIME -> if (isDiscounted) "FOUNDER OFFER" else "LIFETIME ACCESS"
-    ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> if (isDiscounted) "LIMITED OFFER" else "BILLED ANNUALLY"
-    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> if (isDiscounted) "LIMITED OFFER" else "BILLED MONTHLY"
+    ProProduct.ProductType.LIFETIME -> if (isDiscounted) stringResource(R.string.flosi_pro_founder) else stringResource(R.string.flosi_pro_lifetime_access)
+    ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> if (isDiscounted) stringResource(R.string.flosi_pro_limited) else stringResource(R.string.flosi_pro_billed_annual)
+    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> if (isDiscounted) stringResource(R.string.flosi_pro_limited) else stringResource(R.string.flosi_pro_billed_monthly)
 }
 
 /**
@@ -1015,32 +1014,34 @@ private fun ProProduct.eyebrowText(): String = when (type) {
  * the "you're saving money" highlight. For lifetime we lead with the rupee
  * amount saved (Indian shoppers respond to ₹ saved more than to %).
  */
+@Composable
 private fun ProProduct.dealOrCadence(monthlyMicros: Long?): Pair<String, Boolean> = when (type) {
     ProProduct.ProductType.LIFETIME -> when {
         isDiscounted -> {
             val savedMicros = (originalPriceMicros ?: 0L) - priceMicros
             val savedRupees = (savedMicros / 1_000_000.0).toInt()
             val pct = ((savedMicros.toDouble() / (originalPriceMicros ?: priceMicros).toDouble()) * 100).toInt()
-            "Save ₹$savedRupees · $pct% off · Pay once, keep forever" to true
+            stringResource(R.string.flosi_pro_lifetime_deal, savedRupees, pct) to true
         }
-        else -> "Pay once. Keep forever." to false
+        else -> stringResource(R.string.flosi_pro_once) to false
     }
     ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> {
         val pct = annualSavingsPct(monthlyMicros)
         val perMo = (priceMicros / 12L / 1_000_000.0).toInt()
         if (pct != null) {
-            "Save $pct% · works out to ₹$perMo/month" to true
+            stringResource(R.string.flosi_pro_annual_deal, pct, perMo) to true
         } else {
-            "Works out to ₹$perMo/month" to false
+            stringResource(R.string.flosi_pro_annual_cadence, perMo) to false
         }
     }
-    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> "Cancel anytime" to false
+    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> stringResource(R.string.flosi_pro_cancel) to false
 }
 
+@Composable
 private fun ProProduct.ctaLabel(): String = when (type) {
-    ProProduct.ProductType.LIFETIME -> "Get Lifetime · $priceFormatted"
-    ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> "Subscribe · $priceFormatted/year"
-    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> "Start · $priceFormatted/month"
+    ProProduct.ProductType.LIFETIME -> stringResource(R.string.flosi_pro_get_lifetime, priceFormatted)
+    ProProduct.ProductType.SUBSCRIPTION_ANNUAL -> stringResource(R.string.flosi_pro_subscribe_annual, priceFormatted)
+    ProProduct.ProductType.SUBSCRIPTION_MONTHLY -> stringResource(R.string.flosi_pro_start_monthly, priceFormatted)
 }
 
 private fun ProProduct.annualSavingsPct(monthlyMicros: Long?): Int? {

@@ -31,6 +31,9 @@ import com.pennywiseai.tracker.ui.theme.Dimensions
 import ir.ehsannarmani.compose_charts.PieChart
 import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.Pie
+import com.pennywiseai.tracker.R
+import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
 
 @Composable
 fun CategoryPieChart(
@@ -124,7 +127,7 @@ fun CategoryPieChart(
         ) {
             items(chartData.sortedByDescending { it.data }) { pie ->
                 PieLegendItem(
-                    label = pie.label ?: "Unknown",
+                    label = pie.label?.let { localizedCategoryName(it) } ?: stringResource(R.string.flosi_notification_unknown),
                     value = pie.data,
                     color = pie.color,
                     isSelected = pie.selected,

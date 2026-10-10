@@ -1,5 +1,11 @@
 package com.pennywiseai.tracker.ui.components.cards
 
+import com.pennywiseai.tracker.R
+import com.pennywiseai.tracker.core.localization.localizedTransactionMerchant
+import com.pennywiseai.tracker.core.localization.localizedTransactionDescription
+import androidx.compose.ui.res.stringResource
+import com.pennywiseai.tracker.ui.icons.localizedCategoryName
+
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -77,37 +83,48 @@ fun TransactionItem(
     // brand-name merchants ("Uber", "Netflix") and routinely got truncated. The
     // merchant stays the visual heading; the description is a small contextual
     // tag below. (#383)
-    val description = transaction.description?.takeIf { it.isNotBlank() }
+    val description = localizedTransactionDescription(view.context, transaction)?.takeIf { it.isNotBlank() }
 
-    val subtitle = remember(transaction, dateTimeText, isEffectivelyBusiness) {
+    val categoryLabel = localizedCategoryName(transaction.category)
+    val creditLabel = stringResource(R.string.flosi_credit)
+    val transferLabel = stringResource(R.string.flosi_transfer)
+    val investmentLabel = stringResource(R.string.flosi_investment)
+    val recurringLabel = stringResource(R.string.flosi_recurring)
+    val businessLabel = stringResource(R.string.flosi_business)
+    val excludedLabel = stringResource(R.string.flosi_excluded)
+    val balanceLabel = stringResource(R.string.flosi_balance_prefix, "")
+    val transferTitle = transferTitleOverride(transaction)
+    val subtitle = remember(transaction, description, dateTimeText, isEffectivelyBusiness, categoryLabel,
+        creditLabel, transferLabel, investmentLabel, recurringLabel, businessLabel,
+        excludedLabel, balanceLabel, transferTitle) {
         buildList {
             if (description != null) add(description)
             add(dateTimeText)
             if (transaction.category.isNotBlank() &&
                 !transaction.category.equals("Uncategorized", ignoreCase = true)
             ) {
-                add(transaction.category)
+                add(categoryLabel)
             }
 
             if (showTypeLabel) {
                 when (transaction.transactionType) {
-                    TransactionType.CREDIT -> add("Credit")
+                    TransactionType.CREDIT -> add(creditLabel)
                     TransactionType.TRANSFER -> {
-                        if (transferTitleOverride(transaction) == null) {
-                            add("Transfer")
+                        if (transferTitle == null) {
+                            add(transferLabel)
                         }
                     }
-                    TransactionType.INVESTMENT -> add("Investment")
+                    TransactionType.INVESTMENT -> add(investmentLabel)
                     else -> {}
                 }
             }
-            if (transaction.isRecurring) add("Recurring")
-            if (isEffectivelyBusiness) add("Business")
+            if (transaction.isRecurring) add(recurringLabel)
+            if (isEffectivelyBusiness) add(businessLabel)
             // Mark rows the user excluded from analytics so it's visible in the
             // list which ones are skipped by spending stats (#451).
-            if (transaction.excludedFromAnalytics) add("Excluded")
+            if (transaction.excludedFromAnalytics) add(excludedLabel)
             transaction.balanceAfter?.let { balance ->
-                add("Bal ${CurrencyFormatter.formatCurrency(balance, transaction.currency)}")
+                add("$balanceLabel${CurrencyFormatter.formatCurrency(balance, transaction.currency)}")
             }
         }.joinToString(" \u00B7 ")
     }
@@ -129,15 +146,15 @@ fun TransactionItem(
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
     val merchantDisplay = LocalMerchantDisplay.current
+    val localizedMerchant = localizedTransactionMerchant(view.context, transaction)
 
     // For a paired self-transfer row, the event ("Transfer → 9999" /
     // "Transfer from 1234") is more informative than the merchant name (often
     // the user's own contact name), and stops the two legs from looking like
     // duplicate rows in the list. Falls back to merchant otherwise.
-    val transferTitle = transferTitleOverride(transaction)
-
     ListItemCardV2(
-        title = transferTitle ?: merchantDisplay(transaction.merchantName) ?: transaction.merchantName,
+        title = transferTitle ?: if (localizedMerchant != transaction.merchantName) localizedMerchant
+            else merchantDisplay(transaction.merchantName) ?: transaction.merchantName,
         subtitle = subtitle,
         amount = "$amountPrefix$formattedAmount",
         amountColor = amountColor,
@@ -209,16 +226,17 @@ fun TransactionItem(
  * account's last-4) rather than the merchant. Returns null for any other
  * row, in which case the default merchant-as-title rendering wins.
  */
+@Composable
 private fun transferTitleOverride(transaction: TransactionEntity): String? {
     if (transaction.transactionType != TransactionType.TRANSFER) return null
     val mine = transaction.accountNumber
     val from = transaction.fromAccount
     val to = transaction.toAccount
     return when {
-        from != null && to != null && mine == from -> "Transfer → ${to.takeLast(4)}"
-        from != null && to != null && mine == to -> "Transfer from ${from.takeLast(4)}"
-        to != null && mine != to -> "Transfer → ${to.takeLast(4)}"
-        from != null && mine != from -> "Transfer from ${from.takeLast(4)}"
+        from != null && to != null && mine == from -> stringResource(R.string.flosi_transfer_to_account, to.takeLast(4))
+        from != null && to != null && mine == to -> stringResource(R.string.flosi_transfer_from_account, from.takeLast(4))
+        to != null && mine != to -> stringResource(R.string.flosi_transfer_to_account, to.takeLast(4))
+        from != null && mine != from -> stringResource(R.string.flosi_transfer_from_account, from.takeLast(4))
         else -> null
     }
 }
