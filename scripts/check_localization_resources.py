@@ -63,6 +63,9 @@ assert loan_ar["one"] != loan_ar["few"] and loan_ar["two"] != loan_ar["many"]
 
 for name in (
     "flosi_active_subscriptions",
+    "flosi_onboarding_messages_count",
+    "flosi_export_transactions_csv",
+    "flosi_export_success_count",
     "flosi_onboarding_transactions_found",
     "flosi_onboarding_seconds_remaining",
     "flosi_onboarding_scan_saved",

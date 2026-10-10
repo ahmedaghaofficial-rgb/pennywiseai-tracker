@@ -2,6 +2,7 @@ package com.pennywiseai.tracker.presentation.transactions
 
 import android.content.Intent
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
@@ -120,7 +121,7 @@ fun ExportTransactionsDialog(
                 when (val state = exportState) {
                     is ExportState.Ready -> {
                         Text(
-                            text = stringResource(R.string.flosi_export_transactions_csv, transactions.size),
+                            text = pluralStringResource(R.plurals.flosi_export_transactions_csv, transactions.size, transactions.size),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center
@@ -225,7 +226,7 @@ fun ExportTransactionsDialog(
                     
                     is ExportState.Success -> {
                         Text(
-                            text = stringResource(R.string.flosi_export_success_count, state.transactionCount),
+                            text = pluralStringResource(R.plurals.flosi_export_success_count, state.transactionCount, state.transactionCount),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center

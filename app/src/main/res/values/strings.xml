@@ -450,9 +450,13 @@
         <item quantity="one">~%1$d second remaining</item>
         <item quantity="other">~%1$d seconds remaining</item>
     </plurals>
+    <plurals name="flosi_onboarding_messages_count">
+        <item quantity="one">%1$d message</item>
+        <item quantity="other">%1$d messages</item>
+    </plurals>
     <plurals name="flosi_onboarding_scan_saved">
-        <item quantity="one">%1$d transaction saved from %2$d messages</item>
-        <item quantity="other">%1$d transactions saved from %2$d messages</item>
+        <item quantity="one">%1$d transaction saved from %2$s</item>
+        <item quantity="other">%1$d transactions saved from %2$s</item>
     </plurals>
     <plurals name="flosi_move_profile_transactions_warning">
         <item quantity="one">%1$d transaction from this account has a different profile. Move it to the new profile too?</item>
@@ -946,9 +950,15 @@
     <string name="flosi_export_transactions_title">Export Transactions</string>
     <string name="flosi_exporting">Exporting...</string>
     <string name="flosi_export_complete">Export Complete!</string>
-    <string name="flosi_export_transactions_csv">Export %1$d transactions to CSV format</string>
+    <plurals name="flosi_export_transactions_csv">
+        <item quantity="one">Export %1$d transaction to CSV format</item>
+        <item quantity="other">Export %1$d transactions to CSV format</item>
+    </plurals>
     <string name="flosi_free_export_rows">Free export: first %1$d of %2$d rows</string>
-    <string name="flosi_export_success_count">Successfully exported %1$d transactions</string>
+    <plurals name="flosi_export_success_count">
+        <item quantity="one">Successfully exported %1$d transaction</item>
+        <item quantity="other">Successfully exported %1$d transactions</item>
+    </plurals>
     <string name="flosi_file_size">Size: %1$s</string>
     <string name="flosi_export_first_count">Export first %1$d</string>
     <string name="flosi_export">Export</string>

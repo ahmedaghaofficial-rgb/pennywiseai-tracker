@@ -697,7 +697,12 @@ private fun SmsScanStep(uiState: OnBoardingUiState) {
 
             if (uiState.scanSaved > 0) {
                 Text(
-                    text = pluralStringResource(R.plurals.flosi_onboarding_scan_saved, uiState.scanSaved, uiState.scanSaved, uiState.scanTotal),
+                    text = pluralStringResource(
+                        R.plurals.flosi_onboarding_scan_saved,
+                        uiState.scanSaved,
+                        uiState.scanSaved,
+                        pluralStringResource(R.plurals.flosi_onboarding_messages_count, uiState.scanTotal, uiState.scanTotal)
+                    ),
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurfaceVariant

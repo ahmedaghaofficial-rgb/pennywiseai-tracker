@@ -462,13 +462,21 @@
         <item quantity="many">نحو %1$d ثانية متبقية</item>
         <item quantity="other">نحو %1$d ثانية متبقية</item>
     </plurals>
+    <plurals name="flosi_onboarding_messages_count">
+        <item quantity="zero">0 رسالة</item>
+        <item quantity="one">رسالة واحدة</item>
+        <item quantity="two">رسالتين</item>
+        <item quantity="few">%1$d رسائل</item>
+        <item quantity="many">%1$d رسالة</item>
+        <item quantity="other">%1$d رسالة</item>
+    </plurals>
     <plurals name="flosi_onboarding_scan_saved">
-        <item quantity="zero">لم تُحفظ معاملات من أصل %2$d رسالة</item>
-        <item quantity="one">حُفظت معاملة واحدة من أصل %2$d رسالة</item>
-        <item quantity="two">حُفظت معاملتان من أصل %2$d رسالة</item>
-        <item quantity="few">حُفظت %1$d معاملات من أصل %2$d رسالة</item>
-        <item quantity="many">حُفظت %1$d معاملة من أصل %2$d رسالة</item>
-        <item quantity="other">حُفظت %1$d معاملة من أصل %2$d رسالة</item>
+        <item quantity="zero">لم تُحفظ معاملات من أصل %2$s</item>
+        <item quantity="one">حُفظت معاملة واحدة من أصل %2$s</item>
+        <item quantity="two">حُفظت معاملتان من أصل %2$s</item>
+        <item quantity="few">حُفظت %1$d معاملات من أصل %2$s</item>
+        <item quantity="many">حُفظت %1$d معاملة من أصل %2$s</item>
+        <item quantity="other">حُفظت %1$d معاملة من أصل %2$s</item>
     </plurals>
     <plurals name="flosi_move_profile_transactions_warning">
         <item quantity="zero">لا توجد معاملات لنقلها إلى الملف الجديد</item>
@@ -1062,9 +1070,23 @@
     <string name="flosi_export_transactions_title">تصدير المعاملات</string>
     <string name="flosi_exporting">جارٍ التصدير...</string>
     <string name="flosi_export_complete">اكتمل التصدير!</string>
-    <string name="flosi_export_transactions_csv">تصدير %1$d معاملات بصيغة CSV</string>
+    <plurals name="flosi_export_transactions_csv">
+        <item quantity="zero">لا توجد معاملات لتصديرها بصيغة CSV</item>
+        <item quantity="one">تصدير معاملة واحدة بصيغة CSV</item>
+        <item quantity="two">تصدير معاملتين بصيغة CSV</item>
+        <item quantity="few">تصدير %1$d معاملات بصيغة CSV</item>
+        <item quantity="many">تصدير %1$d معاملة بصيغة CSV</item>
+        <item quantity="other">تصدير %1$d معاملة بصيغة CSV</item>
+    </plurals>
     <string name="flosi_free_export_rows">التصدير المجاني: أول %1$d من %2$d صف</string>
-    <string name="flosi_export_success_count">صُدّرت %1$d معاملات بنجاح</string>
+    <plurals name="flosi_export_success_count">
+        <item quantity="zero">لم تُصدَّر أي معاملة</item>
+        <item quantity="one">صُدّرت معاملة واحدة بنجاح</item>
+        <item quantity="two">صُدّرت معاملتان بنجاح</item>
+        <item quantity="few">صُدّرت %1$d معاملات بنجاح</item>
+        <item quantity="many">صُدّرت %1$d معاملة بنجاح</item>
+        <item quantity="other">صُدّرت %1$d معاملة بنجاح</item>
+    </plurals>
     <string name="flosi_file_size">الحجم: %1$s</string>
     <string name="flosi_export_first_count">تصدير أول %1$d</string>
     <string name="flosi_export">تصدير</string>
